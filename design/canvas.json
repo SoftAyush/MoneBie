@@ -1,0 +1,18 @@
+{
+  "pages": [
+    { "id": "page-1", "name": "Shipped icon" },
+    { "id": "page-2", "name": "Earlier directions" }
+  ],
+  "artboards": [
+    { "file": "Main.dc.html", "x": 0, "y": 0, "w": 960, "h": 760, "title": "Aurex app icon", "page": "page-1" },
+    { "file": "Features.dc.html", "x": 0, "y": 0, "w": 920, "h": 620, "title": "Module marks (blue direction)", "page": "page-2" },
+    { "file": "AltApex.dc.html", "x": 0, "y": 720, "w": 300, "h": 400, "page": "page-2" },
+    { "file": "AltAurum.dc.html", "x": 400, "y": 720, "w": 300, "h": 400, "page": "page-2" },
+    { "file": "AltLedger.dc.html", "x": 800, "y": 720, "w": 300, "h": 400, "page": "page-2" }
+  ],
+  "annotations": [
+    { "id": "icon-note", "x": 1040, "y": 0, "w": 320, "page": "page-1", "text": "This is the supplied logo.xml wired up as the launcher icon.\n\nThe emerald mark and the earlier blue Ledger A are on page 2 - nothing was deleted." },
+    { "id": "prev-note", "x": 1000, "y": 0, "w": 300, "page": "page-2", "text": "Earlier directions, kept for reference.\n\nThe module marks here are blue; they would need recolouring to sit with the shipped icon." }
+  ],
+  "launch": { "view": "canvas", "page": "page-1" }
+}

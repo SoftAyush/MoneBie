@@ -1,0 +1,5 @@
+-- Schema v8 -> v9: the appearance setting.
+--
+-- Defaulted to SYSTEM so an existing install keeps behaving exactly as it did
+-- - following the phone - until the user says otherwise.
+ALTER TABLE User ADD COLUMN theme_mode TEXT NOT NULL DEFAULT 'SYSTEM';

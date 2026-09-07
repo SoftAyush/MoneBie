@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The supplied logo, inset so it clears the 66dp guaranteed-visible circle.
+     22dp a side leaves the artwork about 62dp wide, which survives a circular
+     launcher mask with room to spare. -->
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/logo"
+    android:inset="22dp" />

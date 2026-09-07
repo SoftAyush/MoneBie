@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--
+      The activity theme.
+
+      Aurex paints its own light and dark palettes in Compose and remembers
+      which one the user chose, so the platform must not paint over it.
+
+      The app used to run on Theme.Material.Light.NoActionBar, and Android's
+      automatic dark theme took that as an invitation: with the phone in dark
+      mode and the user asking for the light palette, the platform darkened the
+      window on top of Compose. It inverts flat fills but leaves gradients and
+      canvas drawing alone, so the result was a half-dark screen - dark cards
+      behind a pale hero with black text on it, none of which exists in either
+      palette.
+
+      A dark parent takes the app out of that path entirely. The explicit
+      forceDarkAllowed opt-out, for any OEM that decides differently, lives in
+      values-v29: the attribute only exists from Android 10, and declaring it
+      here made it a lint error on every older version this app still supports.
+      Nothing of the parent theme is visible either way: Compose draws every
+      pixel above the window background.
+    -->
+    <style name="Theme.Aurex" parent="@android:style/Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/window_background</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+
+</resources>

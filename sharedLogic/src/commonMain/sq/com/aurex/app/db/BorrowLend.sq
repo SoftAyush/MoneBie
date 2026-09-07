@@ -1,0 +1,138 @@
+-- Money between the user and another person, in either direction.
+--
+-- Borrowing and lending share one table because the fields and the repayment
+-- mechanics are identical; only the sign on the balance sheet differs. The UI
+-- presents them as two separate concepts, which is a presentation concern.
+--
+-- As with Debt and Emi, the settled amount is SUMmed from the repayment rows
+-- rather than stored, so the outstanding figure cannot drift from its history.
+CREATE TABLE LoanRecord (
+    id                       INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    person_name              TEXT    NOT NULL,
+    -- BORROWED or LENT.
+    direction                TEXT    NOT NULL,
+    principal_amount_minor   INTEGER NOT NULL,
+    -- Borrow date, or lending date.
+    date                     TEXT    NOT NULL,
+    -- Due date, or expected return date.
+    due_date                 TEXT,
+    notes                    TEXT,
+    account_id               INTEGER,
+    -- The transaction posted for the principal movement itself, when the money
+    -- went through a tracked account. Held so deleting the record can undo it.
+    principal_transaction_id INTEGER,
+    created_at               TEXT    NOT NULL
+);
+
+CREATE TABLE LoanRepayment (
+    id             INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    record_id      INTEGER NOT NULL,
+    amount_minor   INTEGER NOT NULL,
+    date           TEXT    NOT NULL,
+    account_id     INTEGER,
+    transaction_id INTEGER,
+    note           TEXT,
+    FOREIGN KEY (record_id) REFERENCES LoanRecord(id)
+);
+
+CREATE INDEX loan_repayment_record ON LoanRepayment(record_id);
+CREATE INDEX loan_record_direction ON LoanRecord(direction);
+
+selectAllLoanRecords:
+SELECT LoanRecord.*,
+       COALESCE((SELECT SUM(LoanRepayment.amount_minor)
+                 FROM LoanRepayment
+                 WHERE LoanRepayment.record_id = LoanRecord.id), 0) AS amount_settled_minor
+FROM LoanRecord
+ORDER BY LoanRecord.id DESC;
+
+selectLoanRecordById:
+SELECT LoanRecord.*,
+       COALESCE((SELECT SUM(LoanRepayment.amount_minor)
+                 FROM LoanRepayment
+                 WHERE LoanRepayment.record_id = LoanRecord.id), 0) AS amount_settled_minor
+FROM LoanRecord
+WHERE LoanRecord.id = ?;
+
+insertLoanRecord:
+INSERT INTO LoanRecord(
+    person_name, direction, principal_amount_minor, date, due_date,
+    notes, account_id, principal_transaction_id, created_at
+)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+lastInsertedLoanRecordId:
+SELECT last_insert_rowid();
+
+-- The principal transaction is created after the record, so its id is written
+-- back once it exists.
+linkLoanPrincipalTransaction:
+UPDATE LoanRecord SET principal_transaction_id = :transactionId WHERE id = :id;
+
+updateLoanRecord:
+UPDATE LoanRecord
+SET person_name = :personName,
+    direction = :direction,
+    principal_amount_minor = :principalAmountMinor,
+    date = :date,
+    due_date = :dueDate,
+    notes = :notes
+WHERE id = :id;
+
+deleteLoanRecord:
+DELETE FROM LoanRecord WHERE id = ?;
+
+selectRepaymentsForRecord:
+SELECT * FROM LoanRepayment WHERE record_id = ? ORDER BY date DESC, id DESC;
+
+getLoanRepaymentById:
+SELECT * FROM LoanRepayment WHERE id = ?;
+
+selectRepaymentTransactionIds:
+SELECT transaction_id FROM LoanRepayment WHERE record_id = ? AND transaction_id IS NOT NULL;
+
+insertLoanRepayment:
+INSERT INTO LoanRepayment(record_id, amount_minor, date, account_id, transaction_id, note)
+VALUES (?, ?, ?, ?, ?, ?);
+
+lastInsertedLoanRepaymentId:
+SELECT last_insert_rowid();
+
+linkLoanRepaymentTransaction:
+UPDATE LoanRepayment SET transaction_id = :transactionId WHERE id = :id;
+
+deleteLoanRepayment:
+DELETE FROM LoanRepayment WHERE id = ?;
+
+deleteRepaymentsForRecord:
+DELETE FROM LoanRepayment WHERE record_id = ?;
+
+-- ---------------------------------------------------------------------------
+-- Backup / restore
+--
+-- Raw rows, without the amount_settled_minor rollup selectAllLoanRecords
+-- carries: it is derived from LoanRepayment, which is backed up alongside.
+-- ---------------------------------------------------------------------------
+
+backupSelectAllLoanRecords:
+SELECT * FROM LoanRecord ORDER BY id ASC;
+
+backupSelectAllLoanRepayments:
+SELECT * FROM LoanRepayment ORDER BY id ASC;
+
+backupInsertLoanRecord:
+INSERT INTO LoanRecord(
+    id, person_name, direction, principal_amount_minor, date, due_date, notes,
+    account_id, principal_transaction_id, created_at
+)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+backupInsertLoanRepayment:
+INSERT INTO LoanRepayment(id, record_id, amount_minor, date, account_id, transaction_id, note)
+VALUES (?, ?, ?, ?, ?, ?, ?);
+
+backupDeleteAllLoanRecords:
+DELETE FROM LoanRecord;
+
+backupDeleteAllLoanRepayments:
+DELETE FROM LoanRepayment;

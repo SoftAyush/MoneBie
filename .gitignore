@@ -1,0 +1,80 @@
+# ---- Gradle & build output --------------------------------------------------
+.gradle
+**/build/
+# Kept: a source directory that happens to be called "build" is not output.
+!src/**/build/
+.kotlin
+buildSrc/build/
+*.hprof
+
+# ---- Android ----------------------------------------------------------------
+*.apk
+*.aab
+*.ap_
+*.dex
+captures
+.externalNativeBuild
+.cxx
+output-metadata.json
+lint-results*.html
+lint-results*.xml
+
+# ---- Local machine & secrets ------------------------------------------------
+# Points at this machine's SDK, so it is never the same twice.
+local.properties
+local.defaults.properties
+.env
+*.jks
+*.keystore
+keystore.properties
+signing.properties
+service-account*.json
+
+# The Firebase project this build talks to, generated per project in the
+# Firebase console (Project settings -> Your apps -> google-services.json).
+# Ignored because it names a private project rather than anything about the
+# app; drop the file back into androidApp/ to build, or delete this line to
+# commit it and let a fresh clone build straight away.
+androidApp/google-services.json
+
+# ---- IDEs & editors ---------------------------------------------------------
+.idea
+*.iml
+*.ipr
+*.iws
+.vscode/
+.fleet/
+.claude/settings.local.json
+
+# ---- Xcode & iOS ------------------------------------------------------------
+xcuserdata
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+!*.xcodeproj/project.xcworkspace/
+!*.xcworkspace/contents.xcworkspacedata
+**/xcshareddata/WorkspaceSettings.xcsettings
+DerivedData/
+*.xcuserstate
+.swiftpm/
+Pods/
+
+# ---- Firebase tooling -------------------------------------------------------
+.firebase/
+firebase-debug.log
+firebase-debug.*.log
+firestore-debug.log
+database-debug.log
+pubsub-debug.log
+ui-debug.log
+
+# ---- Node (Firebase functions, tooling) -------------------------------------
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# ---- OS junk ----------------------------------------------------------------
+.DS_Store
+._*
+Thumbs.db
+desktop.ini

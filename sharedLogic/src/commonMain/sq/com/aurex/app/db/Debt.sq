@@ -1,0 +1,138 @@
+-- Money the user owes to a person, bank or institution.
+--
+-- Note what is NOT stored here: amount_paid and status.
+--   * amount paid is SUMmed from DebtPayment on every read, so the remaining
+--     balance is structurally incapable of drifting from the payments that
+--     justify it - there is no field to forget to update;
+--   * status depends on today's date, so it is derived by
+--     FinancialCalculator.debtStatus rather than persisted and re-checked.
+CREATE TABLE Debt (
+    id                       INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    name                     TEXT    NOT NULL,
+    lender                   TEXT    NOT NULL,
+    original_amount_minor    INTEGER NOT NULL,
+    interest_rate            REAL,
+    start_date               TEXT    NOT NULL,
+    due_date                 TEXT,
+    payment_frequency        TEXT    NOT NULL,
+    installment_amount_minor INTEGER,
+    notes                    TEXT,
+    default_account_id       INTEGER,
+    created_at               TEXT    NOT NULL
+);
+
+-- One repayment against a debt. This is the audit trail: it links the debt to
+-- the account the money left and to the transaction that recorded it.
+CREATE TABLE DebtPayment (
+    id             INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    debt_id        INTEGER NOT NULL,
+    amount_minor   INTEGER NOT NULL,
+    date           TEXT    NOT NULL,
+    account_id     INTEGER,
+    transaction_id INTEGER,
+    note           TEXT,
+    FOREIGN KEY (debt_id) REFERENCES Debt(id)
+);
+
+CREATE INDEX debt_payment_debt ON DebtPayment(debt_id);
+
+selectAllDebts:
+SELECT Debt.*,
+       COALESCE((SELECT SUM(DebtPayment.amount_minor)
+                 FROM DebtPayment
+                 WHERE DebtPayment.debt_id = Debt.id), 0) AS amount_paid_minor
+FROM Debt
+ORDER BY Debt.id DESC;
+
+selectDebtById:
+SELECT Debt.*,
+       COALESCE((SELECT SUM(DebtPayment.amount_minor)
+                 FROM DebtPayment
+                 WHERE DebtPayment.debt_id = Debt.id), 0) AS amount_paid_minor
+FROM Debt
+WHERE Debt.id = ?;
+
+countDebts:
+SELECT COUNT(*) FROM Debt;
+
+insertDebt:
+INSERT INTO Debt(
+    name, lender, original_amount_minor, interest_rate, start_date, due_date,
+    payment_frequency, installment_amount_minor, notes, default_account_id, created_at
+)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+lastInsertedDebtId:
+SELECT last_insert_rowid();
+
+updateDebt:
+UPDATE Debt
+SET name = :name,
+    lender = :lender,
+    original_amount_minor = :originalAmountMinor,
+    interest_rate = :interestRate,
+    start_date = :startDate,
+    due_date = :dueDate,
+    payment_frequency = :paymentFrequency,
+    installment_amount_minor = :installmentAmountMinor,
+    notes = :notes,
+    default_account_id = :defaultAccountId
+WHERE id = :id;
+
+deleteDebt:
+DELETE FROM Debt WHERE id = ?;
+
+selectPaymentsForDebt:
+SELECT * FROM DebtPayment WHERE debt_id = ? ORDER BY date DESC, id DESC;
+
+getDebtPaymentById:
+SELECT * FROM DebtPayment WHERE id = ?;
+
+insertDebtPayment:
+INSERT INTO DebtPayment(debt_id, amount_minor, date, account_id, transaction_id, note)
+VALUES (?, ?, ?, ?, ?, ?);
+
+lastInsertedDebtPaymentId:
+SELECT last_insert_rowid();
+
+-- The payment row is written first so the transaction can carry its id as a
+-- back-reference; this closes the loop once that transaction exists.
+linkDebtPaymentTransaction:
+UPDATE DebtPayment SET transaction_id = :transactionId WHERE id = :id;
+
+deleteDebtPayment:
+DELETE FROM DebtPayment WHERE id = ?;
+
+deletePaymentsForDebt:
+DELETE FROM DebtPayment WHERE debt_id = ?;
+
+-- ---------------------------------------------------------------------------
+-- Backup / restore
+--
+-- Raw rows, without the amount_paid_minor rollup selectAllDebts carries: the
+-- rollup is derived from DebtPayment, which is backed up alongside, so storing
+-- it as well would let a restored file disagree with itself.
+-- ---------------------------------------------------------------------------
+
+backupSelectAllDebts:
+SELECT * FROM Debt ORDER BY id ASC;
+
+backupSelectAllDebtPayments:
+SELECT * FROM DebtPayment ORDER BY id ASC;
+
+backupInsertDebt:
+INSERT INTO Debt(
+    id, name, lender, original_amount_minor, interest_rate, start_date, due_date,
+    payment_frequency, installment_amount_minor, notes, default_account_id, created_at
+)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+backupInsertDebtPayment:
+INSERT INTO DebtPayment(id, debt_id, amount_minor, date, account_id, transaction_id, note)
+VALUES (?, ?, ?, ?, ?, ?, ?);
+
+backupDeleteAllDebts:
+DELETE FROM Debt;
+
+backupDeleteAllDebtPayments:
+DELETE FROM DebtPayment;

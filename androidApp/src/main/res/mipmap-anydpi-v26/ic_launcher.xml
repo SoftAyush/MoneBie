@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- No monochrome layer: the logo is 656 traced paths, and flattening it to a
+     single tinted silhouette for Android 13 themed icons produces an
+     unreadable blob. Without the layer the system falls back to the full
+     colour icon, which is the better outcome. -->
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@drawable/ic_launcher_background" />
+    <foreground android:drawable="@drawable/ic_launcher_foreground" />
+</adaptive-icon>

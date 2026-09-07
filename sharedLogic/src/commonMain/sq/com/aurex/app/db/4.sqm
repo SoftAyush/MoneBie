@@ -1,0 +1,29 @@
+-- Schema v4 -> v5: EMI tracking.
+CREATE TABLE Emi (
+    id                         INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    name                       TEXT    NOT NULL,
+    provider                   TEXT    NOT NULL,
+    principal_amount_minor     INTEGER NOT NULL,
+    total_payable_amount_minor INTEGER NOT NULL,
+    monthly_amount_minor       INTEGER NOT NULL,
+    interest_rate              REAL,
+    start_date                 TEXT    NOT NULL,
+    tenure_years               REAL    NOT NULL,
+    payment_account_id         INTEGER,
+    notes                      TEXT,
+    created_at                 TEXT    NOT NULL
+);
+
+CREATE TABLE EmiPayment (
+    id                 INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    emi_id             INTEGER NOT NULL,
+    installment_number INTEGER NOT NULL,
+    amount_minor       INTEGER NOT NULL,
+    due_date           TEXT    NOT NULL,
+    paid_date          TEXT    NOT NULL,
+    account_id         INTEGER,
+    transaction_id     INTEGER,
+    FOREIGN KEY (emi_id) REFERENCES Emi(id)
+);
+
+CREATE INDEX emi_payment_emi ON EmiPayment(emi_id);

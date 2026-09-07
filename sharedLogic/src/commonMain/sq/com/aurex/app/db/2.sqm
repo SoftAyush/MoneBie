@@ -1,0 +1,19 @@
+-- Schema v2 -> v3: the transaction ledger.
+CREATE TABLE TransactionRecord (
+    id                  INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    amount_minor        INTEGER NOT NULL,
+    type                TEXT    NOT NULL,
+    category_id         TEXT    NOT NULL,
+    account_id          INTEGER NOT NULL,
+    transfer_account_id INTEGER,
+    date                TEXT    NOT NULL,
+    note                TEXT,
+    payment_method      TEXT    NOT NULL,
+    source_type         TEXT    NOT NULL DEFAULT 'MANUAL',
+    source_reference_id INTEGER,
+    source_payment_id   INTEGER,
+    FOREIGN KEY (account_id) REFERENCES Account(id)
+);
+
+CREATE INDEX transaction_date ON TransactionRecord(date);
+CREATE INDEX transaction_account ON TransactionRecord(account_id);

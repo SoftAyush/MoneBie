@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+      The launch frame, behind the system splash icon.
+
+      Deliberately one fixed colour rather than a day/night pair. Android picks
+      this before the process starts, so it cannot know which palette the user
+      chose - and a frame that follows the phone is wrong for exactly the user
+      who overrode the phone. Brand navy is right in both: it reads as the
+      splash it is, rather than as the app rendered in the wrong theme.
+
+      Matches the dark palette's background, so a dark-theme launch is seamless.
+    -->
+    <color name="window_background">#061224</color>
+</resources>

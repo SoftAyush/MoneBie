@@ -1,0 +1,104 @@
+-- Transaction categories.
+--
+-- Moved out of the code and into the database so a user can add their own. The
+-- built-ins are seeded here for a fresh install and by 7.sqm for one that
+-- already exists; CategorySeedTest fails the moment the two disagree, which is
+-- the only thing keeping the duplication honest.
+--
+-- is_protected marks the categories the app itself posts to - debt payments,
+-- EMI installments, money lent and borrowed, transfers. They can be renamed and
+-- re-iconed, but never deleted, archived or moved to the other side, because a
+-- repository writes their id directly and a missing row would orphan real
+-- history.
+CREATE TABLE Category (
+    id           TEXT    NOT NULL PRIMARY KEY,
+    name         TEXT    NOT NULL,
+    icon_key     TEXT    NOT NULL,
+    -- INCOME, EXPENSE or TRANSFER.
+    applies_to   TEXT    NOT NULL,
+    is_built_in  INTEGER NOT NULL DEFAULT 0,
+    is_protected INTEGER NOT NULL DEFAULT 0,
+    -- Archived rather than deleted once transactions reference it: the history
+    -- keeps its label, the pickers stop offering it.
+    is_archived  INTEGER NOT NULL DEFAULT 0,
+    sort_order   INTEGER NOT NULL DEFAULT 0,
+    created_at   TEXT    NOT NULL DEFAULT ''
+);
+
+CREATE INDEX category_applies_to ON Category(applies_to);
+
+selectAllCategories:
+SELECT * FROM Category ORDER BY applies_to ASC, sort_order ASC, name ASC;
+
+selectActiveCategories:
+SELECT * FROM Category WHERE is_archived = 0 ORDER BY applies_to ASC, sort_order ASC, name ASC;
+
+getCategoryById:
+SELECT * FROM Category WHERE id = ?;
+
+-- Places a new category after everything already on its side.
+nextSortOrder:
+SELECT COALESCE(MAX(sort_order), 0) + 10 FROM Category WHERE applies_to = ?;
+
+insertCategory:
+INSERT INTO Category(
+    id, name, icon_key, applies_to, is_built_in, is_protected, is_archived, sort_order, created_at
+)
+VALUES (?, ?, ?, ?, 0, 0, 0, ?, ?);
+
+-- Only the label and the icon: the side a category belongs to is baked into
+-- every transaction already filed under it.
+updateCategory:
+UPDATE Category SET name = :name, icon_key = :iconKey WHERE id = :id;
+
+setCategoryArchived:
+UPDATE Category SET is_archived = :archived WHERE id = :id AND is_protected = 0;
+
+-- Guarded rather than trusting the caller: a protected category must survive
+-- even a mistaken delete from anywhere in the app.
+deleteCategory:
+DELETE FROM Category WHERE id = :id AND is_protected = 0 AND is_built_in = 0;
+
+INSERT INTO Category(id, name, icon_key, applies_to, is_built_in, is_protected, is_archived, sort_order, created_at) VALUES ('salary', 'Salary', 'salary', 'INCOME', 1, 0, 0, 10, '');
+INSERT INTO Category(id, name, icon_key, applies_to, is_built_in, is_protected, is_archived, sort_order, created_at) VALUES ('business', 'Business', 'business', 'INCOME', 1, 0, 0, 20, '');
+INSERT INTO Category(id, name, icon_key, applies_to, is_built_in, is_protected, is_archived, sort_order, created_at) VALUES ('freelance', 'Freelance', 'freelance', 'INCOME', 1, 0, 0, 30, '');
+INSERT INTO Category(id, name, icon_key, applies_to, is_built_in, is_protected, is_archived, sort_order, created_at) VALUES ('investment', 'Investment', 'investment', 'INCOME', 1, 0, 0, 40, '');
+INSERT INTO Category(id, name, icon_key, applies_to, is_built_in, is_protected, is_archived, sort_order, created_at) VALUES ('rental', 'Rental', 'rental', 'INCOME', 1, 0, 0, 50, '');
+INSERT INTO Category(id, name, icon_key, applies_to, is_built_in, is_protected, is_archived, sort_order, created_at) VALUES ('gift_in', 'Gift', 'gift', 'INCOME', 1, 0, 0, 60, '');
+INSERT INTO Category(id, name, icon_key, applies_to, is_built_in, is_protected, is_archived, sort_order, created_at) VALUES ('refund', 'Refund', 'refund', 'INCOME', 1, 0, 0, 70, '');
+INSERT INTO Category(id, name, icon_key, applies_to, is_built_in, is_protected, is_archived, sort_order, created_at) VALUES ('borrowed', 'Borrowed', 'lending', 'INCOME', 1, 1, 0, 80, '');
+INSERT INTO Category(id, name, icon_key, applies_to, is_built_in, is_protected, is_archived, sort_order, created_at) VALUES ('loan_returned', 'Loan Returned', 'lending', 'INCOME', 1, 1, 0, 90, '');
+INSERT INTO Category(id, name, icon_key, applies_to, is_built_in, is_protected, is_archived, sort_order, created_at) VALUES ('other_income', 'Other', 'other', 'INCOME', 1, 0, 0, 100, '');
+INSERT INTO Category(id, name, icon_key, applies_to, is_built_in, is_protected, is_archived, sort_order, created_at) VALUES ('food', 'Food & Drink', 'food', 'EXPENSE', 1, 0, 0, 10, '');
+INSERT INTO Category(id, name, icon_key, applies_to, is_built_in, is_protected, is_archived, sort_order, created_at) VALUES ('groceries', 'Groceries', 'groceries', 'EXPENSE', 1, 0, 0, 20, '');
+INSERT INTO Category(id, name, icon_key, applies_to, is_built_in, is_protected, is_archived, sort_order, created_at) VALUES ('transport', 'Transport', 'transport', 'EXPENSE', 1, 0, 0, 30, '');
+INSERT INTO Category(id, name, icon_key, applies_to, is_built_in, is_protected, is_archived, sort_order, created_at) VALUES ('housing', 'Rent & Housing', 'housing', 'EXPENSE', 1, 0, 0, 40, '');
+INSERT INTO Category(id, name, icon_key, applies_to, is_built_in, is_protected, is_archived, sort_order, created_at) VALUES ('utilities', 'Utilities', 'utilities', 'EXPENSE', 1, 0, 0, 50, '');
+INSERT INTO Category(id, name, icon_key, applies_to, is_built_in, is_protected, is_archived, sort_order, created_at) VALUES ('health', 'Health', 'health', 'EXPENSE', 1, 0, 0, 60, '');
+INSERT INTO Category(id, name, icon_key, applies_to, is_built_in, is_protected, is_archived, sort_order, created_at) VALUES ('education', 'Education', 'education', 'EXPENSE', 1, 0, 0, 70, '');
+INSERT INTO Category(id, name, icon_key, applies_to, is_built_in, is_protected, is_archived, sort_order, created_at) VALUES ('shopping', 'Shopping', 'shopping', 'EXPENSE', 1, 0, 0, 80, '');
+INSERT INTO Category(id, name, icon_key, applies_to, is_built_in, is_protected, is_archived, sort_order, created_at) VALUES ('entertainment', 'Entertainment', 'entertainment', 'EXPENSE', 1, 0, 0, 90, '');
+INSERT INTO Category(id, name, icon_key, applies_to, is_built_in, is_protected, is_archived, sort_order, created_at) VALUES ('subscriptions', 'Subscriptions', 'subscriptions', 'EXPENSE', 1, 0, 0, 100, '');
+INSERT INTO Category(id, name, icon_key, applies_to, is_built_in, is_protected, is_archived, sort_order, created_at) VALUES ('debt_payment', 'Debt Payment', 'debt', 'EXPENSE', 1, 1, 0, 110, '');
+INSERT INTO Category(id, name, icon_key, applies_to, is_built_in, is_protected, is_archived, sort_order, created_at) VALUES ('emi_payment', 'EMI Payment', 'emi', 'EXPENSE', 1, 1, 0, 120, '');
+INSERT INTO Category(id, name, icon_key, applies_to, is_built_in, is_protected, is_archived, sort_order, created_at) VALUES ('lending', 'Money Lent', 'lending', 'EXPENSE', 1, 1, 0, 130, '');
+INSERT INTO Category(id, name, icon_key, applies_to, is_built_in, is_protected, is_archived, sort_order, created_at) VALUES ('loan_repayment', 'Loan Repayment', 'lending', 'EXPENSE', 1, 1, 0, 140, '');
+INSERT INTO Category(id, name, icon_key, applies_to, is_built_in, is_protected, is_archived, sort_order, created_at) VALUES ('other_expense', 'Other', 'other', 'EXPENSE', 1, 0, 0, 150, '');
+INSERT INTO Category(id, name, icon_key, applies_to, is_built_in, is_protected, is_archived, sort_order, created_at) VALUES ('transfer', 'Transfer', 'transfer', 'TRANSFER', 1, 1, 0, 10, '');
+
+-- ---------------------------------------------------------------------------
+-- Backup / restore
+--
+-- The built-in categories are restored along with the user's own: their ids are
+-- referenced by transactions, and the seeded copies carry the same ids, so
+-- replacing the table wholesale keeps every transaction's label intact.
+-- ---------------------------------------------------------------------------
+
+backupInsertCategory:
+INSERT INTO Category(
+    id, name, icon_key, applies_to, is_built_in, is_protected, is_archived, sort_order, created_at
+)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+backupDeleteAllCategories:
+DELETE FROM Category;

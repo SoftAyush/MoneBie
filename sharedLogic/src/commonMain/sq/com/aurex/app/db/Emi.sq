@@ -1,0 +1,152 @@
+-- A fixed-installment obligation.
+--
+-- As with Debt, the numbers that change over time are not stored: installments
+-- paid is a COUNT of EmiPayment rows and the amount paid is their SUM, so the
+-- schedule can never claim more or fewer payments than actually exist.
+-- End date, next due date and remaining installments derive from these.
+CREATE TABLE Emi (
+    id                         INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    name                       TEXT    NOT NULL,
+    provider                   TEXT    NOT NULL,
+    principal_amount_minor     INTEGER NOT NULL,
+    total_payable_amount_minor INTEGER NOT NULL,
+    monthly_amount_minor       INTEGER NOT NULL,
+    interest_rate              REAL,
+    start_date                 TEXT    NOT NULL,
+    tenure_years               REAL    NOT NULL,
+    payment_account_id         INTEGER,
+    notes                      TEXT,
+    created_at                 TEXT    NOT NULL
+);
+
+CREATE TABLE EmiPayment (
+    id                 INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    emi_id             INTEGER NOT NULL,
+    -- 1-based position in the schedule. Kept explicit so a payment can be
+    -- matched to the installment it settled, not just to a date.
+    installment_number INTEGER NOT NULL,
+    amount_minor       INTEGER NOT NULL,
+    due_date           TEXT    NOT NULL,
+    paid_date          TEXT    NOT NULL,
+    account_id         INTEGER,
+    transaction_id     INTEGER,
+    FOREIGN KEY (emi_id) REFERENCES Emi(id)
+);
+
+CREATE INDEX emi_payment_emi ON EmiPayment(emi_id);
+
+selectAllEmis:
+SELECT Emi.*,
+       COALESCE((SELECT COUNT(*)
+                 FROM EmiPayment
+                 WHERE EmiPayment.emi_id = Emi.id), 0) AS installments_paid,
+       COALESCE((SELECT SUM(EmiPayment.amount_minor)
+                 FROM EmiPayment
+                 WHERE EmiPayment.emi_id = Emi.id), 0) AS amount_paid_minor
+FROM Emi
+ORDER BY Emi.id DESC;
+
+selectEmiById:
+SELECT Emi.*,
+       COALESCE((SELECT COUNT(*)
+                 FROM EmiPayment
+                 WHERE EmiPayment.emi_id = Emi.id), 0) AS installments_paid,
+       COALESCE((SELECT SUM(EmiPayment.amount_minor)
+                 FROM EmiPayment
+                 WHERE EmiPayment.emi_id = Emi.id), 0) AS amount_paid_minor
+FROM Emi
+WHERE Emi.id = ?;
+
+insertEmi:
+INSERT INTO Emi(
+    name, provider, principal_amount_minor, total_payable_amount_minor,
+    monthly_amount_minor, interest_rate, start_date, tenure_years,
+    payment_account_id, notes, created_at
+)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+lastInsertedEmiId:
+SELECT last_insert_rowid();
+
+updateEmi:
+UPDATE Emi
+SET name = :name,
+    provider = :provider,
+    principal_amount_minor = :principalAmountMinor,
+    total_payable_amount_minor = :totalPayableAmountMinor,
+    monthly_amount_minor = :monthlyAmountMinor,
+    interest_rate = :interestRate,
+    start_date = :startDate,
+    tenure_years = :tenureYears,
+    payment_account_id = :paymentAccountId,
+    notes = :notes
+WHERE id = :id;
+
+deleteEmi:
+DELETE FROM Emi WHERE id = ?;
+
+selectPaymentsForEmi:
+SELECT * FROM EmiPayment
+WHERE emi_id = ?
+ORDER BY installment_number DESC;
+
+getEmiPaymentById:
+SELECT * FROM EmiPayment WHERE id = ?;
+
+-- Only the most recent installment can be undone, so the schedule never
+-- develops a hole that would make "next due" point at an already-paid month.
+latestPaymentForEmi:
+SELECT * FROM EmiPayment
+WHERE emi_id = ?
+ORDER BY installment_number DESC
+LIMIT 1;
+
+insertEmiPayment:
+INSERT INTO EmiPayment(emi_id, installment_number, amount_minor, due_date, paid_date, account_id, transaction_id)
+VALUES (?, ?, ?, ?, ?, ?, ?);
+
+lastInsertedEmiPaymentId:
+SELECT last_insert_rowid();
+
+linkEmiPaymentTransaction:
+UPDATE EmiPayment SET transaction_id = :transactionId WHERE id = :id;
+
+deleteEmiPayment:
+DELETE FROM EmiPayment WHERE id = ?;
+
+deletePaymentsForEmi:
+DELETE FROM EmiPayment WHERE emi_id = ?;
+
+-- ---------------------------------------------------------------------------
+-- Backup / restore
+--
+-- Raw rows, without the installments_paid / amount_paid_minor rollups
+-- selectAllEmis carries: both are derived from EmiPayment, which is backed up
+-- alongside.
+-- ---------------------------------------------------------------------------
+
+backupSelectAllEmis:
+SELECT * FROM Emi ORDER BY id ASC;
+
+backupSelectAllEmiPayments:
+SELECT * FROM EmiPayment ORDER BY id ASC;
+
+backupInsertEmi:
+INSERT INTO Emi(
+    id, name, provider, principal_amount_minor, total_payable_amount_minor,
+    monthly_amount_minor, interest_rate, start_date, tenure_years,
+    payment_account_id, notes, created_at
+)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+backupInsertEmiPayment:
+INSERT INTO EmiPayment(
+    id, emi_id, installment_number, amount_minor, due_date, paid_date, account_id, transaction_id
+)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+
+backupDeleteAllEmis:
+DELETE FROM Emi;
+
+backupDeleteAllEmiPayments:
+DELETE FROM EmiPayment;

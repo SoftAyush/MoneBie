@@ -1,0 +1,54 @@
+CREATE TABLE User (
+    name TEXT NOT NULL,
+    date TEXT NOT NULL,
+    currency_code TEXT NOT NULL,
+    -- SYSTEM, LIGHT or DARK. Stored by name rather than as a flag so "follow
+    -- the phone" stays a real third state instead of being inferred from a null.
+    theme_mode TEXT NOT NULL DEFAULT 'SYSTEM',
+    FOREIGN KEY (currency_code) REFERENCES Currency(code) ON UPDATE CASCADE
+);
+
+-- insertUser:
+-- INSERT INTO User(name, date, currency_code)
+-- VALUES (?, ?, ?);
+--
+selectAllUsers:
+SELECT * FROM User;
+
+
+getUser:
+SELECT * FROM User LIMIT 1;
+
+insertUser:
+INSERT INTO User(name, date, currency_code)
+VALUES (?, ?, ?);
+
+updateUser:
+UPDATE User
+SET name = ?, date = ?, currency_code = ?;
+
+getSelectedCurrencySymbol:
+SELECT Currency.symbol
+FROM User
+JOIN Currency ON User.currency_code = Currency.code
+LIMIT 1;
+
+getThemeMode:
+SELECT theme_mode FROM User LIMIT 1;
+
+setThemeMode:
+UPDATE User SET theme_mode = ?;
+
+-- ---------------------------------------------------------------------------
+-- Backup / restore
+--
+-- insertUser above omits theme_mode, which would silently reset a restored
+-- profile to SYSTEM. This one carries it.
+-- ---------------------------------------------------------------------------
+
+backupInsertUser:
+INSERT INTO User(name, date, currency_code, theme_mode)
+VALUES (?, ?, ?, ?);
+
+backupDeleteAllUsers:
+DELETE FROM User;

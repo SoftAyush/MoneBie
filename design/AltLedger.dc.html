@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&display=swap">
+  <style>
+    body { margin: 0; font-family: Sora, "Segoe UI", system-ui, sans-serif; }
+    a { color: #005AC1; } a:hover { color: #00408C; }
+    .note { font-size: 12px; line-height: 1.5; color: #6B7280; }
+  </style>
+</helmet>
+
+<div style="width: 300px; height: 400px; background: #FEFBFF; padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px;">
+
+  <div style="display: flex; flex-direction: column; gap: 3px;">
+    <div style="font-size: 15px; font-weight: 700; color: #16181C;">Alt · Balance</div>
+    <div class="note">No letterform. Two bars either side of a rule — what you hold, what you owe.</div>
+  </div>
+
+  <div style="background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 14px; padding: 18px; display: flex; justify-content: center;">
+    <svg viewBox="0 0 108 108" width="104" height="104" role="img" aria-label="Balance mark">
+      <rect x="24" y="26" width="46" height="20" rx="4" fill="#005AC1"/>
+      <rect x="24" y="52" width="60" height="4" rx="2" fill="#F0B429"/>
+      <rect x="24" y="62" width="30" height="20" rx="4" fill="#005AC1" opacity="0.45"/>
+    </svg>
+  </div>
+
+  <div style="background: #16181C; border-radius: 14px; padding: 18px; display: flex; align-items: center; justify-content: center; gap: 12px;">
+    <svg viewBox="0 0 108 108" width="42" height="42" role="img" aria-label="Balance on dark">
+      <rect x="24" y="26" width="46" height="20" rx="4" fill="#AFC6FF"/>
+      <rect x="24" y="52" width="60" height="4" rx="2" fill="#F0B429"/>
+      <rect x="24" y="62" width="30" height="20" rx="4" fill="#AFC6FF" opacity="0.45"/>
+    </svg>
+    <div style="font-size: 22px; font-weight: 600; letter-spacing: -0.01em; color: #F5F5F7;">Aurex</div>
+  </div>
+
+  <div style="display: flex; gap: 12px; align-items: center;">
+    <div style="width: 62px; height: 62px; border-radius: 50%; overflow: hidden;">
+      <svg viewBox="0 0 108 108" width="62" height="62" role="img" aria-label="Balance icon">
+        <rect width="108" height="108" fill="#005AC1"/>
+        <g transform="translate(54,54) scale(0.86) translate(-54,-54)">
+          <rect x="30" y="28" width="46" height="18" rx="4" fill="#FFFFFF"/>
+          <rect x="30" y="52" width="46" height="4" rx="2" fill="#F0B429"/>
+          <rect x="30" y="62" width="24" height="18" rx="4" fill="#FFFFFF" opacity="0.5"/>
+        </g>
+      </svg>
+    </div>
+    <div class="note" style="flex-grow: 1;">Says the most about what the app actually does. But with no letterform it is the hardest to recognise as Aurex.</div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>

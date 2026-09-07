@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&display=swap">
+  <style>
+    body { margin: 0; font-family: Sora, "Segoe UI", system-ui, sans-serif; }
+    a { color: #005AC1; } a:hover { color: #00408C; }
+    .note { font-size: 12px; line-height: 1.5; color: #6B7280; }
+  </style>
+</helmet>
+
+<div style="width: 300px; height: 400px; background: #FEFBFF; padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px;">
+
+  <div style="display: flex; flex-direction: column; gap: 3px;">
+    <div style="font-size: 15px; font-weight: 700; color: #16181C;">Alt · Aurum</div>
+    <div class="note">Gold-led. A struck coin with the A cut out of it.</div>
+  </div>
+
+  <div style="background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 14px; padding: 18px; display: flex; justify-content: center;">
+    <svg viewBox="0 0 108 108" width="104" height="104" role="img" aria-label="Aurum coin mark">
+      <circle cx="54" cy="54" r="38" fill="#F0B429"/>
+      <path fill="#8A5A00" fill-rule="evenodd" d="M54 30 L76 78 L32 78 Z M54 47 L60 61 L48 61 Z M46.5 68 L61.5 68 L66 78 L42 78 Z"/>
+    </svg>
+  </div>
+
+  <div style="background: #16181C; border-radius: 14px; padding: 18px; display: flex; align-items: center; justify-content: center; gap: 12px;">
+    <svg viewBox="0 0 108 108" width="42" height="42" role="img" aria-label="Aurum on dark">
+      <circle cx="54" cy="54" r="38" fill="#F0B429"/>
+      <path fill="#16181C" fill-rule="evenodd" d="M54 30 L76 78 L32 78 Z M54 47 L60 61 L48 61 Z M46.5 68 L61.5 68 L66 78 L42 78 Z"/>
+    </svg>
+    <div style="font-size: 22px; font-weight: 600; letter-spacing: -0.01em; color: #F5F5F7;">Aurex</div>
+  </div>
+
+  <div style="display: flex; gap: 12px; align-items: center;">
+    <div style="width: 62px; height: 62px; border-radius: 50%; overflow: hidden;">
+      <svg viewBox="0 0 108 108" width="62" height="62" role="img" aria-label="Aurum icon">
+        <rect width="108" height="108" fill="#16181C"/>
+        <g transform="translate(54,54) scale(0.82) translate(-54,-54)">
+          <circle cx="54" cy="54" r="38" fill="#F0B429"/>
+          <path fill="#16181C" fill-rule="evenodd" d="M54 30 L76 78 L32 78 Z M54 47 L60 61 L48 61 Z M46.5 68 L61.5 68 L66 78 L42 78 Z"/>
+        </g>
+      </svg>
+    </div>
+    <div class="note" style="flex-grow: 1;">Warmest and most memorable. But it abandons the brand blue and leans on the coin cliché.</div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>

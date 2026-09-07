@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--
+      Force Dark arrived in Android 10, so the opt-out belongs here.
+
+      Declared in the base theme it was a lint error on every API below 29,
+      where the attribute does not exist and there is nothing to opt out of.
+      Splitting it keeps the base theme valid at minSdk and still says "no" on
+      every version that could actually darken the window.
+    -->
+    <style name="Theme.Aurex" parent="@android:style/Theme.Material.NoActionBar">
+        <item name="android:forceDarkAllowed">false</item>
+        <item name="android:windowBackground">@color/window_background</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+
+</resources>

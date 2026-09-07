@@ -1,0 +1,103 @@
+-- Named TransactionRecord rather than Transaction because TRANSACTION is a
+-- reserved word in SQLite and would need quoting in every statement.
+CREATE TABLE TransactionRecord (
+    id                  INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    -- Always the positive magnitude; `type` carries the direction.
+    amount_minor        INTEGER NOT NULL,
+    type                TEXT    NOT NULL,
+    category_id         TEXT    NOT NULL,
+    account_id          INTEGER NOT NULL,
+    -- Destination account for a TRANSFER; null otherwise.
+    transfer_account_id INTEGER,
+    -- yyyy-MM-dd HH:mm:ss, sortable and range-queryable as text.
+    date                TEXT    NOT NULL,
+    note                TEXT,
+    payment_method      TEXT    NOT NULL,
+    -- Traceability: what produced this row. MANUAL for user entries, otherwise
+    -- a pointer back to the debt / EMI / loan record and its payment row.
+    source_type         TEXT    NOT NULL DEFAULT 'MANUAL',
+    source_reference_id INTEGER,
+    source_payment_id   INTEGER,
+    FOREIGN KEY (account_id) REFERENCES Account(id)
+);
+
+CREATE INDEX transaction_date ON TransactionRecord(date);
+CREATE INDEX transaction_account ON TransactionRecord(account_id);
+
+selectAllTransactions:
+SELECT * FROM TransactionRecord ORDER BY date DESC, id DESC;
+
+selectRecentTransactions:
+SELECT * FROM TransactionRecord ORDER BY date DESC, id DESC LIMIT :limit;
+
+-- Half-open window [startInclusive, endExclusive). Text comparison is correct
+-- here because timestamps are zero-padded and share one fixed format.
+selectTransactionsBetween:
+SELECT * FROM TransactionRecord
+WHERE date >= :startInclusive AND date < :endExclusive
+ORDER BY date DESC, id DESC;
+
+selectTransactionsForAccount:
+SELECT * FROM TransactionRecord
+WHERE account_id = :accountId OR transfer_account_id = :accountId
+ORDER BY date DESC, id DESC;
+
+getTransactionById:
+SELECT * FROM TransactionRecord WHERE id = ?;
+
+-- Seeds the "same account and payment method as last time" defaults on the
+-- add screen, which is what keeps repeat entry down to amount plus category.
+selectLatestTransaction:
+SELECT * FROM TransactionRecord ORDER BY date DESC, id DESC LIMIT 1;
+
+countTransactions:
+SELECT COUNT(*) FROM TransactionRecord;
+
+insertTransaction:
+INSERT INTO TransactionRecord(
+    amount_minor, type, category_id, account_id, transfer_account_id,
+    date, note, payment_method, source_type, source_reference_id, source_payment_id
+)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+lastInsertedTransactionId:
+SELECT last_insert_rowid();
+
+updateTransaction:
+UPDATE TransactionRecord
+SET amount_minor = :amountMinor,
+    type = :type,
+    category_id = :categoryId,
+    account_id = :accountId,
+    transfer_account_id = :transferAccountId,
+    date = :date,
+    note = :note,
+    payment_method = :paymentMethod
+WHERE id = :id;
+
+deleteTransaction:
+DELETE FROM TransactionRecord WHERE id = ?;
+
+-- Whether a category can be deleted outright or only archived: a category with
+-- history behind it keeps that history readable.
+countTransactionsInCategory:
+SELECT COUNT(*) FROM TransactionRecord WHERE category_id = ?;
+
+-- ---------------------------------------------------------------------------
+-- Backup / restore
+--
+-- source_reference_id and source_payment_id point back at the debt / EMI / loan
+-- payment that generated the row, so they are carried across verbatim rather
+-- than reset to MANUAL - otherwise a restored debt payment would no longer be
+-- undoable from the debt it settled.
+-- ---------------------------------------------------------------------------
+
+backupInsertTransaction:
+INSERT INTO TransactionRecord(
+    id, amount_minor, type, category_id, account_id, transfer_account_id,
+    date, note, payment_method, source_type, source_reference_id, source_payment_id
+)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+backupDeleteAllTransactions:
+DELETE FROM TransactionRecord;

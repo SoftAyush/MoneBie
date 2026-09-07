@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Exposes only the export folder inside the app's own cache. Nothing else in
+  the sandbox is reachable through the provider.
+-->
+<paths>
+    <cache-path name="exports" path="exports/" />
+</paths>
