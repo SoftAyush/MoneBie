@@ -6,6 +6,10 @@
 .kotlin
 buildSrc/build/
 *.hprof
+**/.konan/
+**/generated/
+**/tmp/
+**/kotlinProjectStructureMetadata/
 
 # ---- Android ----------------------------------------------------------------
 *.apk
@@ -67,6 +71,7 @@ firestore-debug.log
 database-debug.log
 pubsub-debug.log
 ui-debug.log
+*.log
 
 # ---- Node (Firebase functions, tooling) -------------------------------------
 node_modules/
@@ -78,3 +83,10 @@ yarn-error.log*
 ._*
 Thumbs.db
 desktop.ini
+
+# ---- Temporary editor files -------------------------------------------------
+*.tmp
+*.temp
+*.swp
+*.swo
+*~

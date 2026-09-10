@@ -1,96 +1,96 @@
 # Aurex
 
-Aurex is a personal finance app for understanding where your money is, what you
-owe, and what is due next. It is built with Kotlin Multiplatform and Jetpack
-Compose, with a shared domain and data layer and an Android application as the
-current primary client.
+Aurex is an Android-first personal finance app designed to help people understand where their money is going, what they owe, and what is due next. The project is built with Kotlin Multiplatform and Compose, with shared business logic and a platform-specific Android client.
 
-## What it does
+## Overview
 
-- See a financial dashboard and overview of your current position.
-- Track accounts, income, expenses, and transaction categories.
-- Manage debts, borrowed and lent money, and EMI schedules.
-- Review spending insights and upcoming payment reminders.
-- Choose light, dark, or system theme behavior.
-- Back up and restore data with Google sign-in and Firebase Firestore on Android.
-- Share transaction data as CSV from Android.
+Aurex focuses on the practical parts of money management:
 
-## Project status
+- tracking balances across accounts
+- recording income and expenses
+- organizing transactions by category
+- managing debts, loans, and borrowing/lending flows
+- viewing upcoming due dates and reminders
+- keeping a local data store with optional cloud backup
+- customizing theme behavior and app preferences
 
-The Android application is the supported end-to-end client. The iOS target and
-shared iOS framework are present in the project, but `iosApp` currently contains
-the default SwiftUI host and is not yet wired to the Aurex experience.
+## Current status
+
+The Android app is the primary, fully supported client in this repository. The iOS project is present as a starter host, but it is not yet the main Aurex experience.
 
 ## Tech stack
 
-- Kotlin Multiplatform with Kotlin 2.4
-- Jetpack Compose and Compose Multiplatform
-- SQLDelight for local SQLite persistence
+- Kotlin Multiplatform
+- Jetpack Compose
+- SQLDelight for local persistence
 - Kotlin Coroutines and Kotlin Serialization
-- Firebase Authentication and Cloud Firestore for Android backup
+- Firebase Authentication and Firestore for Android backup flows
 - Gradle Kotlin DSL
 
 ## Repository layout
 
 | Path | Purpose |
 | --- | --- |
-| `androidApp` | Android application, navigation, screens, notifications, and Firebase integration |
-| `sharedLogic` | Shared domain models, use cases, repositories, ViewModels, and SQLDelight database |
-| `sharedUI` | Shared Compose UI module and platform-aware UI dependencies |
+| `androidApp` | Android application, navigation, screens, notifications, backup integration, and Firebase setup |
+| `sharedLogic` | Shared domain models, use cases, repositories, ViewModels, and the SQLDelight database layer |
+| `sharedUI` | Shared Compose UI module and shared UI dependencies |
 | `iosApp` | iOS application host and Xcode project |
-| `design` | Design explorations and source design files |
+| `design` | Design explorations and visual concept files |
+| `firebase.json` / `firestore.rules` / `firestore.indexes.json` | Firebase project configuration and rules |
 
 ## Requirements
 
 - Android Studio with Kotlin Multiplatform support
 - JDK 17
-- Android SDK with API 37 installed
-- Android device or emulator running API 24 or newer
-- Xcode on macOS only, when working on the iOS target
+- Android SDK configured for the project
+- An emulator or physical Android device running API 24 or newer
+- Xcode on macOS only if you plan to work on the iOS target
 
-The repository includes the Gradle wrapper, so a separate Gradle installation is
-not required.
+The project includes the Gradle wrapper, so you do not need a separate Gradle installation.
 
 ## Getting started
 
-1. Clone the repository and open the project root in Android Studio.
-2. Let Gradle sync and allow Android Studio to install any missing SDK tools.
-3. Select the `androidApp` run configuration and launch it on an emulator or device.
+1. Clone the repository.
+2. Open the project root in Android Studio.
+3. Let Gradle sync and install any required Android SDK components.
+4. Run the `androidApp` configuration on an emulator or device.
 
-Firebase features require a valid Android Firebase project configuration in
-`androidApp/google-services.json`. Authentication and Firestore rules are defined
-in the Firebase configuration files at the repository root.
+Firebase-backed features require a valid Android configuration in `androidApp/google-services.json`.
 
 ## Build and test
 
-From the repository root, run the following on Windows:
+From the repository root, run:
+
+### Windows
 
 ```powershell
-.\gradlew.bat :androidApp:assembleDebug
-.\gradlew.bat :sharedUI:testAndroidHostTest :sharedLogic:testAndroidHostTest
-.\gradlew.bat :sharedLogic:iosSimulatorArm64Test
+./gradlew.bat :androidApp:assembleDebug
+./gradlew.bat :sharedUI:testAndroidHostTest :sharedLogic:testAndroidHostTest
+./gradlew.bat :sharedLogic:iosSimulatorArm64Test
 ```
 
-On macOS or Linux, use `./gradlew` instead of `./gradlew.bat`.
+### macOS / Linux
 
-To run the iOS host, open [`iosApp`](./iosApp) in Xcode and select an iOS
-simulator. The current host is a scaffold for the future shared Aurex UI.
+```bash
+./gradlew :androidApp:assembleDebug
+./gradlew :sharedUI:testAndroidHostTest :sharedLogic:testAndroidHostTest
+./gradlew :sharedLogic:iosSimulatorArm64Test
+```
+
+To work on the iOS host, open the Xcode project in `iosApp` and run it on a simulator.
 
 ## Architecture
 
-The application keeps business logic in `sharedLogic` so it can be reused by
-each platform. Its repositories use SQLDelight for local storage and expose
-platform-independent use cases and ViewModels. `androidApp` provides Android-
-specific services such as Firebase backup, Google sign-in, notifications, and
-CSV sharing. UI screens and navigation currently live in the Android app, while
-`sharedUI` contains the Compose Multiplatform foundation for further sharing.
+The app separates concerns by platform:
+
+- `sharedLogic` contains business rules, model definitions, data access, and platform-independent state management.
+- `androidApp` contains Android-specific integrations such as Firebase authentication and Firestore, notifications, Google sign-in, and CSV export flows.
+- `sharedUI` provides the shared Compose foundation for UI composition and reusable components.
+- `iosApp` is currently a host for future iOS integration rather than the main Aurex experience.
 
 ## Contributing
 
-Keep platform-specific integrations in the relevant source set, put reusable
-business behavior in `sharedLogic`, and add or update tests alongside changes
-to shared behavior. Before opening a pull request, run the Android host tests
-and build the debug application.
+Keep platform-specific integrations in the appropriate source set, and put shared logic in `sharedLogic` wherever possible. When changing shared behavior, add or update tests alongside the code.
 
 ## License
 
