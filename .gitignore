@@ -41,6 +41,13 @@ service-account*.json
 # commit it and let a fresh clone build straight away.
 androidApp/google-services.json
 
+# Local/generated Firebase and build artifacts that are specific to this machine
+# and should not be committed.
+androidApp/aurex-release
+firebase.json
+firestore.indexes.json
+firestore.rules
+
 # ---- IDEs & editors ---------------------------------------------------------
 .idea
 *.iml
