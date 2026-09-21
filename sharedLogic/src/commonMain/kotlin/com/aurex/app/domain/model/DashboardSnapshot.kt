@@ -36,8 +36,16 @@ data class DashboardSnapshot(
     val emiDueThisMonth: Money,
 
     val upcomingPayments: List<UpcomingPayment>,
-    val recentTransactions: List<Transaction>
+    val recentTransactions: List<Transaction>,
+    /** This month's budgets measured against its spending, worst first. */
+    val budgets: List<BudgetStatus> = emptyList()
 ) {
+    /** Budgets already past their limit this month. */
+    val budgetsOver: Int get() = budgets.count { it.isOver }
+
+    /** Budgets close enough to the limit to be worth a glance. */
+    val budgetsNearLimit: Int get() = budgets.count { it.isNearLimit }
+
     /** Debt + EMI + borrowings: the single "money I owe" figure. */
     val totalOwed: Money get() = totalDebtOwed + remainingEmiAmount + totalMoneyBorrowed
 

@@ -2,6 +2,7 @@ package com.aurex.app.ui
 
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
@@ -11,6 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -22,10 +24,12 @@ import androidx.navigation.compose.rememberNavController
 import com.aurex.app.AurexApplication
 import com.aurex.app.domain.model.ThemeMode
 import com.aurex.app.presentation.main.MainViewModel
+import com.aurex.app.security.AppLock
 import com.aurex.app.ui.components.AurexLoadingScreen
 import com.aurex.app.ui.navigation.Main
 import com.aurex.app.ui.navigation.MainShell
 import com.aurex.app.ui.screens.setup.AccountSetupScreen
+import com.aurex.app.ui.screens.lock.LockScreen
 import com.aurex.app.ui.screens.onboarding.OnboardingScreen
 import com.aurex.app.ui.screens.setup.ProfileSetupScreen
 import com.aurex.app.ui.theme.AurexTheme
@@ -73,79 +77,115 @@ fun App(
     }
 
     AurexTheme(darkTheme = darkTheme) {
-        /*
-         * The start destination is latched to the first fully-resolved reading
-         * and never recomputed.
-         *
-         * Both flags change while the user moves through setup - creating the
-         * profile flips isUserCreated, finishing setup flips isAccountSetup - and
-         * NavHost rebuilds its graph whenever startDestination changes, which
-         * would reset the back stack mid-flow. Navigation after launch is
-         * explicit, so latching is both correct and stable.
-         */
-        var startDestination by remember { mutableStateOf<Any?>(null) }
+        val isLocked by AppLock.isLocked
 
-        val resolvedUser = isUserCreated
-        val resolvedAccount = isAccountSetup
-        if (startDestination == null && resolvedUser != null && resolvedAccount != null) {
-            startDestination = when {
-                resolvedUser && resolvedAccount -> Main
-                resolvedUser -> AccountSetup
-                else -> Onboarding
-            }
-        }
-
-        val destination = startDestination
-        if (destination == null) {
-            // Still reading the database; a branded placeholder beats a blank frame.
-            AurexLoadingScreen(modifier = Modifier.fillMaxSize())
-            return@AurexTheme
-        }
-
-        val navController = rememberNavController()
-
-        NavHost(
-            navController = navController,
-            startDestination = destination,
-            enterTransition = { fadeIn() },
-            exitTransition = { fadeOut() },
-        ) {
-            composable<Onboarding> {
-                OnboardingScreen(
-                    onFinished = {
-                        navController.navigate(ProfileSetup) { launchSingleTop = true }
-                    }
-                )
-            }
-
-            composable<ProfileSetup> {
-                ProfileSetupScreen(
-                    onFinished = {
-                        navController.navigate(AccountSetup) { launchSingleTop = true }
-                    }
-                )
-            }
-
-            composable<AccountSetup> {
-                AccountSetupScreen(
-                    onFinished = {
-                        navController.navigate(Main) {
-                            // This clears the entire backstack up to the start destination
-                            popUpTo(navController.graph.startDestinationId) {
-                                inclusive = true
-                            }
-                            launchSingleTop = true
-                        }
-                    }
-                )
-            }
-
-            composable<Main> {
-                MainShell(
+        Box(modifier = Modifier.fillMaxSize()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    // The gate covers the pixels; this covers the semantics.
+                    // Without it a screen reader - or anything else using the
+                    // accessibility tree - could read every balance straight
+                    // through the PIN pad.
+                    .then(if (isLocked) Modifier.clearAndSetSemantics { } else Modifier)
+            ) {
+                AppContent(
+                    isUserCreated = isUserCreated,
+                    isAccountSetup = isAccountSetup,
                     openReminders = openReminders,
                     onRemindersOpened = onRemindersOpened
                 )
             }
+
+            // Drawn over the content rather than in place of it, so the screen
+            // the user was on - and the back stack behind it - is still there
+            // once the PIN goes in.
+            if (isLocked) {
+                LockScreen(onUnlocked = AppLock::unlock, modifier = Modifier.fillMaxSize())
+            }
+        }
+    }
+}
+
+@Composable
+private fun AppContent(
+    isUserCreated: Boolean?,
+    isAccountSetup: Boolean?,
+    openReminders: Boolean,
+    onRemindersOpened: () -> Unit
+) {
+    /*
+     * The start destination is latched to the first fully-resolved reading
+     * and never recomputed.
+     *
+     * Both flags change while the user moves through setup - creating the
+     * profile flips isUserCreated, finishing setup flips isAccountSetup - and
+     * NavHost rebuilds its graph whenever startDestination changes, which
+     * would reset the back stack mid-flow. Navigation after launch is
+     * explicit, so latching is both correct and stable.
+     */
+    var startDestination by remember { mutableStateOf<Any?>(null) }
+
+    val resolvedUser = isUserCreated
+    val resolvedAccount = isAccountSetup
+    if (startDestination == null && resolvedUser != null && resolvedAccount != null) {
+        startDestination = when {
+            resolvedUser && resolvedAccount -> Main
+            resolvedUser -> AccountSetup
+            else -> Onboarding
+        }
+    }
+
+    val destination = startDestination
+    if (destination == null) {
+        // Still reading the database; a branded placeholder beats a blank frame.
+        AurexLoadingScreen(modifier = Modifier.fillMaxSize())
+        return
+    }
+
+    val navController = rememberNavController()
+
+    NavHost(
+        navController = navController,
+        startDestination = destination,
+        enterTransition = { fadeIn() },
+        exitTransition = { fadeOut() },
+    ) {
+        composable<Onboarding> {
+            OnboardingScreen(
+                onFinished = {
+                    navController.navigate(ProfileSetup) { launchSingleTop = true }
+                }
+            )
+        }
+
+        composable<ProfileSetup> {
+            ProfileSetupScreen(
+                onFinished = {
+                    navController.navigate(AccountSetup) { launchSingleTop = true }
+                }
+            )
+        }
+
+        composable<AccountSetup> {
+            AccountSetupScreen(
+                onFinished = {
+                    navController.navigate(Main) {
+                        // This clears the entire backstack up to the start destination
+                        popUpTo(navController.graph.startDestinationId) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                }
+            )
+        }
+
+        composable<Main> {
+            MainShell(
+                openReminders = openReminders,
+                onRemindersOpened = onRemindersOpened
+            )
         }
     }
 }

@@ -60,6 +60,14 @@ class TransactionRepositoryImpl(
         dbHelper.database.transactionWithResult { ledger.post(draft) }
     }
 
+    override suspend fun postTransactions(drafts: List<TransactionDraft>): Int =
+        withContext(ioDispatcher) {
+            dbHelper.database.transactionWithResult {
+                drafts.forEach { ledger.post(it) }
+                drafts.size
+            }
+        }
+
     override suspend fun updateTransaction(id: Long, draft: TransactionDraft) {
         withContext(ioDispatcher) {
             dbHelper.database.transaction {

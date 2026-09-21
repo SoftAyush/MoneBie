@@ -3,6 +3,7 @@ package com.aurex.app.data.backup
 import android.app.Activity
 import android.content.Context
 import androidx.credentials.CredentialManager
+import com.aurex.app.security.AppLock
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.exceptions.GetCredentialCancellationException
@@ -54,6 +55,9 @@ object GoogleIdTokenProvider {
             .build()
 
         val response = try {
+            // The account picker is another app's screen; the lock must not
+            // treat coming back from it as returning to Aurex.
+            AppLock.expectExternalActivity()
             CredentialManager.create(activity).getCredential(activity, request)
         } catch (cancelled: GetCredentialCancellationException) {
             return null

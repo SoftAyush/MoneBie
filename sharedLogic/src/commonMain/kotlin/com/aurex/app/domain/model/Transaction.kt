@@ -29,7 +29,14 @@ enum class TransactionSourceType {
     LEND_REPAYMENT,
 
     ACCOUNT_OPENING,
-    TRANSFER
+    TRANSFER,
+
+    /**
+     * Posted on the user's behalf from a recurring schedule. Owned by the user
+     * rather than by the schedule: unlike a debt or EMI payment there is no
+     * payment history to keep in step, so the row stays editable.
+     */
+    RECURRING
 }
 
 data class TransactionSource(
@@ -39,7 +46,18 @@ data class TransactionSource(
     /** Id of the individual payment row inside that record's history. */
     val paymentId: Long? = null
 ) {
-    val isSystemGenerated: Boolean get() = type != TransactionSourceType.MANUAL
+    /**
+     * Whether a module other than manual entry owns this row.
+     *
+     * A recurring occurrence is excluded: it was posted automatically, but
+     * nothing else in the app depends on it staying as posted, so the user may
+     * correct or remove it like anything they typed themselves.
+     */
+    val isSystemGenerated: Boolean
+        get() = type != TransactionSourceType.MANUAL && type != TransactionSourceType.RECURRING
+
+    /** Whether a recurring schedule produced this row. */
+    val isRecurring: Boolean get() = type == TransactionSourceType.RECURRING
 
     /**
      * Whether this transaction moves money between the user and a person

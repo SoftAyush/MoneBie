@@ -2,6 +2,8 @@ package com.aurex.app.data.backup
 
 import android.os.Build
 import com.aurex.app.domain.model.backup.BackupAccount
+import com.aurex.app.domain.model.backup.BackupBudget
+import com.aurex.app.domain.model.backup.BackupRecurringTransaction
 import com.aurex.app.domain.model.backup.BackupCategory
 import com.aurex.app.domain.model.backup.BackupDebt
 import com.aurex.app.domain.model.backup.BackupDebtPayment
@@ -128,6 +130,8 @@ class FirestoreBackupStore(
             replaceCollection(root.collection(LOAN_RECORDS), snapshot.loanRecords.associate { it.id.toString() to it.toMap() }, count)
             replaceCollection(root.collection(LOAN_REPAYMENTS), snapshot.loanRepayments.associate { it.id.toString() to it.toMap() }, count)
             replaceCollection(root.collection(TRANSACTIONS), snapshot.transactions.associate { it.id.toString() to it.toMap() }, count)
+            replaceCollection(root.collection(BUDGETS), snapshot.budgets.associate { it.id.toString() to it.toMap() }, count)
+            replaceCollection(root.collection(RECURRING), snapshot.recurringTransactions.associate { it.id.toString() to it.toMap() }, count)
 
             root.metaDocument().set(snapshot.toMetadataMap(complete = true)).await()
         }
@@ -152,7 +156,9 @@ class FirestoreBackupStore(
             emis = root.collection(EMIS).documents().map { it.toBackupEmi() },
             emiPayments = root.collection(EMI_PAYMENTS).documents().map { it.toBackupEmiPayment() },
             loanRecords = root.collection(LOAN_RECORDS).documents().map { it.toBackupLoanRecord() },
-            loanRepayments = root.collection(LOAN_REPAYMENTS).documents().map { it.toBackupLoanRepayment() }
+            loanRepayments = root.collection(LOAN_REPAYMENTS).documents().map { it.toBackupLoanRepayment() },
+            budgets = root.collection(BUDGETS).documents().map { it.toBackupBudget() },
+            recurringTransactions = root.collection(RECURRING).documents().map { it.toBackupRecurringTransaction() }
         )
     }
 
@@ -271,10 +277,12 @@ class FirestoreBackupStore(
         const val EMI_PAYMENTS = "emiPayments"
         const val LOAN_RECORDS = "loanRecords"
         const val LOAN_REPAYMENTS = "loanRepayments"
+        const val BUDGETS = "budgets"
+        const val RECURRING = "recurringTransactions"
 
         val ALL_ROW_COLLECTIONS = listOf(
             PROFILE, ACCOUNTS, CATEGORIES, TRANSACTIONS, DEBTS, DEBT_PAYMENTS,
-            EMIS, EMI_PAYMENTS, LOAN_RECORDS, LOAN_REPAYMENTS
+            EMIS, EMI_PAYMENTS, LOAN_RECORDS, LOAN_REPAYMENTS, BUDGETS, RECURRING
         )
 
         const val FIELD_CREATED_AT = "createdAt"
@@ -544,3 +552,55 @@ private fun DocumentSnapshot.requireDouble(field: String): Double =
 
 private fun DocumentSnapshot.missing(field: String) =
     "The backup is damaged: ${reference.path} has no '$field'"
+
+private fun BackupBudget.toMap(): Map<String, Any?> = mapOf(
+    "id" to id,
+    "categoryId" to categoryId,
+    "amountMinor" to amountMinor,
+    "period" to period,
+    "createdAt" to createdAt
+)
+
+private fun BackupRecurringTransaction.toMap(): Map<String, Any?> = mapOf(
+    "id" to id,
+    "name" to name,
+    "amountMinor" to amountMinor,
+    "type" to type,
+    "categoryId" to categoryId,
+    "accountId" to accountId,
+    "transferAccountId" to transferAccountId,
+    "paymentMethod" to paymentMethod,
+    "frequency" to frequency,
+    "startDate" to startDate,
+    "nextDueDate" to nextDueDate,
+    "endDate" to endDate,
+    "note" to note,
+    "isPaused" to isPaused,
+    "createdAt" to createdAt
+)
+
+private fun DocumentSnapshot.toBackupBudget() = BackupBudget(
+    id = requireLong("id"),
+    categoryId = requireString("categoryId"),
+    amountMinor = requireLong("amountMinor"),
+    period = requireString("period"),
+    createdAt = requireString("createdAt")
+)
+
+private fun DocumentSnapshot.toBackupRecurringTransaction() = BackupRecurringTransaction(
+    id = requireLong("id"),
+    name = requireString("name"),
+    amountMinor = requireLong("amountMinor"),
+    type = requireString("type"),
+    categoryId = requireString("categoryId"),
+    accountId = requireLong("accountId"),
+    transferAccountId = getLong("transferAccountId"),
+    paymentMethod = requireString("paymentMethod"),
+    frequency = requireString("frequency"),
+    startDate = requireString("startDate"),
+    nextDueDate = requireString("nextDueDate"),
+    endDate = getString("endDate"),
+    note = getString("note"),
+    isPaused = requireLong("isPaused"),
+    createdAt = requireString("createdAt")
+)

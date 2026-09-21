@@ -55,6 +55,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.aurex.app.core.Money
+import com.aurex.app.domain.model.BudgetLevel
+import com.aurex.app.domain.model.BudgetStatus
 import com.aurex.app.core.MoneyFormatter
 import com.aurex.app.core.formatDisplayDate
 import com.aurex.app.core.formatWeekday
@@ -1511,5 +1513,123 @@ fun AccountChip(
                     )
                 )
         )
+    }
+}
+
+/**
+ * This month's budgets at a glance.
+ *
+ * Shows the three that most need attention - over first, then closest to the
+ * line - because the dashboard's job is to point, not to list. The full set
+ * is one tap away.
+ */
+@Composable
+fun BudgetsCard(
+    budgets: List<BudgetStatus>,
+    currencySymbol: String,
+    onOpenBudgets: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val over = budgets.count { it.isOver }
+    val near = budgets.count { it.isNearLimit }
+    val totalLimit = Money(budgets.sumOf { it.limit.minorUnits })
+    val totalSpent = Money(budgets.sumOf { it.spent.minorUnits })
+    val remaining = totalLimit - totalSpent
+
+    PremiumCard(modifier = modifier.fillMaxWidth(), onClick = onOpenBudgets) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                MicroLabel(text = "Budgets this month")
+                Spacer(Modifier.height(4.dp))
+                Text(
+                    text = when {
+                        over > 0 -> "$over over the limit"
+                        near > 0 -> "$near close to the limit"
+                        else -> "All within budget"
+                    },
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = when {
+                        over > 0 -> AurexTheme.finance.negative
+                        near > 0 -> AurexTheme.finance.caution
+                        else -> MaterialTheme.colorScheme.onSurface
+                    }
+                )
+            }
+
+            Column(horizontalAlignment = Alignment.End) {
+                Text(
+                    text = if (remaining.isNegative) "Over by" else "Left",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                MoneyText(
+                    money = remaining.absolute,
+                    currencySymbol = currencySymbol,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = if (remaining.isNegative) AurexTheme.finance.negative else MaterialTheme.colorScheme.onSurface,
+                    showDecimals = false
+                )
+            }
+        }
+
+        Spacer(Modifier.height(AurexTheme.spacing.medium))
+
+        budgets.take(3).forEachIndexed { index, status ->
+            if (index > 0) Spacer(Modifier.height(AurexTheme.spacing.small))
+            BudgetMiniRow(status = status, currencySymbol = currencySymbol)
+        }
+    }
+}
+
+@Composable
+private fun BudgetMiniRow(status: BudgetStatus, currencySymbol: String) {
+    val accent = when (status.level) {
+        BudgetLevel.OK -> AurexTheme.finance.positive
+        BudgetLevel.NEAR -> AurexTheme.finance.caution
+        BudgetLevel.OVER -> AurexTheme.finance.negative
+    }
+    val width by animateFloatAsState(targetValue = status.progress, label = "budget_mini")
+
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = status.category.name,
+                style = MaterialTheme.typography.bodySmall,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier.weight(1f),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            Text(
+                text = MoneyFormatter.compact(status.spent, currencySymbol) + " / " +
+                    MoneyFormatter.compact(status.limit, currencySymbol),
+                style = MaterialTheme.typography.labelSmall,
+                color = if (status.isOver) accent else MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+        Spacer(Modifier.height(4.dp))
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(5.dp)
+                .clip(CircleShape)
+                .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.06f))
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth(width)
+                    .height(5.dp)
+                    .clip(CircleShape)
+                    .background(accent)
+            )
+        }
     }
 }

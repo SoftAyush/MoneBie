@@ -4,6 +4,8 @@ import com.aurex.app.core.getCurrentDateString
 import com.aurex.app.data.database.DatabaseHelper
 import com.aurex.app.db.AurexDatabase
 import com.aurex.app.domain.model.backup.BackupAccount
+import com.aurex.app.domain.model.backup.BackupBudget
+import com.aurex.app.domain.model.backup.BackupRecurringTransaction
 import com.aurex.app.domain.model.backup.BackupCategory
 import com.aurex.app.domain.model.backup.BackupDebt
 import com.aurex.app.domain.model.backup.BackupDebtPayment
@@ -163,6 +165,34 @@ class BackupRepositoryImpl(
                         transactionId = it.transaction_id,
                         note = it.note
                     )
+                },
+                budgets = dbHelper.budgetQueries.backupSelectAllBudgets().executeAsList().map {
+                    BackupBudget(
+                        id = it.id,
+                        categoryId = it.category_id,
+                        amountMinor = it.amount_minor,
+                        period = it.period,
+                        createdAt = it.created_at
+                    )
+                },
+                recurringTransactions = dbHelper.recurringQueries.backupSelectAllRecurring().executeAsList().map {
+                    BackupRecurringTransaction(
+                        id = it.id,
+                        name = it.name,
+                        amountMinor = it.amount_minor,
+                        type = it.type,
+                        categoryId = it.category_id,
+                        accountId = it.account_id,
+                        transferAccountId = it.transfer_account_id,
+                        paymentMethod = it.payment_method,
+                        frequency = it.frequency,
+                        startDate = it.start_date,
+                        nextDueDate = it.next_due_date,
+                        endDate = it.end_date,
+                        note = it.note,
+                        isPaused = it.is_paused,
+                        createdAt = it.created_at
+                    )
                 }
             )
         }
@@ -185,6 +215,8 @@ class BackupRepositoryImpl(
      */
     override suspend fun restore(snapshot: BackupSnapshot) = withContext(ioDispatcher) {
         dbHelper.database.transaction {
+            dbHelper.budgetQueries.backupDeleteAllBudgets()
+            dbHelper.recurringQueries.backupDeleteAllRecurring()
             dbHelper.transactionQueries.backupDeleteAllTransactions()
             dbHelper.debtQueries.backupDeleteAllDebtPayments()
             dbHelper.emiQueries.backupDeleteAllEmiPayments()
@@ -331,6 +363,36 @@ class BackupRepositoryImpl(
                     account_id = it.accountId,
                     transaction_id = it.transactionId,
                     note = it.note
+                )
+            }
+
+            snapshot.budgets.forEach {
+                dbHelper.budgetQueries.backupInsertBudget(
+                    id = it.id,
+                    category_id = it.categoryId,
+                    amount_minor = it.amountMinor,
+                    period = it.period,
+                    created_at = it.createdAt
+                )
+            }
+
+            snapshot.recurringTransactions.forEach {
+                dbHelper.recurringQueries.backupInsertRecurring(
+                    id = it.id,
+                    name = it.name,
+                    amount_minor = it.amountMinor,
+                    type = it.type,
+                    category_id = it.categoryId,
+                    account_id = it.accountId,
+                    transfer_account_id = it.transferAccountId,
+                    payment_method = it.paymentMethod,
+                    frequency = it.frequency,
+                    start_date = it.startDate,
+                    next_due_date = it.nextDueDate,
+                    end_date = it.endDate,
+                    note = it.note,
+                    is_paused = it.isPaused,
+                    created_at = it.createdAt
                 )
             }
         }

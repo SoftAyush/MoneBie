@@ -11,7 +11,11 @@ Aurex focuses on the practical parts of money management:
 - organizing transactions by category
 - managing debts, loans, and borrowing/lending flows
 - viewing upcoming due dates and reminders
+- setting monthly budgets per category
+- scheduling recurring transactions that post themselves
+- importing and exporting transactions as CSV
 - keeping a local data store with optional cloud backup
+- locking the app behind a PIN or fingerprint
 - customizing theme behavior and app preferences
 
 ## Current status

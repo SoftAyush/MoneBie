@@ -1,0 +1,60 @@
+-- A monthly spending limit for one category.
+--
+-- Nothing about how much has been spent is stored: the spent figure is a SUM
+-- over TransactionRecord for the month in question, computed when read, so a
+-- budget can never disagree with the ledger it is measured against. Only the
+-- limit itself is the user's to set.
+--
+-- One budget per category, enforced by the unique index: two limits on Food
+-- would leave the app unable to say which one a purchase counted against.
+CREATE TABLE Budget (
+    id           INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    category_id  TEXT    NOT NULL,
+    amount_minor INTEGER NOT NULL,
+    -- MONTHLY for now. Carried as a column rather than assumed so a weekly or
+    -- yearly limit later is a new value, not a new table.
+    period       TEXT    NOT NULL DEFAULT 'MONTHLY',
+    created_at   TEXT    NOT NULL
+);
+
+CREATE UNIQUE INDEX budget_category ON Budget(category_id);
+
+selectAllBudgets:
+SELECT * FROM Budget ORDER BY amount_minor DESC, id ASC;
+
+getBudgetById:
+SELECT * FROM Budget WHERE id = ?;
+
+getBudgetForCategory:
+SELECT * FROM Budget WHERE category_id = ?;
+
+insertBudget:
+INSERT INTO Budget(category_id, amount_minor, period, created_at)
+VALUES (?, ?, ?, ?);
+
+lastInsertedBudgetId:
+SELECT last_insert_rowid();
+
+updateBudget:
+UPDATE Budget
+SET category_id = :categoryId,
+    amount_minor = :amountMinor,
+    period = :period
+WHERE id = :id;
+
+deleteBudget:
+DELETE FROM Budget WHERE id = ?;
+
+-- ---------------------------------------------------------------------------
+-- Backup / restore
+-- ---------------------------------------------------------------------------
+
+backupSelectAllBudgets:
+SELECT * FROM Budget ORDER BY id ASC;
+
+backupInsertBudget:
+INSERT INTO Budget(id, category_id, amount_minor, period, created_at)
+VALUES (?, ?, ?, ?, ?);
+
+backupDeleteAllBudgets:
+DELETE FROM Budget;

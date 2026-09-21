@@ -62,10 +62,10 @@ class SchemaMigrationTest {
     }
 
     @Test
-    fun theCurrentSchemaIsVersionNine() {
+    fun theCurrentSchemaIsVersionTen() {
         // Guards against adding a .sqm without the version moving, which would
         // leave existing installs on an older schema with no migration run.
-        assertEquals(9L, AurexDatabase.Schema.version)
+        assertEquals(10L, AurexDatabase.Schema.version)
     }
 
     @Test
@@ -83,8 +83,9 @@ class SchemaMigrationTest {
             "Emi", "EmiPayment",         // v5
             "LoanRecord", "LoanRepayment", // v6
             // v7 seeds rows only - it adds no tables
-            "Category"                    // v8
+            "Category",                   // v8
             // v9 adds a column to User - no new tables
+            "Budget", "RecurringTransaction" // v10
         ).forEach { table ->
             assertTrue(table in tables, "migration lost or never created $table (have: $tables)")
         }

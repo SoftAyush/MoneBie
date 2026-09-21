@@ -6,6 +6,8 @@ import com.aurex.app.core.monthOf
 import com.aurex.app.core.startOfMonth
 import com.aurex.app.domain.calculation.FinancialCalculator
 import com.aurex.app.domain.model.Account
+import com.aurex.app.domain.model.Budget
+import com.aurex.app.domain.model.CategoryLookup
 import com.aurex.app.domain.model.BorrowLendRecord
 import com.aurex.app.domain.model.TransactionCategory
 import com.aurex.app.domain.model.DashboardSnapshot
@@ -14,13 +16,16 @@ import com.aurex.app.domain.model.Emi
 import com.aurex.app.domain.model.Transaction
 import com.aurex.app.domain.repository.AccountRepository
 import com.aurex.app.domain.repository.BorrowLendRepository
+import com.aurex.app.domain.repository.BudgetRepository
 import com.aurex.app.domain.repository.CategoryRepository
 import com.aurex.app.domain.repository.DebtRepository
 import com.aurex.app.domain.repository.EmiRepository
 import com.aurex.app.domain.repository.TransactionRepository
 import com.aurex.app.domain.repository.UserRepository
+import com.aurex.app.domain.usecase.budget.BudgetMeasure
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 
 /**
@@ -44,7 +49,12 @@ class GetDashboardSnapshotUseCase(
     private val emiRepository: EmiRepository,
     private val borrowLendRepository: BorrowLendRepository,
     /** Injectable so snapshots are reproducible in tests. */
-    private val todayProvider: () -> String = ::getCurrentDay
+    private val todayProvider: () -> String = ::getCurrentDay,
+    /**
+     * Optional so the dashboard can be assembled without the budgets module,
+     * which is what the existing tests and the iOS host do.
+     */
+    private val budgetRepository: BudgetRepository? = null
 ) {
 
     private data class Profile(val name: String, val currencySymbol: String)
@@ -52,7 +62,8 @@ class GetDashboardSnapshotUseCase(
     private data class Obligations(
         val debts: List<Debt>,
         val emis: List<Emi>,
-        val records: List<BorrowLendRecord>
+        val records: List<BorrowLendRecord>,
+        val budgets: List<Budget> = emptyList()
     )
 
     private data class References(
@@ -100,8 +111,9 @@ class GetDashboardSnapshotUseCase(
         val obligations = combine(
             debtRepository.observeDebts(),
             emiRepository.observeEmis(),
-            borrowLendRepository.observeRecords()
-        ) { debts, emis, records -> Obligations(debts, emis, records) }
+            borrowLendRepository.observeRecords(),
+            budgetRepository?.observeBudgets() ?: flowOf(emptyList())
+        ) { debts, emis, records, budgets -> Obligations(debts, emis, records, budgets) }
 
         // Archived categories come too: a recent row may be filed under one
         // the user has since hidden, and it still has to render with its name.
@@ -130,7 +142,7 @@ class GetDashboardSnapshotUseCase(
         val today = todayProvider()
         val month = monthOf(today)
         val transactions = ledger.window
-        val (debts, emis, records) = obligations
+        val (debts, emis, records, budgets) = obligations
 
         return DashboardSnapshot(
             userName = profile.name,
@@ -161,7 +173,15 @@ class GetDashboardSnapshotUseCase(
                 limit = UPCOMING_PAYMENT_LIMIT
             ),
             // Already ordered and limited by the query.
-            recentTransactions = ledger.recent
+            recentTransactions = ledger.recent,
+
+            // The window always covers the month to date, which is exactly
+            // the period a monthly budget is measured over.
+            budgets = BudgetMeasure.measure(
+                budgets = budgets,
+                transactions = transactions.filter { monthOf(it.date) == month },
+                categories = CategoryLookup(references.categories)
+            )
         )
     }
 

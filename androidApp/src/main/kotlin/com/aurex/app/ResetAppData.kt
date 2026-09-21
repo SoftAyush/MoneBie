@@ -5,6 +5,8 @@ import android.content.Intent
 import com.aurex.app.data.database.AUREX_DATABASE_NAME
 import com.aurex.app.notifications.PaymentReminderSettings
 import com.aurex.app.notifications.PaymentReminders
+import com.aurex.app.notifications.RecurringPosting
+import com.aurex.app.security.AppLockSettings
 import com.aurex.app.ui.theme.ThemeStartupCache
 
 /**
@@ -48,6 +50,11 @@ object ResetAppData {
         // ever find nothing.
         PaymentReminders.cancel(app)
         PaymentReminderSettings.clear(app)
+        RecurringPosting.cancel(app)
+
+        // And the lock: a fresh install has no PIN, and leaving this one behind
+        // would lock the next user out of an empty app.
+        AppLockSettings.clear(app)
 
         val intent = Intent(app, MainActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)

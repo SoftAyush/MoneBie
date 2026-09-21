@@ -1,0 +1,105 @@
+-- A transaction that happens on a schedule: rent, salary, a subscription.
+--
+-- This is the template, not the history. Every occurrence that falls due is
+-- posted to TransactionRecord as an ordinary row - with source_type RECURRING
+-- and source_reference_id pointing back here - so the ledger stays the single
+-- account of what actually happened, and deleting the template never removes
+-- money that really moved.
+--
+-- next_due_date is the one moving part. It is advanced each time an occurrence
+-- is posted or skipped, and read to decide whether anything is due. Keeping it
+-- as a column rather than recomputing from start_date plus the count of posted
+-- rows means a skipped month stays skipped.
+CREATE TABLE RecurringTransaction (
+    id                  INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    name                TEXT    NOT NULL,
+    amount_minor        INTEGER NOT NULL,
+    type                TEXT    NOT NULL,
+    category_id         TEXT    NOT NULL,
+    account_id          INTEGER NOT NULL,
+    transfer_account_id INTEGER,
+    payment_method      TEXT    NOT NULL,
+    -- WEEKLY, BIWEEKLY, MONTHLY, QUARTERLY or YEARLY.
+    frequency           TEXT    NOT NULL,
+    -- yyyy-MM-dd. The first occurrence.
+    start_date          TEXT    NOT NULL,
+    -- yyyy-MM-dd. The next occurrence not yet posted or skipped.
+    next_due_date       TEXT    NOT NULL,
+    -- yyyy-MM-dd, or null for an open-ended schedule.
+    end_date            TEXT,
+    note                TEXT,
+    is_paused           INTEGER NOT NULL DEFAULT 0,
+    created_at          TEXT    NOT NULL,
+    FOREIGN KEY (account_id) REFERENCES Account(id)
+);
+
+CREATE INDEX recurring_next_due ON RecurringTransaction(next_due_date);
+
+selectAllRecurring:
+SELECT * FROM RecurringTransaction ORDER BY is_paused ASC, next_due_date ASC, id ASC;
+
+getRecurringById:
+SELECT * FROM RecurringTransaction WHERE id = ?;
+
+-- Everything with an occurrence on or before the day given, ready to post.
+selectDueRecurring:
+SELECT * FROM RecurringTransaction
+WHERE is_paused = 0 AND next_due_date <= :day
+ORDER BY next_due_date ASC, id ASC;
+
+countRecurring:
+SELECT COUNT(*) FROM RecurringTransaction;
+
+insertRecurring:
+INSERT INTO RecurringTransaction(
+    name, amount_minor, type, category_id, account_id, transfer_account_id,
+    payment_method, frequency, start_date, next_due_date, end_date, note,
+    is_paused, created_at
+)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?);
+
+lastInsertedRecurringId:
+SELECT last_insert_rowid();
+
+updateRecurring:
+UPDATE RecurringTransaction
+SET name = :name,
+    amount_minor = :amountMinor,
+    type = :type,
+    category_id = :categoryId,
+    account_id = :accountId,
+    transfer_account_id = :transferAccountId,
+    payment_method = :paymentMethod,
+    frequency = :frequency,
+    start_date = :startDate,
+    next_due_date = :nextDueDate,
+    end_date = :endDate,
+    note = :note
+WHERE id = :id;
+
+setRecurringNextDue:
+UPDATE RecurringTransaction SET next_due_date = :nextDueDate WHERE id = :id;
+
+setRecurringPaused:
+UPDATE RecurringTransaction SET is_paused = :paused WHERE id = :id;
+
+deleteRecurring:
+DELETE FROM RecurringTransaction WHERE id = ?;
+
+-- ---------------------------------------------------------------------------
+-- Backup / restore
+-- ---------------------------------------------------------------------------
+
+backupSelectAllRecurring:
+SELECT * FROM RecurringTransaction ORDER BY id ASC;
+
+backupInsertRecurring:
+INSERT INTO RecurringTransaction(
+    id, name, amount_minor, type, category_id, account_id, transfer_account_id,
+    payment_method, frequency, start_date, next_due_date, end_date, note,
+    is_paused, created_at
+)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+backupDeleteAllRecurring:
+DELETE FROM RecurringTransaction;

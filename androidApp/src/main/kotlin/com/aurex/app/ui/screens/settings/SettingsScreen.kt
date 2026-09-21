@@ -35,7 +35,11 @@ import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.CloudUpload
 import androidx.compose.material.icons.rounded.DeleteForever
 import androidx.compose.material.icons.rounded.Edit
+import androidx.compose.material.icons.rounded.EventRepeat
 import androidx.compose.material.icons.rounded.FileDownload
+import androidx.compose.material.icons.rounded.FileUpload
+import androidx.compose.material.icons.rounded.Lock
+import androidx.compose.material.icons.rounded.Savings
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.NotificationsActive
 import androidx.compose.material.icons.rounded.NotificationsNone
@@ -84,6 +88,8 @@ import com.aurex.app.notifications.PaymentReminders
 import com.aurex.app.domain.model.displayName
 import com.aurex.app.presentation.settings.SettingsEvent
 import com.aurex.app.presentation.settings.SettingsViewModel
+import com.aurex.app.security.AppLock
+import com.aurex.app.security.AppLockSettings
 import com.aurex.app.ui.components.AmbientBackdrop
 import com.aurex.app.ui.components.AurexBrandMark
 import com.aurex.app.ui.components.AurexButton
@@ -136,6 +142,10 @@ fun SettingsScreen(
     onOpenReminders: () -> Unit,
     onOpenCategories: () -> Unit,
     onOpenBackup: () -> Unit,
+    onOpenBudgets: () -> Unit,
+    onOpenRecurring: () -> Unit,
+    onOpenImport: () -> Unit,
+    onOpenAppLock: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -200,6 +210,17 @@ fun SettingsScreen(
     }
 
     var permissionRefused by remember { mutableStateOf(false) }
+
+    // Read on every return, like the reminder switch: the lock screen a level
+    // down changes these and this row has to say so when the user comes back.
+    var appLockOn by remember { mutableStateOf(AppLockSettings.isEnabled(context)) }
+    var biometricOn by remember { mutableStateOf(AppLockSettings.isBiometricEnabled(context)) }
+    LaunchedEffect(lifecycleOwner) {
+        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+            appLockOn = AppLockSettings.isEnabled(context)
+            biometricOn = AppLockSettings.isBiometricEnabled(context)
+        }
+    }
 
     val notificationPermission = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
@@ -352,6 +373,24 @@ fun SettingsScreen(
                         CardDivider(alpha = 0.07f)
 
                         SettingsRow(
+                            icon = Icons.Rounded.Savings,
+                            title = "Budgets",
+                            subtitle = "Monthly limits by category, and how much is left",
+                            onClick = onOpenBudgets
+                        )
+
+                        CardDivider(alpha = 0.07f)
+
+                        SettingsRow(
+                            icon = Icons.Rounded.EventRepeat,
+                            title = "Recurring transactions",
+                            subtitle = "Rent, salary and subscriptions, recorded on their day",
+                            onClick = onOpenRecurring
+                        )
+
+                        CardDivider(alpha = 0.07f)
+
+                        SettingsRow(
                             icon = Icons.Rounded.NotificationsNone,
                             title = "Upcoming payments",
                             subtitle = "Everything due across debts, EMIs and personal loans",
@@ -396,6 +435,15 @@ fun SettingsScreen(
                         CardDivider(alpha = 0.07f)
 
                         SettingsRow(
+                            icon = Icons.Rounded.FileUpload,
+                            title = "Import transactions",
+                            subtitle = "Bring in a CSV from Aurex or another app",
+                            onClick = onOpenImport
+                        )
+
+                        CardDivider(alpha = 0.07f)
+
+                        SettingsRow(
                             icon = Icons.Rounded.CloudUpload,
                             title = "Backup & restore",
                             // Says which account, not just that there is one:
@@ -407,6 +455,31 @@ fun SettingsScreen(
                             status = if (uiState.isBackupOn) "On" else "Off",
                             statusIsOn = uiState.isBackupOn,
                             onClick = onOpenBackup
+                        )
+                    }
+                }
+
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    PremiumSectionHeader(title = "Privacy")
+
+                    Spacer(Modifier.height(AurexTheme.spacing.small))
+
+                    PremiumCard(
+                        modifier = Modifier.fillMaxWidth(),
+                        contentPadding = AurexTheme.spacing.medium
+                    ) {
+                        SettingsRow(
+                            icon = Icons.Rounded.Lock,
+                            title = "App lock",
+                            subtitle = if (appLockOn) {
+                                "A PIN" + (if (biometricOn) " or fingerprint" else "") +
+                                    " is asked for on the way in"
+                            } else {
+                                "Ask for a PIN or fingerprint before opening Aurex"
+                            },
+                            status = if (appLockOn) "On" else "Off",
+                            statusIsOn = appLockOn,
+                            onClick = onOpenAppLock
                         )
                     }
                 }
@@ -1381,6 +1454,7 @@ private fun shareCsv(
         addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
     }
 
+    AppLock.expectExternalActivity()
     context.startActivity(
         Intent.createChooser(intent, "Export transactions").apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

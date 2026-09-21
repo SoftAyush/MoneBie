@@ -1,5 +1,5 @@
 [versions]
-agp = "9.4.0"
+agp = "9.4.1"
 android-compileSdk = "37"
 android-minSdk = "24"
 android-targetSdk = "36"
@@ -25,6 +25,8 @@ firebaseBom = "34.18.0"
 androidx-credentials = "1.6.0"
 googleid = "1.2.0"
 androidx-work = "2.11.2"
+androidx-biometric = "1.1.0"
+androidx-fragment = "1.8.9"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -68,6 +70,9 @@ androidx-credentials-play-services-auth = { module = "androidx.credentials:crede
 # Supplies GetGoogleIdOption, the Credential Manager request type for Google sign-in.
 googleid = { module = "com.google.android.libraries.identity.googleid:googleid", version.ref = "googleid" }
 androidx-work-runtime = { module = "androidx.work:work-runtime-ktx", version.ref = "androidx-work" }
+# BiometricPrompt for the app lock. Needs a FragmentActivity to host its dialog.
+androidx-biometric = { module = "androidx.biometric:biometric", version.ref = "androidx-biometric" }
+androidx-fragment = { module = "androidx.fragment:fragment-ktx", version.ref = "androidx-fragment" }
 kotlinx-coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "kotlinx-coroutines" }
 
 [plugins]

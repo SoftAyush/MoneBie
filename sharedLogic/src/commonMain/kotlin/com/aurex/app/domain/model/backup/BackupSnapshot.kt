@@ -42,7 +42,13 @@ data class BackupSnapshot(
     val emis: List<BackupEmi>,
     val emiPayments: List<BackupEmiPayment>,
     val loanRecords: List<BackupLoanRecord>,
-    val loanRepayments: List<BackupLoanRepayment>
+    val loanRepayments: List<BackupLoanRepayment>,
+    /*
+     * Added in 1.1.0. Defaulted so a backup written before then, which has no
+     * such collections, reads back as one with none rather than failing.
+     */
+    val budgets: List<BackupBudget> = emptyList(),
+    val recurringTransactions: List<BackupRecurringTransaction> = emptyList()
 ) {
 
     /**
@@ -54,7 +60,8 @@ data class BackupSnapshot(
      */
     val meaningfulRowCount: Int
         get() = accounts.size + transactions.size + debts.size + debtPayments.size +
-            emis.size + emiPayments.size + loanRecords.size + loanRepayments.size
+            emis.size + emiPayments.size + loanRecords.size + loanRepayments.size +
+            budgets.size + recurringTransactions.size
 
     /** Every row, including the seeded ones. What the upload actually writes. */
     val totalRowCount: Int
@@ -184,4 +191,30 @@ data class BackupLoanRepayment(
     val accountId: Long?,
     val transactionId: Long?,
     val note: String?
+)
+
+data class BackupBudget(
+    val id: Long,
+    val categoryId: String,
+    val amountMinor: Long,
+    val period: String,
+    val createdAt: String
+)
+
+data class BackupRecurringTransaction(
+    val id: Long,
+    val name: String,
+    val amountMinor: Long,
+    val type: String,
+    val categoryId: String,
+    val accountId: Long,
+    val transferAccountId: Long?,
+    val paymentMethod: String,
+    val frequency: String,
+    val startDate: String,
+    val nextDueDate: String,
+    val endDate: String?,
+    val note: String?,
+    val isPaused: Long,
+    val createdAt: String
 )

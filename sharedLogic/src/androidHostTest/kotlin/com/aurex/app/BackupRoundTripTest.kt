@@ -106,6 +106,37 @@ class BackupRoundTripTest {
             id = 99L, record_id = 55L, amount_minor = 50_00L, date = "2026-05-01",
             account_id = 7L, transaction_id = null, note = "part repaid"
         )
+
+        budgetQueries.backupInsertBudget(
+            id = 23L, category_id = "food", amount_minor = 400_00L, period = "MONTHLY",
+            created_at = "2026-06-01 08:00:00"
+        )
+        recurringQueries.backupInsertRecurring(
+            id = 61L, name = "Rent", amount_minor = 900_00L, type = "EXPENSE",
+            category_id = "housing", account_id = 7L, transfer_account_id = null,
+            payment_method = "BANK_TRANSFER", frequency = "MONTHLY", start_date = "2026-01-31",
+            next_due_date = "2026-07-31", end_date = null, note = null, is_paused = 1L,
+            created_at = "2026-01-31 09:00:00"
+        )
+    }
+
+    @Test
+    fun `budgets and recurring schedules make the trip too`() = runTest {
+        val source = DatabaseHelper(freshDatabase()).also { it.seedLedger() }
+        val target = DatabaseHelper(freshDatabase())
+        BackupRepositoryImpl(target).restore(BackupRepositoryImpl(source).snapshot())
+
+        val restored = BackupRepositoryImpl(target).snapshot()
+
+        assertEquals(23L, restored.budgets.single().id)
+        assertEquals("food", restored.budgets.single().categoryId)
+
+        // The schedule's place in time is what a restore must not lose: a next
+        // due date reset to the start would re-post six months of rent.
+        val rent = restored.recurringTransactions.single()
+        assertEquals(61L, rent.id)
+        assertEquals("2026-07-31", rent.nextDueDate)
+        assertEquals(1L, rent.isPaused)
     }
 
     @Test

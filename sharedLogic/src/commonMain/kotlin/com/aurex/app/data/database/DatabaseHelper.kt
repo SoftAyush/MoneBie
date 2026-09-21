@@ -13,4 +13,6 @@ class DatabaseHelper(driver: SqlDriver) {
     val borrowLendQueries = database.borrowLendQueries
     val debtQueries = database.debtQueries
     val categoryQueries = database.categoryQueries
+    val budgetQueries = database.budgetQueries
+    val recurringQueries = database.recurringTransactionQueries
 }

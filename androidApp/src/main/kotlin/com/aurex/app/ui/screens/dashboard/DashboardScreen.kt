@@ -63,6 +63,7 @@ fun DashboardScreen(
     onOpenInsights: () -> Unit,
     onOpenReminders: () -> Unit,
     onOpenProfile: () -> Unit,
+    onOpenBudgets: () -> Unit,
     onOpenTransactions: () -> Unit,
     onOpenDebts: () -> Unit,
     onOpenBorrowLend: () -> Unit,
@@ -120,6 +121,7 @@ fun DashboardScreen(
                     onOpenInsights = onOpenInsights,
                     onOpenReminders = onOpenReminders,
                     onOpenProfile = onOpenProfile,
+                    onOpenBudgets = onOpenBudgets,
                     onOpenTransactions = onOpenTransactions,
                     onOpenDebts = onOpenDebts,
                     onOpenBorrowLend = onOpenBorrowLend,
@@ -138,6 +140,7 @@ private fun LazyListScope.dashboardContent(
     onOpenInsights: () -> Unit,
     onOpenReminders: () -> Unit,
     onOpenProfile: () -> Unit,
+    onOpenBudgets: () -> Unit,
     onOpenTransactions: () -> Unit,
     onOpenDebts: () -> Unit,
     onOpenBorrowLend: () -> Unit,
@@ -218,6 +221,20 @@ private fun LazyListScope.dashboardContent(
             onClick = onOpenInsights,
             modifier = Modifier.entrance(progress, rise = 16.dp)
         )
+    }
+
+    // Only once there is something to measure: an empty budgets card on a
+    // dashboard is a nag, and the settings screen already offers the feature.
+    if (snapshot.budgets.isNotEmpty()) {
+        item(key = "budgets") {
+            val progress = rememberEntrance(delayMillis = 270)
+            BudgetsCard(
+                budgets = snapshot.budgets,
+                currencySymbol = snapshot.currencySymbol,
+                onOpenBudgets = onOpenBudgets,
+                modifier = Modifier.entrance(progress, rise = 16.dp)
+            )
+        }
     }
 
     item(key = "owe_owed") {

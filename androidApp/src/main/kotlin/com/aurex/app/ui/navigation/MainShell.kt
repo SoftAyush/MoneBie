@@ -35,6 +35,11 @@ import com.aurex.app.domain.model.LoanDirection
 import com.aurex.app.domain.model.TransactionType
 import com.aurex.app.ui.screens.dashboard.DashboardScreen
 import com.aurex.app.ui.screens.backup.BackupScreen
+import com.aurex.app.ui.screens.budget.BudgetsScreen
+import com.aurex.app.ui.screens.csvimport.ImportCsvScreen
+import com.aurex.app.ui.screens.lock.AppLockSettingsScreen
+import com.aurex.app.ui.screens.recurring.AddEditRecurringScreen
+import com.aurex.app.ui.screens.recurring.RecurringScreen
 import com.aurex.app.ui.screens.category.CategoriesScreen
 import com.aurex.app.ui.screens.module.AccountsScreen
 
@@ -139,6 +144,7 @@ fun MainShell(
                     onOpenInsights = { navController.navigate(Insights) },
                     onOpenReminders = { navController.navigate(Reminders) },
                     onOpenProfile = { navController.navigate(Profile) },
+                    onOpenBudgets = { navController.navigate(Budgets) },
                     onOpenTransactions = { navController.switchTab(MainTab.TRANSACTIONS) },
                     onOpenDebts = { navController.switchTab(MainTab.DEBT) },
                     onOpenBorrowLend = { navController.switchTab(MainTab.BORROW) },
@@ -234,8 +240,41 @@ fun MainShell(
                     onBack = { navController.popBackStack() },
                     onOpenReminders = { navController.navigate(Reminders) },
                     onOpenCategories = { navController.navigate(Categories) },
-                    onOpenBackup = { navController.navigate(Backup) }
+                    onOpenBackup = { navController.navigate(Backup) },
+                    onOpenBudgets = { navController.navigate(Budgets) },
+                    onOpenRecurring = { navController.navigate(Recurring) },
+                    onOpenImport = { navController.navigate(ImportCsv) },
+                    onOpenAppLock = { navController.navigate(AppLockSettingsRoute) }
                 )
+            }
+            composable<Budgets> {
+                BudgetsScreen(onBack = { navController.popBackStack() })
+            }
+            composable<Recurring> {
+                RecurringScreen(
+                    onBack = { navController.popBackStack() },
+                    onAdd = { type -> navController.navigate(AddEditRecurring(presetType = type.name)) },
+                    onEdit = { id -> navController.navigate(AddEditRecurring(recurringId = id)) }
+                )
+            }
+            composable<AddEditRecurring> { entry ->
+                val route = entry.toRoute<AddEditRecurring>()
+                AddEditRecurringScreen(
+                    onBack = { navController.popBackStack() },
+                    onOpenAccounts = { navController.navigate(Accounts) },
+                    recurringId = route.recurringId.takeIf { it != AddEditRecurring.NO_RECURRING_ID },
+                    presetType = runCatching { TransactionType.valueOf(route.presetType) }
+                        .getOrDefault(TransactionType.EXPENSE)
+                )
+            }
+            composable<ImportCsv> {
+                ImportCsvScreen(
+                    onBack = { navController.popBackStack() },
+                    onOpenAccounts = { navController.navigate(Accounts) }
+                )
+            }
+            composable<AppLockSettingsRoute> {
+                AppLockSettingsScreen(onBack = { navController.popBackStack() })
             }
             composable<Backup> {
                 BackupScreen(onBack = { navController.popBackStack() })

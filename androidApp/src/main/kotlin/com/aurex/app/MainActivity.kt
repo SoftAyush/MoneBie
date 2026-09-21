@@ -3,19 +3,24 @@ package com.aurex.app
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import androidx.activity.ComponentActivity
+import androidx.fragment.app.FragmentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.tooling.preview.Preview
+import com.aurex.app.security.AppLock
 import com.aurex.app.ui.App
 import com.aurex.app.ui.theme.AurexBackgroundDark
 import com.aurex.app.ui.theme.AurexBackgroundLight
 import com.aurex.app.ui.theme.ThemeStartupCache
 
-class MainActivity : ComponentActivity() {
+/*
+ * A FragmentActivity rather than a ComponentActivity because BiometricPrompt
+ * hosts its dialog in a fragment. Nothing else here needs fragments.
+ */
+class MainActivity : FragmentActivity() {
 
     /**
      * Whether a payment reminder is waiting to be opened.
@@ -59,6 +64,16 @@ class MainActivity : ComponentActivity() {
                 onRemindersOpened = { pendingReminders.value = false }
             )
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        AppLock.onForeground(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        AppLock.onBackground(changingConfigurations = isChangingConfigurations)
     }
 
     /** A reminder tapped while Aurex is already open arrives here, not in onCreate. */

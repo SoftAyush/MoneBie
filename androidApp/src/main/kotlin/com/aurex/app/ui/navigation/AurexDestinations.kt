@@ -140,3 +140,33 @@ object Reminders
 /** Cloud backup: sign in, upload the ledger, restore it on another phone. */
 @Serializable
 object Backup
+
+/** Monthly spending limits by category, one month at a time. */
+@Serializable
+object Budgets
+
+/** Scheduled transactions: rent, salary, subscriptions. */
+@Serializable
+object Recurring
+
+/**
+ * Create a recurring transaction, or edit an existing one when [recurringId]
+ * is set. [presetType] opens the form on the right side of the ledger.
+ */
+@Serializable
+data class AddEditRecurring(
+    val recurringId: Long = NO_RECURRING_ID,
+    val presetType: String = "EXPENSE"
+) {
+    companion object {
+        const val NO_RECURRING_ID = -1L
+    }
+}
+
+/** Bring transactions in from a CSV file. */
+@Serializable
+object ImportCsv
+
+/** The PIN and biometric lock. */
+@Serializable
+object AppLockSettingsRoute

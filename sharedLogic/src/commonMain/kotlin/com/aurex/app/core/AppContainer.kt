@@ -4,6 +4,8 @@ import app.cash.sqldelight.db.SqlDriver
 import com.aurex.app.data.database.DatabaseHelper
 import com.aurex.app.data.repository.AccountRepositoryImpl
 import com.aurex.app.data.repository.BackupRepositoryImpl
+import com.aurex.app.data.repository.BudgetRepositoryImpl
+import com.aurex.app.data.repository.RecurringTransactionRepositoryImpl
 import com.aurex.app.data.repository.UnavailableRemoteBackupStore
 import com.aurex.app.data.repository.CategoryRepositoryImpl
 import com.aurex.app.data.repository.CurrencyRepositoryImpl
@@ -14,6 +16,8 @@ import com.aurex.app.data.repository.TransactionRepositoryImpl
 import com.aurex.app.data.repository.UserRepositoryImpl
 import com.aurex.app.domain.repository.AccountRepository
 import com.aurex.app.domain.repository.BackupRepository
+import com.aurex.app.domain.repository.BudgetRepository
+import com.aurex.app.domain.repository.RecurringTransactionRepository
 import com.aurex.app.domain.repository.RemoteBackupStore
 import com.aurex.app.domain.repository.BorrowLendRepository
 import com.aurex.app.domain.repository.CategoryRepository
@@ -26,6 +30,20 @@ import com.aurex.app.domain.usecase.account.ArchiveAccountUseCase
 import com.aurex.app.domain.usecase.backup.BackUpNowUseCase
 import com.aurex.app.domain.usecase.backup.ObserveBackupIdentityUseCase
 import com.aurex.app.domain.usecase.backup.RestoreBackupUseCase
+import com.aurex.app.domain.usecase.budget.DeleteBudgetUseCase
+import com.aurex.app.domain.usecase.budget.GetBudgetOverviewUseCase
+import com.aurex.app.domain.usecase.budget.GetBudgetsUseCase
+import com.aurex.app.domain.usecase.budget.SaveBudgetUseCase
+import com.aurex.app.domain.usecase.csvimport.CommitCsvImportUseCase
+import com.aurex.app.domain.usecase.csvimport.PrepareCsvImportUseCase
+import com.aurex.app.domain.usecase.recurring.DeleteRecurringTransactionUseCase
+import com.aurex.app.domain.usecase.recurring.GetRecurringTransactionUseCase
+import com.aurex.app.domain.usecase.recurring.GetRecurringTransactionsUseCase
+import com.aurex.app.domain.usecase.recurring.PostDueRecurringUseCase
+import com.aurex.app.domain.usecase.recurring.PostRecurringNowUseCase
+import com.aurex.app.domain.usecase.recurring.SaveRecurringTransactionUseCase
+import com.aurex.app.domain.usecase.recurring.SetRecurringPausedUseCase
+import com.aurex.app.domain.usecase.recurring.SkipRecurringOccurrenceUseCase
 import com.aurex.app.domain.usecase.account.CreateAccountUseCase
 import com.aurex.app.domain.usecase.account.GetAccountUseCase
 import com.aurex.app.domain.usecase.account.SaveAccountUseCase
@@ -104,6 +122,10 @@ class AppContainer(
     val borrowLendRepository: BorrowLendRepository = BorrowLendRepositoryImpl(databaseHelper)
 
     val backupRepository: BackupRepository = BackupRepositoryImpl(databaseHelper)
+
+    val budgetRepository: BudgetRepository = BudgetRepositoryImpl(databaseHelper)
+    val recurringTransactionRepository: RecurringTransactionRepository =
+        RecurringTransactionRepositoryImpl(databaseHelper)
 
     // ---- Use cases -------------------------------------------------------
     val getCurrenciesUseCase = GetCurrenciesUseCase(currencyRepository)
@@ -198,6 +220,36 @@ class AppContainer(
         borrowLendRepository = borrowLendRepository
     )
 
+    val getBudgetsUseCase = GetBudgetsUseCase(budgetRepository)
+    val saveBudgetUseCase = SaveBudgetUseCase(budgetRepository, categoryRepository)
+    val deleteBudgetUseCase = DeleteBudgetUseCase(budgetRepository)
+    val getBudgetOverviewUseCase = GetBudgetOverviewUseCase(
+        budgetRepository = budgetRepository,
+        transactionRepository = transactionRepository,
+        categoryRepository = categoryRepository,
+        userRepository = userRepository
+    )
+
+    val getRecurringTransactionsUseCase = GetRecurringTransactionsUseCase(recurringTransactionRepository)
+    val getRecurringTransactionUseCase = GetRecurringTransactionUseCase(recurringTransactionRepository)
+    val saveRecurringTransactionUseCase = SaveRecurringTransactionUseCase(recurringTransactionRepository)
+    val deleteRecurringTransactionUseCase = DeleteRecurringTransactionUseCase(recurringTransactionRepository)
+    val setRecurringPausedUseCase = SetRecurringPausedUseCase(recurringTransactionRepository)
+    val postDueRecurringUseCase = PostDueRecurringUseCase(recurringTransactionRepository)
+    val postRecurringNowUseCase = PostRecurringNowUseCase(recurringTransactionRepository)
+    val skipRecurringOccurrenceUseCase = SkipRecurringOccurrenceUseCase(recurringTransactionRepository)
+
+    val prepareCsvImportUseCase = PrepareCsvImportUseCase(
+        transactionRepository = transactionRepository,
+        accountRepository = accountRepository,
+        categoryRepository = categoryRepository
+    )
+    val commitCsvImportUseCase = CommitCsvImportUseCase(
+        transactionRepository = transactionRepository,
+        accountRepository = accountRepository,
+        categoryRepository = categoryRepository
+    )
+
     val getDashboardSnapshotUseCase = GetDashboardSnapshotUseCase(
         userRepository = userRepository,
         accountRepository = accountRepository,
@@ -205,6 +257,7 @@ class AppContainer(
         transactionRepository = transactionRepository,
         debtRepository = debtRepository,
         emiRepository = emiRepository,
-        borrowLendRepository = borrowLendRepository
+        borrowLendRepository = borrowLendRepository,
+        budgetRepository = budgetRepository
     )
 }

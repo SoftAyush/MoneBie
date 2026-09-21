@@ -41,6 +41,15 @@ interface TransactionRepository {
     /** Inserts [draft] and applies its balance effect atomically. Returns the new id. */
     suspend fun postTransaction(draft: TransactionDraft): Long
 
+    /**
+     * Posts every draft inside one database transaction. Returns how many
+     * were written - all of them, or none if anything failed.
+     *
+     * For imports: a thousand rows posted one at a time could be interrupted
+     * halfway and leave the user unable to tell which half arrived.
+     */
+    suspend fun postTransactions(drafts: List<TransactionDraft>): Int
+
     /** Replaces a transaction, reversing the old balance effect and applying the new one. */
     suspend fun updateTransaction(id: Long, draft: TransactionDraft)
 

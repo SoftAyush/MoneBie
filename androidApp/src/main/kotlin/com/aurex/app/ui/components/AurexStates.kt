@@ -82,11 +82,15 @@ fun EmptyState(
 
         if (actionLabel != null && onAction != null) {
             Spacer(Modifier.height(AurexTheme.spacing.medium))
+            // Padding sits outside the pill so the touch target is comfortably
+            // larger than the label without changing how the pill looks.
             StatusPill(
                 text = actionLabel,
                 contentColor = MaterialTheme.colorScheme.primary,
                 containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.10f),
-                modifier = Modifier.clip(CircleShape)
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .pressable(onAction)
             )
         }
     }
