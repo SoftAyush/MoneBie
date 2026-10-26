@@ -1,6 +1,6 @@
-package com.aurex.app.domain.calculation
+package com.monebie.app.domain.calculation
 
-import com.aurex.app.core.Money
+import com.monebie.app.core.Money
 import kotlin.math.pow
 import kotlin.math.roundToInt
 import kotlin.math.roundToLong

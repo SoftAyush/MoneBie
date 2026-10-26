@@ -1,20 +1,20 @@
-package com.aurex.app.domain.calculation
+package com.monebie.app.domain.calculation
 
-import com.aurex.app.core.Money
-import com.aurex.app.core.getCurrentDay
-import com.aurex.app.core.monthOf
-import com.aurex.app.core.totalOf
-import com.aurex.app.domain.model.Account
-import com.aurex.app.domain.model.AccountType
-import com.aurex.app.domain.model.BorrowLendRecord
-import com.aurex.app.domain.model.Debt
-import com.aurex.app.domain.model.Emi
-import com.aurex.app.domain.model.FinancialOverview
-import com.aurex.app.domain.model.LoanDirection
-import com.aurex.app.domain.model.PositionGroup
-import com.aurex.app.domain.model.PositionGroupKey
-import com.aurex.app.domain.model.PositionLine
-import com.aurex.app.domain.model.isAsset
+import com.monebie.app.core.Money
+import com.monebie.app.core.getCurrentDay
+import com.monebie.app.core.monthOf
+import com.monebie.app.core.totalOf
+import com.monebie.app.domain.model.Account
+import com.monebie.app.domain.model.AccountType
+import com.monebie.app.domain.model.BorrowLendRecord
+import com.monebie.app.domain.model.Debt
+import com.monebie.app.domain.model.Emi
+import com.monebie.app.domain.model.FinancialOverview
+import com.monebie.app.domain.model.LoanDirection
+import com.monebie.app.domain.model.PositionGroup
+import com.monebie.app.domain.model.PositionGroupKey
+import com.monebie.app.domain.model.PositionLine
+import com.monebie.app.domain.model.isAsset
 
 /**
  * Turns raw records into the itemised financial position.

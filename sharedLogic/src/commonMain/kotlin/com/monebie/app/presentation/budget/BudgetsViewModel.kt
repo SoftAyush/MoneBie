@@ -1,20 +1,24 @@
-package com.aurex.app.presentation.budget
+package com.monebie.app.presentation.budget
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aurex.app.core.Money
-import com.aurex.app.core.getCurrentDay
-import com.aurex.app.core.monthOf
-import com.aurex.app.core.shiftMonth
-import com.aurex.app.domain.model.BudgetDraft
-import com.aurex.app.domain.model.BudgetOverview
-import com.aurex.app.domain.model.BudgetStatus
-import com.aurex.app.domain.usecase.budget.DeleteBudgetUseCase
-import com.aurex.app.domain.usecase.budget.GetBudgetOverviewUseCase
-import com.aurex.app.domain.usecase.budget.SaveBudgetUseCase
+import com.monebie.app.core.Money
+import com.monebie.app.core.AppCalendar
+import com.monebie.app.core.getCurrentDay
+import com.monebie.app.core.monthKeyOf
+import com.monebie.app.core.monthOf
+import com.monebie.app.core.shiftMonth
+import com.monebie.app.domain.model.BudgetDraft
+import com.monebie.app.domain.model.BudgetOverview
+import com.monebie.app.domain.model.BudgetStatus
+import com.monebie.app.domain.usecase.budget.DeleteBudgetUseCase
+import com.monebie.app.domain.usecase.budget.GetBudgetOverviewUseCase
+import com.monebie.app.domain.usecase.budget.SaveBudgetUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
@@ -54,7 +58,11 @@ class BudgetsViewModel(
 ) : ViewModel() {
 
     private val currentMonth = monthOf(todayProvider())
-    private val selectedMonth = MutableStateFlow(currentMonth)
+    // Months back from the current one; a count so a calendar switch keeps the user's place.
+    private val monthsBack = MutableStateFlow(0)
+    private val selectedMonth = combine(AppCalendar.system, monthsBack) { system, back ->
+        shiftMonth(monthKeyOf(todayProvider(), system), -back)
+    }.distinctUntilChanged()
 
     val uiState: StateFlow<BudgetOverview> = selectedMonth
         .flatMapLatest { month -> getBudgetOverviewUseCase(month) }
@@ -71,11 +79,11 @@ class BudgetsViewModel(
     val event: StateFlow<BudgetEvent?> = _event.asStateFlow()
 
     fun showPreviousMonth() {
-        selectedMonth.update { shiftMonth(it, -1) }
+        monthsBack.update { it + 1 }
     }
 
     fun showNextMonth() {
-        selectedMonth.update { if (it < currentMonth) shiftMonth(it, 1) else it }
+        monthsBack.update { (it - 1).coerceAtLeast(0) }
     }
 
     fun startCreating(categoryId: String? = null) {

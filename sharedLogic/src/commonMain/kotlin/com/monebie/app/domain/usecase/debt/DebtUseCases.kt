@@ -1,11 +1,11 @@
-package com.aurex.app.domain.usecase.debt
+package com.monebie.app.domain.usecase.debt
 
-import com.aurex.app.core.Money
-import com.aurex.app.domain.model.Debt
-import com.aurex.app.domain.model.DebtDraft
-import com.aurex.app.domain.model.DebtPayment
-import com.aurex.app.domain.model.PaymentMethod
-import com.aurex.app.domain.repository.DebtRepository
+import com.monebie.app.core.Money
+import com.monebie.app.domain.model.Debt
+import com.monebie.app.domain.model.DebtDraft
+import com.monebie.app.domain.model.DebtPayment
+import com.monebie.app.domain.model.PaymentMethod
+import com.monebie.app.domain.repository.DebtRepository
 import kotlinx.coroutines.flow.Flow
 
 class GetDebtsUseCase(private val repository: DebtRepository) {

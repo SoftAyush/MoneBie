@@ -1,4 +1,4 @@
-package com.aurex.app.ui.screens.borrowlend
+package com.monebie.app.ui.screens.borrowlend
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
@@ -40,33 +40,33 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.aurex.app.AurexApplication
-import com.aurex.app.core.MoneyFormatter
-import com.aurex.app.domain.model.LoanDirection
-import com.aurex.app.presentation.borrowlend.BorrowLendListViewModel
-import com.aurex.app.presentation.borrowlend.LoanListItem
-import com.aurex.app.presentation.borrowlend.BorrowLendUiState
-import com.aurex.app.ui.components.AmbientBackdrop
-import com.aurex.app.ui.components.CountUpMoneyText
-import com.aurex.app.ui.components.EmptyState
-import com.aurex.app.ui.components.FilterPill
-import com.aurex.app.ui.components.Segment
-import com.aurex.app.ui.components.SegmentedSelector
-import com.aurex.app.ui.components.HeroCardShape
-import com.aurex.app.ui.components.HeroDecoration
-import com.aurex.app.ui.components.HeroFinance
-import com.aurex.app.ui.components.HeroNote
-import com.aurex.app.ui.components.HeroPill
-import com.aurex.app.ui.components.HeroSplitBar
-import com.aurex.app.ui.components.HeroTile
-import com.aurex.app.ui.components.MicroLabel
-import com.aurex.app.ui.components.OnHero
-import com.aurex.app.ui.components.PremiumCard
-import com.aurex.app.ui.components.ShimmerBlock
-import com.aurex.app.ui.components.heroBrush
-import com.aurex.app.ui.theme.AurexTheme
-import com.aurex.app.ui.theme.Palette700
-import com.aurex.app.ui.theme.Palette900
+import com.monebie.app.MoneBieApplication
+import com.monebie.app.core.MoneyFormatter
+import com.monebie.app.domain.model.LoanDirection
+import com.monebie.app.presentation.borrowlend.BorrowLendListViewModel
+import com.monebie.app.presentation.borrowlend.LoanListItem
+import com.monebie.app.presentation.borrowlend.BorrowLendUiState
+import com.monebie.app.ui.components.AmbientBackdrop
+import com.monebie.app.ui.components.CountUpMoneyText
+import com.monebie.app.ui.components.EmptyState
+import com.monebie.app.ui.components.FilterPill
+import com.monebie.app.ui.components.Segment
+import com.monebie.app.ui.components.SegmentedSelector
+import com.monebie.app.ui.components.HeroCardShape
+import com.monebie.app.ui.components.HeroDecoration
+import com.monebie.app.ui.components.HeroFinance
+import com.monebie.app.ui.components.HeroNote
+import com.monebie.app.ui.components.HeroPill
+import com.monebie.app.ui.components.HeroSplitBar
+import com.monebie.app.ui.components.HeroTile
+import com.monebie.app.ui.components.MicroLabel
+import com.monebie.app.ui.components.OnHero
+import com.monebie.app.ui.components.PremiumCard
+import com.monebie.app.ui.components.ShimmerBlock
+import com.monebie.app.ui.components.heroBrush
+import com.monebie.app.ui.theme.MoneBieTheme
+import com.monebie.app.ui.theme.Palette700
+import com.monebie.app.ui.theme.Palette900
 
 /**
  * Money between the user and other people.
@@ -84,7 +84,7 @@ fun BorrowLendScreen(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
-    val app = context.applicationContext as AurexApplication
+    val app = context.applicationContext as MoneBieApplication
 
     val viewModel: BorrowLendListViewModel = viewModel(
         factory = viewModelFactory {
@@ -115,12 +115,12 @@ fun BorrowLendScreen(
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(
-                    start = AurexTheme.spacing.medium,
-                    end = AurexTheme.spacing.medium,
-                    top = AurexTheme.spacing.small,
+                    start = MoneBieTheme.spacing.medium,
+                    end = MoneBieTheme.spacing.medium,
+                    top = MoneBieTheme.spacing.small,
                     bottom = 96.dp
                 ),
-                verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small)
+                verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small)
             ) {
                 if (uiState.isLoading) {
                     item(key = "skeleton") { BorrowLendSkeleton() }
@@ -169,7 +169,7 @@ fun BorrowLendScreen(
             contentColor = MaterialTheme.colorScheme.onPrimary,
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .padding(AurexTheme.spacing.medium)
+                .padding(MoneBieTheme.spacing.medium)
         ) {
             Icon(
                 imageVector = Icons.Rounded.Add,
@@ -198,8 +198,8 @@ private fun BorrowLendBar(
         modifier = modifier
             .fillMaxWidth()
             .padding(
-                horizontal = AurexTheme.spacing.medium,
-                vertical = AurexTheme.spacing.small
+                horizontal = MoneBieTheme.spacing.medium,
+                vertical = MoneBieTheme.spacing.small
             ),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -224,7 +224,7 @@ private fun BorrowLendBar(
                     else -> "All squared up"
                 },
                 color = if (uiState.overdueCount > 0) {
-                    AurexTheme.finance.negative
+                    MoneBieTheme.finance.negative
                 } else {
                     MaterialTheme.colorScheme.primary
                 }
@@ -251,10 +251,10 @@ private fun DirectionBar(
         modifier = modifier
             .fillMaxWidth()
             .padding(
-                horizontal = AurexTheme.spacing.medium,
-                vertical = AurexTheme.spacing.small
+                horizontal = MoneBieTheme.spacing.medium,
+                vertical = MoneBieTheme.spacing.small
             ),
-        verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small)
+        verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small)
     ) {
         /*
          * A switch, not two filters.
@@ -271,12 +271,12 @@ private fun DirectionBar(
                 Segment(
                     value = LoanDirection.LENT,
                     label = countedLabel("Owed to you", uiState.openLendCount),
-                    accent = AurexTheme.finance.receivable
+                    accent = MoneBieTheme.finance.receivable
                 ),
                 Segment(
                     value = LoanDirection.BORROWED,
                     label = countedLabel("You owe", uiState.openBorrowCount),
-                    accent = AurexTheme.finance.negative
+                    accent = MoneBieTheme.finance.negative
                 )
             ),
             selected = uiState.direction,
@@ -488,10 +488,10 @@ private fun NextDueNote(
 private fun BorrowLendSkeleton(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small)
+        verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small)
     ) {
         ShimmerBlock(modifier = Modifier.fillMaxWidth(), height = 228.dp, cornerRadius = 30.dp)
-        Spacer(Modifier.height(AurexTheme.spacing.extraSmall))
+        Spacer(Modifier.height(MoneBieTheme.spacing.extraSmall))
         ShimmerBlock(modifier = Modifier.fillMaxWidth(), height = 132.dp, cornerRadius = 24.dp)
         ShimmerBlock(modifier = Modifier.fillMaxWidth(), height = 132.dp, cornerRadius = 24.dp)
     }

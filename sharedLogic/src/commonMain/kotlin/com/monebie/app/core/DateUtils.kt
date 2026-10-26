@@ -1,4 +1,4 @@
-package com.aurex.app.core
+package com.monebie.app.core
 
 /**
  * Dates are stored as sortable ISO-like text, matching the convention already
@@ -25,11 +25,25 @@ expect fun addDays(day: String, days: Int): String
 /** Whole days from [startDay] to [endDay]; negative when [endDay] is in the past. */
 expect fun daysBetween(startDay: String, endDay: String): Long
 
-/** `2026-09-04` -> `4 Sep 2026`. */
-expect fun formatDisplayDate(day: String): String
+/** `2026-09-04` -> `4 Sep 2026`, always AD whatever [AppCalendar] says. */
+expect fun formatGregorianDate(day: String): String
 
-/** `2026-09-04` -> `September 2026`. */
-expect fun formatMonthYear(day: String): String
+/** `2026-09-04` -> `September 2026`, always AD whatever [AppCalendar] says. */
+expect fun formatGregorianMonthYear(day: String): String
+
+/**
+ * A day as the user reads dates: `4 Sep 2026`, or `19 Bhadra 2083` in BS.
+ * Days outside the BS table fall back to AD.
+ */
+fun formatDisplayDate(day: String): String =
+    if (AppCalendar.current == CalendarSystem.BS) {
+        formatNepaliDate(day) ?: formatGregorianDate(day)
+    } else {
+        formatGregorianDate(day)
+    }
+
+/** The month containing [day] as the user reads months: `September 2026` or `Bhadra 2083`. */
+fun formatMonthYear(day: String): String = formatMonth(monthOf(day))
 
 /** `2026-09-04` -> `Thu`. */
 expect fun formatWeekday(day: String): String
@@ -40,17 +54,23 @@ expect fun getCurrentHour(): Int
 /** The calendar day part of a timestamp. */
 fun dayOf(timestamp: String): String = timestamp.take(10)
 
-/** The `yyyy-MM` month part of a timestamp or day. */
-fun monthOf(timestamp: String): String = timestamp.take(7)
+/**
+ * The key of the month containing a timestamp or day, in the user's calendar:
+ * `2026-09` for AD, `BS-2083-05` for BS. See AppCalendar for the format.
+ */
+fun monthOf(timestamp: String): String = monthKeyOf(timestamp, AppCalendar.current)
 
-/** First day of the month containing [day]. */
-fun startOfMonth(day: String): String = "${monthOf(day)}-01"
+/** First day of the month containing [day], as a `yyyy-MM-dd` AD day. */
+fun startOfMonth(day: String): String = firstDayOfMonth(monthOf(day))
 
 /** Whether [timestamp] falls on the calendar day [day]. */
 fun isOnDay(timestamp: String, day: String): Boolean = dayOf(timestamp) == day
 
-/** Whether [timestamp] falls inside the `yyyy-MM` month. */
-fun isInMonth(timestamp: String, month: String): Boolean = monthOf(timestamp) == month
+/** Whether [timestamp] falls inside the month keyed [month], in that month's own calendar. */
+fun isInMonth(timestamp: String, month: String): Boolean {
+    val day = dayOf(timestamp)
+    return day >= firstDayOfMonth(month) && day < firstDayAfterMonth(month)
+}
 
 /** Human relative label for a due date, e.g. `Overdue by 3d`, `Today`, `In 12d`. */
 fun relativeDueLabel(daysUntilDue: Long): String = when {
@@ -68,11 +88,20 @@ expect fun epochMillisToDay(millis: Long): String
 /** Converts a `yyyy-MM-dd` day to epoch millis, for seeding a date picker. */
 expect fun dayToEpochMillis(day: String): Long
 
-/** First day of a `yyyy-MM` month. */
-fun firstDayOfMonth(month: String): String = "$month-01"
+/** First day of a month key, as a `yyyy-MM-dd` AD day. */
+fun firstDayOfMonth(month: String): String = firstDayOfMonthKey(month)
 
-/** Shifts a `yyyy-MM` month by [delta] months. */
-fun shiftMonth(month: String, delta: Int): String = monthOf(addMonths(firstDayOfMonth(month), delta))
+/**
+ * The day after a month key ends, as a `yyyy-MM-dd` AD day: the exclusive end
+ * for a `date >= start AND date < end` range query over the month.
+ */
+fun firstDayAfterMonth(month: String): String = firstDayOfMonth(shiftMonth(month, 1))
+
+/** Shifts a month key by [delta] months, staying in the key's calendar. */
+fun shiftMonth(month: String, delta: Int): String = shiftMonthKey(month, delta)
+
+/** A month key for display: `September 2026` or `Bhadra 2083`. */
+fun formatMonth(month: String): String = formatMonthKey(month)
 
 /**
  * Builds the stored timestamp for a transaction dated [day].

@@ -1,4 +1,4 @@
-package com.aurex.app.domain.model
+package com.monebie.app.domain.model
 
 /**
  * Optional narrowing applied to a month of transactions.

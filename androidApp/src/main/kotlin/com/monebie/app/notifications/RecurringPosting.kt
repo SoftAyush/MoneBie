@@ -1,4 +1,4 @@
-package com.aurex.app.notifications
+package com.monebie.app.notifications
 
 import android.Manifest
 import android.app.NotificationChannel
@@ -16,9 +16,9 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
-import com.aurex.app.AurexApplication
-import com.aurex.app.MainActivity
-import com.aurex.app.R
+import com.monebie.app.MoneBieApplication
+import com.monebie.app.MainActivity
+import com.monebie.app.R
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
 
@@ -32,9 +32,9 @@ import java.util.concurrent.TimeUnit
  */
 object RecurringPosting {
 
-    const val CHANNEL_ID = "aurex_recurring"
+    const val CHANNEL_ID = "monebie_recurring"
 
-    private const val DAILY_WORK = "aurex_recurring_daily"
+    private const val DAILY_WORK = "monebie_recurring_daily"
     private const val RUN_AT_HOUR = 6
 
     fun schedule(context: Context) {
@@ -81,7 +81,7 @@ class RecurringPostingWorker(
 ) : CoroutineWorker(context, params) {
 
     override suspend fun doWork(): Result {
-        val app = applicationContext as? AurexApplication ?: return Result.success()
+        val app = applicationContext as? MoneBieApplication ?: return Result.success()
         val result = runCatching { app.appContainer.postDueRecurringUseCase() }
             .getOrElse { return Result.retry() }
 

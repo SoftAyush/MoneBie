@@ -1,4 +1,4 @@
-package com.aurex.app.ui.screens.settings
+package com.monebie.app.ui.screens.settings
 
 import android.Manifest
 import android.content.Context
@@ -80,54 +80,58 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.aurex.app.AurexApplication
-import com.aurex.app.ResetAppData
-import com.aurex.app.domain.model.ThemeMode
-import com.aurex.app.notifications.PaymentReminderSettings
-import com.aurex.app.notifications.PaymentReminders
-import com.aurex.app.domain.model.displayName
-import com.aurex.app.presentation.settings.SettingsEvent
-import com.aurex.app.presentation.settings.SettingsViewModel
-import com.aurex.app.security.AppLock
-import com.aurex.app.security.AppLockSettings
-import com.aurex.app.ui.components.AmbientBackdrop
-import com.aurex.app.ui.components.AurexBrandMark
-import com.aurex.app.ui.components.AurexButton
-import com.aurex.app.ui.components.AurexSnackbarHost
-import com.aurex.app.ui.components.showAurexMessage
-import com.aurex.app.ui.components.AurexTextField
-import com.aurex.app.ui.components.CardDivider
-import com.aurex.app.ui.components.CurrencySelector
-import com.aurex.app.ui.components.DetailTopBar
-import com.aurex.app.ui.components.FormField
-import com.aurex.app.ui.components.FormNotice
-import com.aurex.app.ui.components.FormSection
-import com.aurex.app.ui.components.GlowBadge
-import com.aurex.app.ui.components.HeroCardShape
-import com.aurex.app.ui.components.HeroDecoration
-import com.aurex.app.ui.components.HeroIconButton
-import com.aurex.app.ui.components.HeroPill
-import com.aurex.app.ui.components.HeroTile
-import com.aurex.app.ui.components.MicroLabel
-import com.aurex.app.ui.components.OnHero
-import com.aurex.app.ui.components.PremiumCard
-import com.aurex.app.ui.components.PremiumCardShape
-import com.aurex.app.ui.components.PremiumSectionHeader
-import com.aurex.app.ui.components.entrance
-import com.aurex.app.ui.components.heroBrush
-import com.aurex.app.ui.components.pressable
-import com.aurex.app.ui.components.rememberEntrance
-import com.aurex.app.ui.theme.AurexBackgroundDark
-import com.aurex.app.ui.theme.AurexBackgroundLight
-import com.aurex.app.ui.theme.AurexOnSurfaceDark
-import com.aurex.app.ui.theme.AurexOnSurfaceLight
-import com.aurex.app.ui.theme.AurexSurfaceContainerDark
-import com.aurex.app.ui.theme.AurexSurfaceContainerLight
-import com.aurex.app.ui.theme.AurexTheme
-import com.aurex.app.ui.theme.Palette100
-import com.aurex.app.ui.theme.Palette300
-import com.aurex.app.ui.theme.Palette700
-import com.aurex.app.ui.theme.Palette900
+import com.monebie.app.MoneBieApplication
+import com.monebie.app.ResetAppData
+import com.monebie.app.core.CalendarSystem
+import com.monebie.app.domain.model.ThemeMode
+import com.monebie.app.notifications.PaymentReminderSettings
+import com.monebie.app.notifications.PaymentReminders
+import com.monebie.app.domain.model.displayName
+import com.monebie.app.presentation.settings.SettingsEvent
+import com.monebie.app.presentation.settings.SettingsViewModel
+import com.monebie.app.security.AppLock
+import com.monebie.app.security.AppLockSettings
+import com.monebie.app.ui.components.AmbientBackdrop
+import com.monebie.app.ui.components.MoneBieBrandMark
+import com.monebie.app.ui.components.MoneBieButton
+import com.monebie.app.ui.components.MoneBieSnackbarHost
+import com.monebie.app.ui.components.showMoneBieMessage
+import com.monebie.app.ui.components.MoneBieTextField
+import com.monebie.app.ui.components.CardDivider
+import com.monebie.app.ui.components.CurrencySelector
+import com.monebie.app.ui.components.DateCalendarSettings
+import com.monebie.app.ui.components.SelectableChip
+import com.monebie.app.ui.components.currentCalendar
+import com.monebie.app.ui.components.DetailTopBar
+import com.monebie.app.ui.components.FormField
+import com.monebie.app.ui.components.FormNotice
+import com.monebie.app.ui.components.FormSection
+import com.monebie.app.ui.components.GlowBadge
+import com.monebie.app.ui.components.HeroCardShape
+import com.monebie.app.ui.components.HeroDecoration
+import com.monebie.app.ui.components.HeroIconButton
+import com.monebie.app.ui.components.HeroPill
+import com.monebie.app.ui.components.HeroTile
+import com.monebie.app.ui.components.MicroLabel
+import com.monebie.app.ui.components.OnHero
+import com.monebie.app.ui.components.PremiumCard
+import com.monebie.app.ui.components.PremiumCardShape
+import com.monebie.app.ui.components.PremiumSectionHeader
+import com.monebie.app.ui.components.entrance
+import com.monebie.app.ui.components.heroBrush
+import com.monebie.app.ui.components.pressable
+import com.monebie.app.ui.components.rememberEntrance
+import com.monebie.app.ui.theme.MoneBieBackgroundDark
+import com.monebie.app.ui.theme.MoneBieBackgroundLight
+import com.monebie.app.ui.theme.MoneBieOnSurfaceDark
+import com.monebie.app.ui.theme.MoneBieOnSurfaceLight
+import com.monebie.app.ui.theme.MoneBieSurfaceContainerDark
+import com.monebie.app.ui.theme.MoneBieSurfaceContainerLight
+import com.monebie.app.ui.theme.MoneBieTheme
+import com.monebie.app.ui.theme.Palette100
+import com.monebie.app.ui.theme.Palette300
+import com.monebie.app.ui.theme.Palette700
+import com.monebie.app.ui.theme.Palette900
 
 /**
  * Profile and app settings.
@@ -149,7 +153,7 @@ fun SettingsScreen(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
-    val app = context.applicationContext as AurexApplication
+    val app = context.applicationContext as MoneBieApplication
 
     val viewModel: SettingsViewModel = viewModel(
         factory = viewModelFactory {
@@ -189,7 +193,7 @@ fun SettingsScreen(
     /*
      * Reminders live outside the database, so the switch reads the setting once
      * and then owns it. Re-read on every return to the screen as well: Android's
-     * own settings can take the notification permission back while Aurex is in
+     * own settings can take the notification permission back while MoneBie is in
      * the background, and a switch still showing "on" would be a lie.
      */
     var remindersOn by remember {
@@ -236,8 +240,8 @@ fun SettingsScreen(
 
     LaunchedEffect(permissionRefused) {
         if (permissionRefused) {
-            snackbarHostState.showAurexMessage(
-                "Aurex needs permission to send notifications. You can allow it in " +
+            snackbarHostState.showMoneBieMessage(
+                "MoneBie needs permission to send notifications. You can allow it in " +
                     "Android's app settings."
             )
             permissionRefused = false
@@ -247,10 +251,10 @@ fun SettingsScreen(
     LaunchedEffect(event) {
         when (val current = event) {
             is SettingsEvent.ProfileSaved ->
-                snackbarHostState.showAurexMessage("Saved. Hello, " + current.name + ".")
+                snackbarHostState.showMoneBieMessage("Saved. Hello, " + current.name + ".")
 
             is SettingsEvent.CurrencyChanged ->
-                snackbarHostState.showAurexMessage(
+                snackbarHostState.showMoneBieMessage(
                     "Now showing amounts in " + current.currency.code + "."
                 )
 
@@ -261,7 +265,7 @@ fun SettingsScreen(
                     mimeType = current.file.mimeType,
                     content = current.file.content
                 )
-                snackbarHostState.showAurexMessage(
+                snackbarHostState.showMoneBieMessage(
                     if (shared) {
                         "Exported " + current.file.rowCount + " transactions."
                     } else {
@@ -270,7 +274,7 @@ fun SettingsScreen(
                 )
             }
 
-            is SettingsEvent.ThemeChanged -> snackbarHostState.showAurexMessage(
+            is SettingsEvent.ThemeChanged -> snackbarHostState.showMoneBieMessage(
                 when (current.mode) {
                     ThemeMode.SYSTEM -> "Following your phone's appearance."
                     ThemeMode.LIGHT -> "Light theme on."
@@ -278,7 +282,7 @@ fun SettingsScreen(
                 }
             )
 
-            is SettingsEvent.Failed -> snackbarHostState.showAurexMessage(current.message)
+            is SettingsEvent.Failed -> snackbarHostState.showMoneBieMessage(current.message)
             null -> Unit
         }
         if (event != null) viewModel.consumeEvent()
@@ -297,12 +301,12 @@ fun SettingsScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
-                    .padding(horizontal = AurexTheme.spacing.medium)
+                    .padding(horizontal = MoneBieTheme.spacing.medium)
                     .imePadding()
                     .navigationBarsPadding(),
-                verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.large)
+                verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.large)
             ) {
-                Spacer(Modifier.height(AurexTheme.spacing.extraSmall))
+                Spacer(Modifier.height(MoneBieTheme.spacing.extraSmall))
 
                 ProfileHero(
                     name = uiState.user?.name,
@@ -334,6 +338,40 @@ fun SettingsScreen(
                     }
                 }
 
+                FormSection(title = "Date & calendar") {
+                    val calendar = currentCalendar()
+                    FormField(
+                        label = "Calendar",
+                        // Worth saying that nothing is rewritten: switching is
+                        // safe to try and safe to undo.
+                        hint = when (calendar) {
+                            CalendarSystem.AD ->
+                                "Dates, months, budgets and reports follow the English (AD) calendar."
+                            CalendarSystem.BS ->
+                                "Dates, months, budgets and reports follow the Nepali (BS) " +
+                                    "calendar, so this month runs from the 1st of the Nepali month."
+                        } + " Your entries are not changed, only how they are grouped and shown."
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small)
+                        ) {
+                            SelectableChip(
+                                label = "English (AD)",
+                                selected = calendar == CalendarSystem.AD,
+                                onClick = { DateCalendarSettings.set(context, CalendarSystem.AD) },
+                                modifier = Modifier.weight(1f)
+                            )
+                            SelectableChip(
+                                label = "नेपाली (BS)",
+                                selected = calendar == CalendarSystem.BS,
+                                onClick = { DateCalendarSettings.set(context, CalendarSystem.BS) },
+                                modifier = Modifier.weight(1f)
+                            )
+                        }
+                    }
+                }
+
                 uiState.selectedCurrency?.let { selected ->
                     FormSection(title = "Currency") {
                         FormField(
@@ -357,11 +395,11 @@ fun SettingsScreen(
                 Column(modifier = Modifier.fillMaxWidth()) {
                     PremiumSectionHeader(title = "Categories, reminders & data")
 
-                    Spacer(Modifier.height(AurexTheme.spacing.small))
+                    Spacer(Modifier.height(MoneBieTheme.spacing.small))
 
                     PremiumCard(
                         modifier = Modifier.fillMaxWidth(),
-                        contentPadding = AurexTheme.spacing.medium
+                        contentPadding = MoneBieTheme.spacing.medium
                     ) {
                         SettingsRow(
                             icon = Icons.Rounded.Sell,
@@ -437,7 +475,7 @@ fun SettingsScreen(
                         SettingsRow(
                             icon = Icons.Rounded.FileUpload,
                             title = "Import transactions",
-                            subtitle = "Bring in a CSV from Aurex or another app",
+                            subtitle = "Bring in a CSV from MoneBie or another app",
                             onClick = onOpenImport
                         )
 
@@ -462,11 +500,11 @@ fun SettingsScreen(
                 Column(modifier = Modifier.fillMaxWidth()) {
                     PremiumSectionHeader(title = "Privacy")
 
-                    Spacer(Modifier.height(AurexTheme.spacing.small))
+                    Spacer(Modifier.height(MoneBieTheme.spacing.small))
 
                     PremiumCard(
                         modifier = Modifier.fillMaxWidth(),
-                        contentPadding = AurexTheme.spacing.medium
+                        contentPadding = MoneBieTheme.spacing.medium
                     ) {
                         SettingsRow(
                             icon = Icons.Rounded.Lock,
@@ -475,7 +513,7 @@ fun SettingsScreen(
                                 "A PIN" + (if (biometricOn) " or fingerprint" else "") +
                                     " is asked for on the way in"
                             } else {
-                                "Ask for a PIN or fingerprint before opening Aurex"
+                                "Ask for a PIN or fingerprint before opening MoneBie"
                             },
                             status = if (appLockOn) "On" else "Off",
                             statusIsOn = appLockOn,
@@ -487,7 +525,7 @@ fun SettingsScreen(
                 Column(modifier = Modifier.fillMaxWidth()) {
                     PremiumSectionHeader(title = "Danger zone")
 
-                    Spacer(Modifier.height(AurexTheme.spacing.small))
+                    Spacer(Modifier.height(MoneBieTheme.spacing.small))
 
                     // Tinted rather than neutral: this card holds the one action
                     // on the page that cannot be taken back, and a card that
@@ -505,13 +543,13 @@ fun SettingsScreen(
                 }
 
                 Column(modifier = Modifier.fillMaxWidth()) {
-                    PremiumSectionHeader(title = "About Aurex")
+                    PremiumSectionHeader(title = "About MoneBie")
 
-                    Spacer(Modifier.height(AurexTheme.spacing.small))
+                    Spacer(Modifier.height(MoneBieTheme.spacing.small))
 
                     PremiumCard(
                         modifier = Modifier.fillMaxWidth(),
-                        contentPadding = AurexTheme.spacing.medium
+                        contentPadding = MoneBieTheme.spacing.medium
                     ) {
                         AboutRow(
                             icon = Icons.Rounded.PhoneAndroid,
@@ -546,18 +584,18 @@ fun SettingsScreen(
                             icon = Icons.Rounded.NotificationsNone,
                             // Follows the switch above rather than stating one
                             // of the two as a fact: this row is the answer to
-                            // "will Aurex tell me while it is closed", and it
+                            // "will MoneBie tell me while it is closed", and it
                             // has to match what the setting actually says.
                             title = if (remindersOn) {
-                                "Reminders reach you outside Aurex"
+                                "Reminders reach you outside MoneBie"
                             } else {
                                 "Reminders are in-app only"
                             },
                             subtitle = if (remindersOn) {
-                                "Aurex checks your debts and EMIs each morning and notifies " +
+                                "MoneBie checks your debts and EMIs each morning and notifies " +
                                     "you a week before, three days before, and on the day."
                             } else {
-                                "Due dates are shown inside Aurex. Switch on payment reminders " +
+                                "Due dates are shown inside MoneBie. Switch on payment reminders " +
                                     "above to be told while it is closed."
                             }
                         )
@@ -568,11 +606,11 @@ fun SettingsScreen(
                 // it is the end of the page, not another fact to read.
                 BrandFooter(version = appVersionLabel())
 
-                Spacer(Modifier.height(AurexTheme.spacing.extraExtraLarge))
+                Spacer(Modifier.height(MoneBieTheme.spacing.extraExtraLarge))
             }
         }
 
-        AurexSnackbarHost(
+        MoneBieSnackbarHost(
             hostState = snackbarHostState,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
@@ -805,7 +843,7 @@ private fun ThemePicker(
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small)
+        horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small)
     ) {
         ThemeMode.entries.forEach { mode ->
             ThemeOption(
@@ -911,9 +949,9 @@ private fun ThemeOption(
  */
 @Composable
 private fun ThemeMiniature(dark: Boolean, modifier: Modifier = Modifier) {
-    val background = if (dark) AurexBackgroundDark else AurexBackgroundLight
-    val surface = if (dark) AurexSurfaceContainerDark else AurexSurfaceContainerLight
-    val ink = if (dark) AurexOnSurfaceDark else AurexOnSurfaceLight
+    val background = if (dark) MoneBieBackgroundDark else MoneBieBackgroundLight
+    val surface = if (dark) MoneBieSurfaceContainerDark else MoneBieSurfaceContainerLight
+    val ink = if (dark) MoneBieOnSurfaceDark else MoneBieOnSurfaceLight
 
     Column(
         modifier = modifier
@@ -970,7 +1008,7 @@ private fun NameSheet(
         modifier = Modifier
             .fillMaxWidth()
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = AurexTheme.spacing.medium)
+            .padding(horizontal = MoneBieTheme.spacing.medium)
             .imePadding()
             .navigationBarsPadding()
     ) {
@@ -979,7 +1017,7 @@ private fun NameSheet(
                 icon = Icons.Rounded.PersonOutline,
                 tint = MaterialTheme.colorScheme.primary
             )
-            Spacer(Modifier.width(AurexTheme.spacing.medium))
+            Spacer(Modifier.width(MoneBieTheme.spacing.medium))
             Column {
                 Text(
                     text = "Your name",
@@ -992,14 +1030,14 @@ private fun NameSheet(
             }
         }
 
-        Spacer(Modifier.height(AurexTheme.spacing.large))
+        Spacer(Modifier.height(MoneBieTheme.spacing.large))
 
         FormField(
             label = "Name",
             error = error,
             hint = "Used for the greeting on your dashboard."
         ) {
-            AurexTextField(
+            MoneBieTextField(
                 value = name,
                 onValueChange = onNameChange,
                 placeholder = "Your name",
@@ -1008,15 +1046,15 @@ private fun NameSheet(
             )
         }
 
-        Spacer(Modifier.height(AurexTheme.spacing.extraLarge))
+        Spacer(Modifier.height(MoneBieTheme.spacing.extraLarge))
 
-        AurexButton(
+        MoneBieButton(
             text = "Save name",
             loading = isSaving,
             onClick = onSave
         )
 
-        Spacer(Modifier.height(AurexTheme.spacing.extraExtraLarge))
+        Spacer(Modifier.height(MoneBieTheme.spacing.extraExtraLarge))
     }
 }
 
@@ -1046,9 +1084,9 @@ private fun SettingsRow(
             .fillMaxWidth()
             .clip(MaterialTheme.shapes.medium)
             .pressable(onClick)
-            .padding(vertical = AurexTheme.spacing.small),
+            .padding(vertical = MoneBieTheme.spacing.small),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.medium)
+        horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.medium)
     ) {
         GlowBadge(icon = icon, tint = tint)
 
@@ -1135,9 +1173,9 @@ private fun SettingsToggleRow(
             // The whole row toggles, so the switch is a target of last resort
             // rather than the only one.
             .pressable { onCheckedChange(!checked) }
-            .padding(vertical = AurexTheme.spacing.small),
+            .padding(vertical = MoneBieTheme.spacing.small),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.medium)
+        horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.medium)
     ) {
         GlowBadge(
             icon = icon,
@@ -1178,7 +1216,7 @@ private fun SettingsToggleRow(
 }
 
 /**
- * Whether Aurex may post a notification at all.
+ * Whether MoneBie may post a notification at all.
  *
  * Always true below Android 13, where notifications need no permission; from 13
  * on it is the user's to grant and to take back at any time.
@@ -1215,7 +1253,7 @@ private fun DangerCard(
                 )
             )
             .border(1.dp, error.copy(alpha = 0.28f), PremiumCardShape)
-            .padding(AurexTheme.spacing.medium),
+            .padding(MoneBieTheme.spacing.medium),
         content = content
     )
 }
@@ -1232,12 +1270,12 @@ private fun BrandFooter(version: String, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(top = AurexTheme.spacing.small),
+            .padding(top = MoneBieTheme.spacing.small),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        AurexBrandMark(size = 44.dp)
+        MoneBieBrandMark(size = 44.dp)
 
-        Spacer(Modifier.height(AurexTheme.spacing.small))
+        Spacer(Modifier.height(MoneBieTheme.spacing.small))
 
         Text(
             text = version,
@@ -1282,13 +1320,13 @@ private fun ResetSheet(
         modifier = modifier
             .fillMaxWidth()
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = AurexTheme.spacing.medium)
+            .padding(horizontal = MoneBieTheme.spacing.medium)
             .imePadding()
             .navigationBarsPadding()
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             GlowBadge(icon = Icons.Rounded.DeleteForever, tint = error)
-            Spacer(Modifier.width(AurexTheme.spacing.medium))
+            Spacer(Modifier.width(MoneBieTheme.spacing.medium))
             Column {
                 Text(
                     text = "Delete everything",
@@ -1301,7 +1339,7 @@ private fun ResetSheet(
             }
         }
 
-        Spacer(Modifier.height(AurexTheme.spacing.large))
+        Spacer(Modifier.height(MoneBieTheme.spacing.large))
 
         FormNotice(
             icon = Icons.Rounded.Info,
@@ -1309,13 +1347,13 @@ private fun ResetSheet(
             // deserves to recognise what they are about to lose.
             text = "Your name, currency and theme, every account and its balance, " +
                 "every transaction, debt, EMI and personal loan, and any categories " +
-                "you added. Aurex will close and open as it did on the first day.",
+                "you added. MoneBie will close and open as it did on the first day.",
             accent = error
         )
 
-        Spacer(Modifier.height(AurexTheme.spacing.medium))
+        Spacer(Modifier.height(MoneBieTheme.spacing.medium))
 
-        AurexButton(
+        MoneBieButton(
             text = "Export transactions first",
             onClick = onExport,
             icon = Icons.Rounded.FileDownload,
@@ -1323,13 +1361,13 @@ private fun ResetSheet(
             contentColor = MaterialTheme.colorScheme.primary
         )
 
-        Spacer(Modifier.height(AurexTheme.spacing.large))
+        Spacer(Modifier.height(MoneBieTheme.spacing.large))
 
         FormField(
             label = "Type $CONFIRM_WORD to confirm",
             hint = "Nothing is deleted until this matches."
         ) {
-            AurexTextField(
+            MoneBieTextField(
                 value = confirmation,
                 onValueChange = onConfirmationChange,
                 placeholder = CONFIRM_WORD,
@@ -1338,9 +1376,9 @@ private fun ResetSheet(
             )
         }
 
-        Spacer(Modifier.height(AurexTheme.spacing.extraLarge))
+        Spacer(Modifier.height(MoneBieTheme.spacing.extraLarge))
 
-        AurexButton(
+        MoneBieButton(
             text = "Delete everything",
             onClick = onDelete,
             enabled = canDelete,
@@ -1348,7 +1386,7 @@ private fun ResetSheet(
             contentColor = MaterialTheme.colorScheme.onError
         )
 
-        Spacer(Modifier.height(AurexTheme.spacing.extraExtraLarge))
+        Spacer(Modifier.height(MoneBieTheme.spacing.extraExtraLarge))
     }
 }
 
@@ -1372,8 +1410,8 @@ private fun AboutRow(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = AurexTheme.spacing.small),
-        horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.medium)
+            .padding(vertical = MoneBieTheme.spacing.small),
+        horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.medium)
     ) {
         // A flat plate rather than the lit badge the tappable rows carry: the
         // quieter mark is half of what says this row goes nowhere.
@@ -1420,8 +1458,8 @@ private fun appVersionLabel(): String {
     return remember(context) {
         runCatching {
             val info = context.packageManager.getPackageInfo(context.packageName, 0)
-            "Aurex " + info.versionName
-        }.getOrDefault("Aurex")
+            "MoneBie " + info.versionName
+        }.getOrDefault("MoneBie")
     }
 }
 
@@ -1450,7 +1488,7 @@ private fun shareCsv(
     val intent = Intent(Intent.ACTION_SEND).apply {
         type = mimeType
         putExtra(Intent.EXTRA_STREAM, uri)
-        putExtra(Intent.EXTRA_SUBJECT, "Aurex transactions")
+        putExtra(Intent.EXTRA_SUBJECT, "MoneBie transactions")
         addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
     }
 

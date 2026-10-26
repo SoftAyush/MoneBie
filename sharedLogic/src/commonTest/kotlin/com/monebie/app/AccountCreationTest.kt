@@ -1,10 +1,10 @@
-package com.aurex.app
+package com.monebie.app
 
-import com.aurex.app.core.Money
-import com.aurex.app.domain.model.Account
-import com.aurex.app.domain.model.AccountType
-import com.aurex.app.domain.model.isAsset
-import com.aurex.app.domain.model.openingBalanceFor
+import com.monebie.app.core.Money
+import com.monebie.app.domain.model.Account
+import com.monebie.app.domain.model.AccountType
+import com.monebie.app.domain.model.isAsset
+import com.monebie.app.domain.model.openingBalanceFor
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse

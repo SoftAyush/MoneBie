@@ -1,15 +1,15 @@
-package com.aurex.app.presentation.debt
+package com.monebie.app.presentation.debt
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aurex.app.core.Money
-import com.aurex.app.core.getCurrentDay
-import com.aurex.app.core.totalOf
-import com.aurex.app.domain.calculation.FinancialCalculator
-import com.aurex.app.domain.model.Debt
-import com.aurex.app.domain.model.DebtStatus
-import com.aurex.app.domain.usecase.debt.GetDebtsUseCase
-import com.aurex.app.domain.usecase.user.GetSelectedCurrencySymbolUseCase
+import com.monebie.app.core.Money
+import com.monebie.app.core.getCurrentDay
+import com.monebie.app.core.totalOf
+import com.monebie.app.domain.calculation.FinancialCalculator
+import com.monebie.app.domain.model.Debt
+import com.monebie.app.domain.model.DebtStatus
+import com.monebie.app.domain.usecase.debt.GetDebtsUseCase
+import com.monebie.app.domain.usecase.user.GetSelectedCurrencySymbolUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -82,7 +82,7 @@ class DebtListViewModel(
                 debt = debt,
                 status = FinancialCalculator.debtStatus(debt, today),
                 nextDueDate = nextDue,
-                daysUntilDue = nextDue?.let { com.aurex.app.core.daysBetween(today, it) }
+                daysUntilDue = nextDue?.let { com.monebie.app.core.daysBetween(today, it) }
             )
         }
 

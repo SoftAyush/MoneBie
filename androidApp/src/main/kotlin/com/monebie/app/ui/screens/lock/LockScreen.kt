@@ -1,4 +1,4 @@
-package com.aurex.app.ui.screens.lock
+package com.monebie.app.ui.screens.lock
 
 import androidx.biometric.BiometricPrompt
 import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
@@ -45,12 +45,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
-import com.aurex.app.security.AppLock
-import com.aurex.app.security.AppLockSettings
-import com.aurex.app.ui.components.AmbientBackdrop
-import com.aurex.app.ui.components.AurexBrandMark
-import com.aurex.app.ui.components.pressable
-import com.aurex.app.ui.theme.AurexTheme
+import com.monebie.app.security.AppLock
+import com.monebie.app.security.AppLockSettings
+import com.monebie.app.ui.components.AmbientBackdrop
+import com.monebie.app.ui.components.MoneBieBrandMark
+import com.monebie.app.ui.components.pressable
+import com.monebie.app.ui.theme.MoneBieTheme
 
 /**
  * The PIN gate.
@@ -114,7 +114,7 @@ fun LockScreen(
         )
         prompt.authenticate(
             BiometricPrompt.PromptInfo.Builder()
-                .setTitle("Unlock Aurex")
+                .setTitle("Unlock MoneBie")
                 .setSubtitle("Use your fingerprint or face, or enter your PIN")
                 .setNegativeButtonText("Use PIN")
                 .setAllowedAuthenticators(BIOMETRIC_STRONG or BIOMETRIC_WEAK)
@@ -155,14 +155,14 @@ fun LockScreen(
                 .fillMaxSize()
                 .statusBarsPadding()
                 .navigationBarsPadding()
-                .padding(horizontal = AurexTheme.spacing.large),
+                .padding(horizontal = MoneBieTheme.spacing.large),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(Modifier.weight(1f))
 
-            AurexBrandMark(size = 56.dp)
+            MoneBieBrandMark(size = 56.dp)
 
-            Spacer(Modifier.height(AurexTheme.spacing.large))
+            Spacer(Modifier.height(MoneBieTheme.spacing.large))
 
             Text(
                 text = "Enter your PIN",
@@ -171,7 +171,7 @@ fun LockScreen(
                 color = MaterialTheme.colorScheme.onSurface
             )
 
-            Spacer(Modifier.height(AurexTheme.spacing.small))
+            Spacer(Modifier.height(MoneBieTheme.spacing.small))
 
             Text(
                 text = when {
@@ -187,7 +187,7 @@ fun LockScreen(
                 }
             )
 
-            Spacer(Modifier.height(AurexTheme.spacing.extraLarge))
+            Spacer(Modifier.height(MoneBieTheme.spacing.extraLarge))
 
             PinDots(
                 filled = entered.length,
@@ -210,7 +210,7 @@ fun LockScreen(
                 onBiometric = if (biometricsAvailable) promptBiometric else null
             )
 
-            Spacer(Modifier.height(AurexTheme.spacing.large))
+            Spacer(Modifier.height(MoneBieTheme.spacing.large))
         }
     }
 }
@@ -267,15 +267,15 @@ internal fun PinPad(
 
     Column(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small),
+        verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         rows.forEach { row ->
-            Row(horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.medium)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.medium)) {
                 row.forEach { digit -> PinKey(label = digit.toString(), onClick = { onDigit(digit) }) }
             }
         }
-        Row(horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.medium)) {
+        Row(horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.medium)) {
             if (onBiometric != null) {
                 PinKey(icon = Icons.Rounded.Fingerprint, onClick = onBiometric, contentDescription = "Use fingerprint")
             } else {

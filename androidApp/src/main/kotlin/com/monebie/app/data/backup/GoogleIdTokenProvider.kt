@@ -1,9 +1,9 @@
-package com.aurex.app.data.backup
+package com.monebie.app.data.backup
 
 import android.app.Activity
 import android.content.Context
 import androidx.credentials.CredentialManager
-import com.aurex.app.security.AppLock
+import com.monebie.app.security.AppLock
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.exceptions.GetCredentialCancellationException
@@ -44,7 +44,7 @@ object GoogleIdTokenProvider {
         val request = GetCredentialRequest.Builder()
             .addCredentialOption(
                 GetGoogleIdOption.Builder()
-                    // False so that a user with no Aurex account yet is still
+                    // False so that a user with no MoneBie account yet is still
                     // offered their accounts. Filtering to already-authorised
                     // ones would show an empty sheet to every new user, which
                     // reads as "Google sign-in is broken".
@@ -56,7 +56,7 @@ object GoogleIdTokenProvider {
 
         val response = try {
             // The account picker is another app's screen; the lock must not
-            // treat coming back from it as returning to Aurex.
+            // treat coming back from it as returning to MoneBie.
             AppLock.expectExternalActivity()
             CredentialManager.create(activity).getCredential(activity, request)
         } catch (cancelled: GetCredentialCancellationException) {

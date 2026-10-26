@@ -1,8 +1,8 @@
-package com.aurex.app.data.mapper
+package com.monebie.app.data.mapper
 
-import com.aurex.app.domain.model.TransactionCategory
-import com.aurex.app.domain.model.TransactionType
-import com.aurex.app.db.Category as DbCategory
+import com.monebie.app.domain.model.TransactionCategory
+import com.monebie.app.domain.model.TransactionType
+import com.monebie.app.db.Category as DbCategory
 
 fun DbCategory.toDomain(): TransactionCategory = TransactionCategory(
     id = id,

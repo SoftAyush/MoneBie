@@ -1,4 +1,4 @@
-package com.aurex.app.notifications
+package com.monebie.app.notifications
 
 import android.Manifest
 import android.app.PendingIntent
@@ -11,14 +11,14 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.aurex.app.AurexApplication
-import com.aurex.app.MainActivity
-import com.aurex.app.R
-import com.aurex.app.core.MoneyFormatter
-import com.aurex.app.core.formatDisplayDate
-import com.aurex.app.core.getCurrentDay
-import com.aurex.app.domain.model.UpcomingPayment
-import com.aurex.app.domain.model.UpcomingPaymentKind
+import com.monebie.app.MoneBieApplication
+import com.monebie.app.MainActivity
+import com.monebie.app.R
+import com.monebie.app.core.MoneyFormatter
+import com.monebie.app.core.formatDisplayDate
+import com.monebie.app.core.getCurrentDay
+import com.monebie.app.domain.model.UpcomingPayment
+import com.monebie.app.domain.model.UpcomingPaymentKind
 import kotlinx.coroutines.flow.first
 
 /**
@@ -38,7 +38,7 @@ class PaymentReminderWorker(
         val context = applicationContext
         if (!PaymentReminderSettings.isEnabled(context)) return Result.success()
 
-        val app = context as? AurexApplication ?: return Result.success()
+        val app = context as? MoneBieApplication ?: return Result.success()
         val today = getCurrentDay()
 
         val board = app.appContainer.getUpcomingPaymentsUseCase().first { !it.isLoading }

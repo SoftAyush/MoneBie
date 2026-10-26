@@ -1,4 +1,4 @@
--- Schema v9 -> v10: budgets and recurring transactions (Aurex 1.1.0).
+-- Schema v9 -> v10: budgets and recurring transactions (MoneBie 1.1.0).
 --
 -- Both tables are additive. Nothing about existing rows changes: a recurring
 -- occurrence is posted to TransactionRecord with a source_type of RECURRING,

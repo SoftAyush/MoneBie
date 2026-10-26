@@ -1,4 +1,4 @@
-package com.aurex.app.notifications
+package com.monebie.app.notifications
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -25,13 +25,13 @@ import java.util.concurrent.TimeUnit
  */
 object PaymentReminders {
 
-    const val CHANNEL_ID = "aurex_payment_reminders"
+    const val CHANNEL_ID = "monebie_payment_reminders"
 
     /** How many days before the due date a reminder is posted. */
     val OFFSETS = listOf(7L, 3L, 0L)
 
-    private const val DAILY_WORK = "aurex_payment_reminders_daily"
-    private const val IMMEDIATE_WORK = "aurex_payment_reminders_now"
+    private const val DAILY_WORK = "monebie_payment_reminders_daily"
+    private const val IMMEDIATE_WORK = "monebie_payment_reminders_now"
 
     /**
      * The hour the daily check runs.

@@ -1,10 +1,10 @@
-package com.aurex.app.domain.calculation
+package com.monebie.app.domain.calculation
 
-import com.aurex.app.core.addDays
-import com.aurex.app.core.addMonths
-import com.aurex.app.domain.model.PaymentFrequency
-import com.aurex.app.domain.model.periodDays
-import com.aurex.app.domain.model.periodMonths
+import com.monebie.app.core.addDays
+import com.monebie.app.core.addMonths
+import com.monebie.app.domain.model.PaymentFrequency
+import com.monebie.app.domain.model.periodDays
+import com.monebie.app.domain.model.periodMonths
 
 /**
  * Where a recurring schedule lands next.

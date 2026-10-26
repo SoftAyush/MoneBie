@@ -1,16 +1,16 @@
-package com.aurex.app.domain.usecase.csvimport
+package com.monebie.app.domain.usecase.csvimport
 
-import com.aurex.app.core.dayOf
-import com.aurex.app.core.timestampForDay
-import com.aurex.app.domain.model.Account
-import com.aurex.app.domain.model.Transaction
-import com.aurex.app.domain.model.TransactionCategories
-import com.aurex.app.domain.model.TransactionCategory
-import com.aurex.app.domain.model.TransactionDraft
-import com.aurex.app.domain.model.TransactionType
-import com.aurex.app.domain.repository.AccountRepository
-import com.aurex.app.domain.repository.CategoryRepository
-import com.aurex.app.domain.repository.TransactionRepository
+import com.monebie.app.core.dayOf
+import com.monebie.app.core.timestampForDay
+import com.monebie.app.domain.model.Account
+import com.monebie.app.domain.model.Transaction
+import com.monebie.app.domain.model.TransactionCategories
+import com.monebie.app.domain.model.TransactionCategory
+import com.monebie.app.domain.model.TransactionDraft
+import com.monebie.app.domain.model.TransactionType
+import com.monebie.app.domain.repository.AccountRepository
+import com.monebie.app.domain.repository.CategoryRepository
+import com.monebie.app.domain.repository.TransactionRepository
 import kotlinx.coroutines.flow.first
 
 /**

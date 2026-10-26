@@ -1,9 +1,9 @@
-package com.aurex.app.presentation.dashboard
+package com.monebie.app.presentation.dashboard
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aurex.app.domain.model.DashboardSnapshot
-import com.aurex.app.domain.usecase.dashboard.GetDashboardSnapshotUseCase
+import com.monebie.app.domain.model.DashboardSnapshot
+import com.monebie.app.domain.usecase.dashboard.GetDashboardSnapshotUseCase
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch

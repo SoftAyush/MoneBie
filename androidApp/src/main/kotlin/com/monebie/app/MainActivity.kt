@@ -1,4 +1,4 @@
-package com.aurex.app
+package com.monebie.app
 
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
@@ -10,11 +10,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.tooling.preview.Preview
-import com.aurex.app.security.AppLock
-import com.aurex.app.ui.App
-import com.aurex.app.ui.theme.AurexBackgroundDark
-import com.aurex.app.ui.theme.AurexBackgroundLight
-import com.aurex.app.ui.theme.ThemeStartupCache
+import com.monebie.app.security.AppLock
+import com.monebie.app.ui.App
+import com.monebie.app.ui.theme.MoneBieBackgroundDark
+import com.monebie.app.ui.theme.MoneBieBackgroundLight
+import com.monebie.app.ui.theme.ThemeStartupCache
 
 /*
  * A FragmentActivity rather than a ComponentActivity because BiometricPrompt
@@ -51,7 +51,7 @@ class MainActivity : FragmentActivity() {
 
         window.setBackgroundDrawable(
             ColorDrawable(
-                (if (startupDark) AurexBackgroundDark else AurexBackgroundLight).toArgb()
+                (if (startupDark) MoneBieBackgroundDark else MoneBieBackgroundLight).toArgb()
             )
         )
 
@@ -76,7 +76,7 @@ class MainActivity : FragmentActivity() {
         AppLock.onBackground(changingConfigurations = isChangingConfigurations)
     }
 
-    /** A reminder tapped while Aurex is already open arrives here, not in onCreate. */
+    /** A reminder tapped while MoneBie is already open arrives here, not in onCreate. */
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)

@@ -1,4 +1,4 @@
-package com.aurex.app.ui.screens.dashboard
+package com.monebie.app.ui.screens.dashboard
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,23 +26,23 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.aurex.app.AurexApplication
-import com.aurex.app.core.formatMonthYear
-import com.aurex.app.core.getCurrentHour
-import com.aurex.app.domain.model.DashboardSnapshot
-import com.aurex.app.domain.model.TransactionType
-import com.aurex.app.presentation.dashboard.DashboardUiState
-import com.aurex.app.presentation.dashboard.DashboardViewModel
-import com.aurex.app.ui.components.AmbientBackdrop
-import com.aurex.app.ui.components.CardDivider
-import com.aurex.app.ui.components.EmptyState
-import com.aurex.app.ui.components.PremiumCard
-import com.aurex.app.ui.components.PremiumSectionHeader
-import com.aurex.app.ui.components.ErrorState
-import com.aurex.app.ui.components.ShimmerBlock
-import com.aurex.app.ui.components.entrance
-import com.aurex.app.ui.components.rememberEntrance
-import com.aurex.app.ui.theme.AurexTheme
+import com.monebie.app.MoneBieApplication
+import com.monebie.app.core.formatMonthYear
+import com.monebie.app.core.getCurrentHour
+import com.monebie.app.domain.model.DashboardSnapshot
+import com.monebie.app.domain.model.TransactionType
+import com.monebie.app.presentation.dashboard.DashboardUiState
+import com.monebie.app.presentation.dashboard.DashboardViewModel
+import com.monebie.app.ui.components.AmbientBackdrop
+import com.monebie.app.ui.components.CardDivider
+import com.monebie.app.ui.components.EmptyState
+import com.monebie.app.ui.components.PremiumCard
+import com.monebie.app.ui.components.PremiumSectionHeader
+import com.monebie.app.ui.components.ErrorState
+import com.monebie.app.ui.components.ShimmerBlock
+import com.monebie.app.ui.components.entrance
+import com.monebie.app.ui.components.rememberEntrance
+import com.monebie.app.ui.theme.MoneBieTheme
 
 /**
  * The Finance Dashboard.
@@ -71,7 +71,7 @@ fun DashboardScreen(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
-    val app = context.applicationContext as AurexApplication
+    val app = context.applicationContext as MoneBieApplication
 
     val viewModel: DashboardViewModel = viewModel(
         factory = viewModelFactory {
@@ -98,13 +98,13 @@ fun DashboardScreen(
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(
-                start = AurexTheme.spacing.medium,
-                end = AurexTheme.spacing.medium,
-                top = AurexTheme.spacing.medium,
+                start = MoneBieTheme.spacing.medium,
+                end = MoneBieTheme.spacing.medium,
+                top = MoneBieTheme.spacing.medium,
                 // Clears the bottom bar and the floating action button.
                 bottom = 96.dp
             ),
-            verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.medium)
+            verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.medium)
         ) {
             when (val state = uiState) {
                 is DashboardUiState.Loading -> item { DashboardSkeleton() }
@@ -306,7 +306,7 @@ private fun LazyListScope.dashboardContent(
 
         item(key = "accounts_strip") {
             LazyRow(
-                horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small),
+                horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 items(snapshot.accounts, key = { it.id }) { account ->
@@ -320,7 +320,7 @@ private fun LazyListScope.dashboardContent(
 /** Skeleton mirroring the real layout, so content does not jump on first load. */
 @Composable
 private fun DashboardSkeleton() {
-    Column(verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.medium)) {
+    Column(verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.medium)) {
         ShimmerBlock(modifier = Modifier.fillMaxWidth(0.55f), height = 44.dp, cornerRadius = 22.dp)
         ShimmerBlock(modifier = Modifier.fillMaxWidth(), height = 224.dp, cornerRadius = 30.dp)
 
@@ -336,7 +336,7 @@ private fun DashboardSkeleton() {
 
         ShimmerBlock(modifier = Modifier.fillMaxWidth(), height = 108.dp, cornerRadius = 24.dp)
         ShimmerBlock(modifier = Modifier.fillMaxWidth(), height = 268.dp, cornerRadius = 24.dp)
-        Spacer(Modifier.height(AurexTheme.spacing.extraSmall))
+        Spacer(Modifier.height(MoneBieTheme.spacing.extraSmall))
         ShimmerBlock(modifier = Modifier.fillMaxWidth(0.4f), height = 20.dp)
         ShimmerBlock(modifier = Modifier.fillMaxWidth(), height = 84.dp, cornerRadius = 24.dp)
     }

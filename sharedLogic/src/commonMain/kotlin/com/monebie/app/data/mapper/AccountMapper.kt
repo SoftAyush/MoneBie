@@ -1,9 +1,9 @@
-package com.aurex.app.data.mapper
+package com.monebie.app.data.mapper
 
-import com.aurex.app.core.Money
-import com.aurex.app.domain.model.Account
-import com.aurex.app.domain.model.AccountType
-import com.aurex.app.db.Account as DbAccount
+import com.monebie.app.core.Money
+import com.monebie.app.domain.model.Account
+import com.monebie.app.domain.model.AccountType
+import com.monebie.app.db.Account as DbAccount
 
 fun DbAccount.toDomain(): Account = Account(
     id = id,

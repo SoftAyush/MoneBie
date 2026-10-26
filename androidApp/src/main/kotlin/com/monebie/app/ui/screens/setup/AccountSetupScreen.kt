@@ -1,4 +1,4 @@
-package com.aurex.app.ui.screens.setup
+package com.monebie.app.ui.screens.setup
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
@@ -62,34 +62,34 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.aurex.app.AurexApplication
-import com.aurex.app.core.Money
-import com.aurex.app.domain.model.AccountType
-import com.aurex.app.domain.model.displayName
-import com.aurex.app.presentation.account.AccountSetupViewModel
-import com.aurex.app.ui.components.AurexBrandBar
-import com.aurex.app.ui.components.AurexGlassCard
-import com.aurex.app.ui.components.AurexGradientButton
-import com.aurex.app.ui.components.AurexStepPill
-import com.aurex.app.ui.components.AurexTextField
-import com.aurex.app.ui.components.AuroraBackground
-import com.aurex.app.ui.components.FormField
-import com.aurex.app.ui.components.MicroLabel
-import com.aurex.app.ui.components.MoneyInputField
-import com.aurex.app.ui.components.MoneyText
-import com.aurex.app.ui.components.PremiumCard
-import com.aurex.app.ui.components.brandBrush
-import com.aurex.app.ui.components.entrance
-import com.aurex.app.ui.components.onBrandColor
-import com.aurex.app.ui.components.rememberEntrance
-import com.aurex.app.ui.theme.AurexTheme
+import com.monebie.app.MoneBieApplication
+import com.monebie.app.core.Money
+import com.monebie.app.domain.model.AccountType
+import com.monebie.app.domain.model.displayName
+import com.monebie.app.presentation.account.AccountSetupViewModel
+import com.monebie.app.ui.components.MoneBieBrandBar
+import com.monebie.app.ui.components.MoneBieGlassCard
+import com.monebie.app.ui.components.MoneBieGradientButton
+import com.monebie.app.ui.components.MoneBieStepPill
+import com.monebie.app.ui.components.MoneBieTextField
+import com.monebie.app.ui.components.AuroraBackground
+import com.monebie.app.ui.components.FormField
+import com.monebie.app.ui.components.MicroLabel
+import com.monebie.app.ui.components.MoneyInputField
+import com.monebie.app.ui.components.MoneyText
+import com.monebie.app.ui.components.PremiumCard
+import com.monebie.app.ui.components.brandBrush
+import com.monebie.app.ui.components.entrance
+import com.monebie.app.ui.components.onBrandColor
+import com.monebie.app.ui.components.rememberEntrance
+import com.monebie.app.ui.theme.MoneBieTheme
 
 @Composable
 fun AccountSetupScreen(
     onFinished: () -> Unit = {}
 ) {
     val context = LocalContext.current
-    val app = context.applicationContext as AurexApplication
+    val app = context.applicationContext as MoneBieApplication
 
     val viewModel: AccountSetupViewModel = viewModel(
         factory = viewModelFactory {
@@ -115,7 +115,7 @@ fun AccountSetupScreen(
     val formIn = rememberEntrance(delayMillis = 320)
     val ctaIn = rememberEntrance(delayMillis = 440)
 
-    AurexTheme {
+    MoneBieTheme {
         Box(modifier = Modifier.fillMaxSize()) {
             AuroraBackground(modifier = Modifier.fillMaxSize())
 
@@ -125,18 +125,18 @@ fun AccountSetupScreen(
                     .safeContentPadding()
                     .imePadding()
             ) {
-                AurexBrandBar(
-                    trailing = { AurexStepPill(current = 2, total = 2) }
+                MoneBieBrandBar(
+                    trailing = { MoneBieStepPill(current = 2, total = 2) }
                 )
 
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
                         .verticalScroll(rememberScrollState())
-                        .padding(horizontal = AurexTheme.spacing.large)
+                        .padding(horizontal = MoneBieTheme.spacing.large)
                         .navigationBarsPadding()
                 ) {
-                    Spacer(Modifier.height(AurexTheme.spacing.large))
+                    Spacer(Modifier.height(MoneBieTheme.spacing.large))
 
                     Column(modifier = Modifier.entrance(headerIn)) {
                         Text(
@@ -146,7 +146,7 @@ fun AccountSetupScreen(
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurface
                         )
-                        Spacer(Modifier.height(AurexTheme.spacing.medium))
+                        Spacer(Modifier.height(MoneBieTheme.spacing.medium))
                         Text(
                             text = "Where your money sits today. Every transaction " +
                                 "you record will move a balance like this one.",
@@ -155,7 +155,7 @@ fun AccountSetupScreen(
                         )
                     }
 
-                    Spacer(Modifier.height(AurexTheme.spacing.large))
+                    Spacer(Modifier.height(MoneBieTheme.spacing.large))
 
                     AccountPreview(
                         name = accountName,
@@ -165,14 +165,14 @@ fun AccountSetupScreen(
                         modifier = Modifier.entrance(previewIn)
                     )
 
-                    Spacer(Modifier.height(AurexTheme.spacing.large))
+                    Spacer(Modifier.height(MoneBieTheme.spacing.large))
 
-                    AurexGlassCard(modifier = Modifier.entrance(formIn)) {
+                    MoneBieGlassCard(modifier = Modifier.entrance(formIn)) {
                         Column(
-                            verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.large)
+                            verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.large)
                         ) {
                             FormField(label = "Account name", error = uiState.nameError) {
-                                AurexTextField(
+                                MoneBieTextField(
                                     value = accountName,
                                     onValueChange = { accountName = it },
                                     placeholder = "e.g. Main Bank Account",
@@ -184,7 +184,7 @@ fun AccountSetupScreen(
                                 Row(
                                     modifier = Modifier.fillMaxWidth(),
                                     horizontalArrangement = Arrangement.spacedBy(
-                                        AurexTheme.spacing.small + 4.dp
+                                        MoneBieTheme.spacing.small + 4.dp
                                     )
                                 ) {
                                     // Only the three asset types: an opening
@@ -227,9 +227,9 @@ fun AccountSetupScreen(
                         }
                     }
 
-                    Spacer(Modifier.height(AurexTheme.spacing.extraLarge))
+                    Spacer(Modifier.height(MoneBieTheme.spacing.extraLarge))
 
-                    AurexGradientButton(
+                    MoneBieGradientButton(
                         text = "Finish Setup",
                         icon = Icons.Rounded.RocketLaunch,
                         loading = uiState.isSaving,
@@ -244,7 +244,7 @@ fun AccountSetupScreen(
                         }
                     )
 
-                    Spacer(Modifier.height(AurexTheme.spacing.medium))
+                    Spacer(Modifier.height(MoneBieTheme.spacing.medium))
 
                     Row(
                         modifier = Modifier
@@ -259,7 +259,7 @@ fun AccountSetupScreen(
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.size(14.dp)
                         )
-                        Spacer(Modifier.width(AurexTheme.spacing.small))
+                        Spacer(Modifier.width(MoneBieTheme.spacing.small))
                         Text(
                             text = "Everything stays on this device.",
                             style = MaterialTheme.typography.bodySmall,
@@ -267,7 +267,7 @@ fun AccountSetupScreen(
                         )
                     }
 
-                    Spacer(Modifier.height(AurexTheme.spacing.large))
+                    Spacer(Modifier.height(MoneBieTheme.spacing.large))
                 }
             }
         }
@@ -305,7 +305,7 @@ private fun AccountPreview(
     // makes is "this is what you will see", and the surface is part of that.
     PremiumCard(
         modifier = modifier.fillMaxWidth(),
-        contentPadding = AurexTheme.spacing.medium
+        contentPadding = MoneBieTheme.spacing.medium
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Box(
@@ -323,7 +323,7 @@ private fun AccountPreview(
                 )
             }
 
-            Spacer(Modifier.width(AurexTheme.spacing.medium))
+            Spacer(Modifier.width(MoneBieTheme.spacing.medium))
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
@@ -413,7 +413,7 @@ private fun AccountTypeTile(
                 tint = contentColor,
                 modifier = Modifier.size(26.dp)
             )
-            Spacer(Modifier.height(AurexTheme.spacing.small))
+            Spacer(Modifier.height(MoneBieTheme.spacing.small))
             Text(
                 text = title,
                 style = MaterialTheme.typography.labelLarge,

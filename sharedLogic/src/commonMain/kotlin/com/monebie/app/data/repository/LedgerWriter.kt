@@ -1,11 +1,11 @@
-package com.aurex.app.data.repository
+package com.monebie.app.data.repository
 
-import com.aurex.app.data.database.DatabaseHelper
-import com.aurex.app.data.mapper.toDomain
-import com.aurex.app.domain.calculation.FinancialCalculator
-import com.aurex.app.domain.model.AccountDelta
-import com.aurex.app.domain.model.Transaction
-import com.aurex.app.domain.model.TransactionDraft
+import com.monebie.app.data.database.DatabaseHelper
+import com.monebie.app.data.mapper.toDomain
+import com.monebie.app.domain.calculation.FinancialCalculator
+import com.monebie.app.domain.model.AccountDelta
+import com.monebie.app.domain.model.Transaction
+import com.monebie.app.domain.model.TransactionDraft
 
 /**
  * The one place a transaction row and an account balance change together.

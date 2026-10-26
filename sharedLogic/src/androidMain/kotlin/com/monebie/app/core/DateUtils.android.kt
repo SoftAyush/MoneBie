@@ -1,4 +1,4 @@
-package com.aurex.app.core
+package com.monebie.app.core
 
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -41,12 +41,12 @@ actual fun daysBetween(startDay: String, endDay: String): Long {
     return TimeUnit.MILLISECONDS.toDays(end.time - start.time)
 }
 
-actual fun formatDisplayDate(day: String): String {
+actual fun formatGregorianDate(day: String): String {
     val date = parseDay(day) ?: return day
     return formatter("d MMM yyyy").format(date)
 }
 
-actual fun formatMonthYear(day: String): String {
+actual fun formatGregorianMonthYear(day: String): String {
     val date = parseDay(day) ?: return day
     return formatter("MMMM yyyy").format(date)
 }

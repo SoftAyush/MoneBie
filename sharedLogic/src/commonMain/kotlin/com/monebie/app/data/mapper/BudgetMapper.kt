@@ -1,9 +1,9 @@
-package com.aurex.app.data.mapper
+package com.monebie.app.data.mapper
 
-import com.aurex.app.core.Money
-import com.aurex.app.domain.model.Budget
-import com.aurex.app.domain.model.BudgetPeriod
-import com.aurex.app.db.Budget as DbBudget
+import com.monebie.app.core.Money
+import com.monebie.app.domain.model.Budget
+import com.monebie.app.domain.model.BudgetPeriod
+import com.monebie.app.db.Budget as DbBudget
 
 fun DbBudget.toDomain(): Budget = Budget(
     id = id,

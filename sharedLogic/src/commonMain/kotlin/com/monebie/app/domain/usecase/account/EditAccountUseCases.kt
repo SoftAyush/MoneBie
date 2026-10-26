@@ -1,10 +1,10 @@
-package com.aurex.app.domain.usecase.account
+package com.monebie.app.domain.usecase.account
 
-import com.aurex.app.core.Money
-import com.aurex.app.domain.model.Account
-import com.aurex.app.domain.model.AccountType
-import com.aurex.app.domain.model.openingBalanceFor
-import com.aurex.app.domain.repository.AccountRepository
+import com.monebie.app.core.Money
+import com.monebie.app.domain.model.Account
+import com.monebie.app.domain.model.AccountType
+import com.monebie.app.domain.model.openingBalanceFor
+import com.monebie.app.domain.repository.AccountRepository
 import kotlinx.coroutines.flow.first
 
 /**
@@ -57,7 +57,7 @@ class SaveAccountUseCase(
          *
          * Balances are stored on one signed scale, where negative means the
          * account is a claim against the user - that is what
-         * [com.aurex.app.domain.model.Account.outstanding] reads, and what the
+         * [com.monebie.app.domain.model.Account.outstanding] reads, and what the
          * net position is built from. The entry field can only produce digits,
          * so a card opened at 12,000 arrived as +12,000 and was reported as
          * twelve thousand rupees *available* on the very screen that had just

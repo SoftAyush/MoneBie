@@ -1,4 +1,4 @@
-package com.aurex.app.ui.components
+package com.monebie.app.ui.components
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -55,7 +55,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
-import com.aurex.app.ui.theme.AurexTheme
+import com.monebie.app.ui.theme.MoneBieTheme
 
 /*
  * The shared visual language for the pre-login flow - onboarding, profile
@@ -171,9 +171,9 @@ fun AuroraBackground(modifier: Modifier = Modifier) {
     }
 }
 
-/** The gradient tile carrying the Aurex initial. */
+/** The gradient tile carrying the MoneBie initial. */
 @Composable
-fun AurexBrandMark(modifier: Modifier = Modifier, size: Dp = 34.dp) {
+fun MoneBieBrandMark(modifier: Modifier = Modifier, size: Dp = 34.dp) {
     Box(
         modifier = modifier
             .size(size)
@@ -195,7 +195,7 @@ fun AurexBrandMark(modifier: Modifier = Modifier, size: Dp = 34.dp) {
  * whatever that screen wants on the right - Skip, a step count, nothing.
  */
 @Composable
-fun AurexBrandBar(
+fun MoneBieBrandBar(
     modifier: Modifier = Modifier,
     trailing: @Composable (() -> Unit)? = null
 ) {
@@ -203,15 +203,15 @@ fun AurexBrandBar(
         modifier = modifier
             .fillMaxWidth()
             .padding(
-                horizontal = AurexTheme.spacing.large,
-                vertical = AurexTheme.spacing.medium
+                horizontal = MoneBieTheme.spacing.large,
+                vertical = MoneBieTheme.spacing.medium
             ),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        AurexBrandMark()
-        Spacer(Modifier.width(AurexTheme.spacing.small + 2.dp))
+        MoneBieBrandMark()
+        Spacer(Modifier.width(MoneBieTheme.spacing.small + 2.dp))
         Text(
-            text = "AUREX",
+            text = "MONEBIE",
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
             letterSpacing = 3.sp,
@@ -224,7 +224,7 @@ fun AurexBrandBar(
 
 /** "Step 2 of 2", as a quiet pill. */
 @Composable
-fun AurexStepPill(current: Int, total: Int, modifier: Modifier = Modifier) {
+fun MoneBieStepPill(current: Int, total: Int, modifier: Modifier = Modifier) {
     Text(
         text = "Step $current of $total",
         style = MaterialTheme.typography.labelMedium,
@@ -240,14 +240,14 @@ fun AurexStepPill(current: Int, total: Int, modifier: Modifier = Modifier) {
 
 /** The morphing dots: the active one stretches into a pill. */
 @Composable
-fun AurexStepDots(
+fun MoneBieStepDots(
     total: Int,
     current: Int,
     modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small),
+        horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small),
         verticalAlignment = Alignment.CenterVertically
     ) {
         repeat(total) { index ->
@@ -283,7 +283,7 @@ fun AurexStepDots(
 
 /** The floating panel the pre-login screens put their content on. */
 @Composable
-fun AurexGlassCard(
+fun MoneBieGlassCard(
     modifier: Modifier = Modifier,
     contentPadding: Dp = 24.dp,
     content: @Composable () -> Unit
@@ -313,7 +313,7 @@ fun AurexGlassCard(
  * thumb. [loading] locks it so a double tap cannot submit twice.
  */
 @Composable
-fun AurexGradientButton(
+fun MoneBieGradientButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -365,7 +365,7 @@ fun AurexGradientButton(
                 color = content
             )
             icon?.let {
-                Spacer(Modifier.width(AurexTheme.spacing.small))
+                Spacer(Modifier.width(MoneBieTheme.spacing.small))
                 Icon(imageVector = it, contentDescription = null, tint = content)
             }
         }

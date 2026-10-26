@@ -1,10 +1,10 @@
-package com.aurex.app.domain.repository
+package com.monebie.app.domain.repository
 
-import com.aurex.app.core.Money
-import com.aurex.app.domain.model.Debt
-import com.aurex.app.domain.model.DebtDraft
-import com.aurex.app.domain.model.DebtPayment
-import com.aurex.app.domain.model.PaymentMethod
+import com.monebie.app.core.Money
+import com.monebie.app.domain.model.Debt
+import com.monebie.app.domain.model.DebtDraft
+import com.monebie.app.domain.model.DebtPayment
+import com.monebie.app.domain.model.PaymentMethod
 import kotlinx.coroutines.flow.Flow
 
 /**

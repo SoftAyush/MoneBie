@@ -1,4 +1,4 @@
-package com.aurex.app.core
+package com.monebie.app.core
 
 fun sayHello(to: String): String =
     "Hello, $to!"

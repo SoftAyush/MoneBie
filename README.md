@@ -1,10 +1,10 @@
-# Aurex
+# MoneBie
 
-Aurex is an Android-first personal finance app designed to help people understand where their money is going, what they owe, and what is due next. The project is built with Kotlin Multiplatform and Compose, with shared business logic and a platform-specific Android client.
+MoneBie is an Android-first personal finance app designed to help people understand where their money is going, what they owe, and what is due next. The project is built with Kotlin Multiplatform and Compose, with shared business logic and a platform-specific Android client.
 
 ## Overview
 
-Aurex focuses on the practical parts of money management:
+MoneBie focuses on the practical parts of money management:
 
 - tracking balances across accounts
 - recording income and expenses
@@ -20,7 +20,7 @@ Aurex focuses on the practical parts of money management:
 
 ## Current status
 
-The Android app is the primary, fully supported client in this repository. The iOS project is present as a starter host, but it is not yet the main Aurex experience.
+The Android app is the primary, fully supported client in this repository. The iOS project is present as a starter host, but it is not yet the main MoneBie experience.
 
 ## Tech stack
 
@@ -90,7 +90,7 @@ The app separates concerns by platform:
 - `sharedLogic` contains business rules, model definitions, data access, and platform-independent state management.
 - `androidApp` contains Android-specific integrations such as Firebase authentication and Firestore, notifications, Google sign-in, and CSV export flows.
 - `sharedUI` provides the shared Compose foundation for UI composition and reusable components.
-- `iosApp` is currently a host for future iOS integration rather than the main Aurex experience.
+- `iosApp` is currently a host for future iOS integration rather than the main MoneBie experience.
 
 ## Contributing
 

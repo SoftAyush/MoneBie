@@ -1,4 +1,4 @@
-package com.aurex.app.ui.screens.recurring
+package com.monebie.app.ui.screens.recurring
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -53,44 +53,44 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.aurex.app.AurexApplication
-import com.aurex.app.core.MoneyFormatter
-import com.aurex.app.core.formatDisplayDate
-import com.aurex.app.core.relativeDueLabel
-import com.aurex.app.domain.model.TransactionType
-import com.aurex.app.domain.model.displayName
-import com.aurex.app.domain.model.perLabel
-import com.aurex.app.presentation.recurring.RecurringEvent
-import com.aurex.app.presentation.recurring.RecurringListItem
-import com.aurex.app.presentation.recurring.RecurringListUiState
-import com.aurex.app.presentation.recurring.RecurringListViewModel
-import com.aurex.app.ui.components.AmbientBackdrop
-import com.aurex.app.ui.components.AurexIcons
-import com.aurex.app.ui.components.AurexSnackbarHost
-import com.aurex.app.ui.components.CardDivider
-import com.aurex.app.ui.components.ConfirmDialog
-import com.aurex.app.ui.components.CountUpMoneyText
-import com.aurex.app.ui.components.DetailTopBar
-import com.aurex.app.ui.components.EmptyState
-import com.aurex.app.ui.components.GlassIconButton
-import com.aurex.app.ui.components.GlowBadge
-import com.aurex.app.ui.components.HeroCardShape
-import com.aurex.app.ui.components.HeroDecoration
-import com.aurex.app.ui.components.HeroFinance
-import com.aurex.app.ui.components.HeroTile
-import com.aurex.app.ui.components.MicroLabel
-import com.aurex.app.ui.components.MoneyText
-import com.aurex.app.ui.components.OnHero
-import com.aurex.app.ui.components.PremiumCard
-import com.aurex.app.ui.components.PremiumSectionHeader
-import com.aurex.app.ui.components.ShimmerBlock
-import com.aurex.app.ui.components.StatusPill
-import com.aurex.app.ui.components.heroBrush
-import com.aurex.app.ui.components.pressable
-import com.aurex.app.ui.components.showAurexMessage
-import com.aurex.app.ui.theme.AurexTheme
-import com.aurex.app.ui.theme.Palette700
-import com.aurex.app.ui.theme.Palette900
+import com.monebie.app.MoneBieApplication
+import com.monebie.app.core.MoneyFormatter
+import com.monebie.app.core.formatDisplayDate
+import com.monebie.app.core.relativeDueLabel
+import com.monebie.app.domain.model.TransactionType
+import com.monebie.app.domain.model.displayName
+import com.monebie.app.domain.model.perLabel
+import com.monebie.app.presentation.recurring.RecurringEvent
+import com.monebie.app.presentation.recurring.RecurringListItem
+import com.monebie.app.presentation.recurring.RecurringListUiState
+import com.monebie.app.presentation.recurring.RecurringListViewModel
+import com.monebie.app.ui.components.AmbientBackdrop
+import com.monebie.app.ui.components.MoneBieIcons
+import com.monebie.app.ui.components.MoneBieSnackbarHost
+import com.monebie.app.ui.components.CardDivider
+import com.monebie.app.ui.components.ConfirmDialog
+import com.monebie.app.ui.components.CountUpMoneyText
+import com.monebie.app.ui.components.DetailTopBar
+import com.monebie.app.ui.components.EmptyState
+import com.monebie.app.ui.components.GlassIconButton
+import com.monebie.app.ui.components.GlowBadge
+import com.monebie.app.ui.components.HeroCardShape
+import com.monebie.app.ui.components.HeroDecoration
+import com.monebie.app.ui.components.HeroFinance
+import com.monebie.app.ui.components.HeroTile
+import com.monebie.app.ui.components.MicroLabel
+import com.monebie.app.ui.components.MoneyText
+import com.monebie.app.ui.components.OnHero
+import com.monebie.app.ui.components.PremiumCard
+import com.monebie.app.ui.components.PremiumSectionHeader
+import com.monebie.app.ui.components.ShimmerBlock
+import com.monebie.app.ui.components.StatusPill
+import com.monebie.app.ui.components.heroBrush
+import com.monebie.app.ui.components.pressable
+import com.monebie.app.ui.components.showMoneBieMessage
+import com.monebie.app.ui.theme.MoneBieTheme
+import com.monebie.app.ui.theme.Palette700
+import com.monebie.app.ui.theme.Palette900
 
 /**
  * Recurring transactions.
@@ -109,7 +109,7 @@ fun RecurringScreen(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
-    val app = context.applicationContext as AurexApplication
+    val app = context.applicationContext as MoneBieApplication
 
     val viewModel: RecurringListViewModel = viewModel(
         factory = viewModelFactory {
@@ -145,19 +145,19 @@ fun RecurringScreen(
 
     LaunchedEffect(event) {
         when (val current = event) {
-            is RecurringEvent.Posted -> snackbarHostState.showAurexMessage(
+            is RecurringEvent.Posted -> snackbarHostState.showMoneBieMessage(
                 if (current.count == 1) {
                     "Recorded " + current.names.first() + "."
                 } else {
                     "Recorded ${current.count} entries: " + current.names.distinct().joinToString(", ") + "."
                 }
             )
-            is RecurringEvent.PostedOne -> snackbarHostState.showAurexMessage("Recorded ${current.name} for today.")
-            is RecurringEvent.Skipped -> snackbarHostState.showAurexMessage("Skipped this ${current.name}.")
-            is RecurringEvent.Paused -> snackbarHostState.showAurexMessage(
+            is RecurringEvent.PostedOne -> snackbarHostState.showMoneBieMessage("Recorded ${current.name} for today.")
+            is RecurringEvent.Skipped -> snackbarHostState.showMoneBieMessage("Skipped this ${current.name}.")
+            is RecurringEvent.Paused -> snackbarHostState.showMoneBieMessage(
                 if (current.paused) "${current.name} is paused." else "${current.name} is running again."
             )
-            is RecurringEvent.Deleted -> snackbarHostState.showAurexMessage(
+            is RecurringEvent.Deleted -> snackbarHostState.showMoneBieMessage(
                 "Removed ${current.name}. Entries already recorded stay in your history."
             )
             null -> Unit
@@ -189,16 +189,16 @@ fun RecurringScreen(
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(
-                    start = AurexTheme.spacing.medium,
-                    end = AurexTheme.spacing.medium,
-                    top = AurexTheme.spacing.small,
-                    bottom = AurexTheme.spacing.extraExtraLarge
+                    start = MoneBieTheme.spacing.medium,
+                    end = MoneBieTheme.spacing.medium,
+                    top = MoneBieTheme.spacing.small,
+                    bottom = MoneBieTheme.spacing.extraExtraLarge
                 ),
-                verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small)
+                verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small)
             ) {
                 if (uiState.isLoading) {
                     item(key = "skeleton") {
-                        Column(verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small)) {
+                        Column(verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small)) {
                             ShimmerBlock(Modifier.fillMaxWidth().height(170.dp))
                             ShimmerBlock(Modifier.fillMaxWidth().height(72.dp))
                             ShimmerBlock(Modifier.fillMaxWidth().height(72.dp))
@@ -213,7 +213,7 @@ fun RecurringScreen(
                             EmptyState(
                                 icon = Icons.Rounded.EventRepeat,
                                 title = "Nothing on repeat yet",
-                                message = "Rent, salary, subscriptions - set them up once and Aurex " +
+                                message = "Rent, salary, subscriptions - set them up once and MoneBie " +
                                     "records each one on its day.",
                                 actionLabel = "Add one",
                                 onAction = { onAdd(TransactionType.EXPENSE) }
@@ -248,7 +248,7 @@ fun RecurringScreen(
             }
         }
 
-        AurexSnackbarHost(
+        MoneBieSnackbarHost(
             hostState = snackbarHostState,
             modifier = Modifier.align(Alignment.BottomCenter)
         )
@@ -361,8 +361,8 @@ private fun RecurringRow(
     val schedule = item.schedule
     val accent = when {
         schedule.isPaused || schedule.hasEnded -> MaterialTheme.colorScheme.onSurfaceVariant
-        schedule.type == TransactionType.INCOME -> AurexTheme.finance.positive
-        schedule.type == TransactionType.EXPENSE -> AurexTheme.finance.negative
+        schedule.type == TransactionType.INCOME -> MoneBieTheme.finance.positive
+        schedule.type == TransactionType.EXPENSE -> MoneBieTheme.finance.negative
         else -> MaterialTheme.colorScheme.primary
     }
 
@@ -370,10 +370,10 @@ private fun RecurringRow(
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.medium)
+            horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.medium)
         ) {
             GlowBadge(
-                icon = AurexIcons.forCategory(item.category.iconKey),
+                icon = MoneBieIcons.forCategory(item.category.iconKey),
                 tint = accent,
                 size = 40.dp
             )
@@ -420,8 +420,8 @@ private fun RecurringRow(
                         val soon = item.daysUntilNext <= 3
                         StatusPill(
                             text = relativeDueLabel(item.daysUntilNext).replace("Due today", "Today"),
-                            contentColor = if (soon) AurexTheme.finance.caution else MaterialTheme.colorScheme.primary,
-                            containerColor = (if (soon) AurexTheme.finance.caution else MaterialTheme.colorScheme.primary)
+                            contentColor = if (soon) MoneBieTheme.finance.caution else MaterialTheme.colorScheme.primary,
+                            containerColor = (if (soon) MoneBieTheme.finance.caution else MaterialTheme.colorScheme.primary)
                                 .copy(alpha = 0.12f)
                         )
                     }
@@ -446,7 +446,7 @@ private fun RecurringActionSheet(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = AurexTheme.spacing.large)
+            .padding(horizontal = MoneBieTheme.spacing.large)
             .navigationBarsPadding()
     ) {
         Text(
@@ -462,9 +462,9 @@ private fun RecurringActionSheet(
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
 
-        Spacer(Modifier.height(AurexTheme.spacing.medium))
+        Spacer(Modifier.height(MoneBieTheme.spacing.medium))
 
-        PremiumCard(modifier = Modifier.fillMaxWidth(), contentPadding = AurexTheme.spacing.small) {
+        PremiumCard(modifier = Modifier.fillMaxWidth(), contentPadding = MoneBieTheme.spacing.small) {
             ActionRow(Icons.Rounded.Edit, "Edit", "Change the amount, cycle or account", onEdit)
             if (schedule.isActive) {
                 CardDivider(alpha = 0.07f)
@@ -501,7 +501,7 @@ private fun RecurringActionSheet(
             )
         }
 
-        Spacer(Modifier.height(AurexTheme.spacing.medium))
+        Spacer(Modifier.height(MoneBieTheme.spacing.medium))
     }
 }
 
@@ -518,9 +518,9 @@ private fun ActionRow(
             .fillMaxWidth()
             .clip(MaterialTheme.shapes.medium)
             .pressable(onClick)
-            .padding(horizontal = AurexTheme.spacing.small, vertical = AurexTheme.spacing.small),
+            .padding(horizontal = MoneBieTheme.spacing.small, vertical = MoneBieTheme.spacing.small),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.medium)
+        horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.medium)
     ) {
         GlowBadge(icon = icon, tint = tint, size = 38.dp)
         Column(modifier = Modifier.weight(1f)) {

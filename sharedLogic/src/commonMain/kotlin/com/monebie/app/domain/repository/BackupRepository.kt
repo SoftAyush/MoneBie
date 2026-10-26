@@ -1,6 +1,6 @@
-package com.aurex.app.domain.repository
+package com.monebie.app.domain.repository
 
-import com.aurex.app.domain.model.backup.BackupSnapshot
+import com.monebie.app.domain.model.backup.BackupSnapshot
 
 /** Reads the local database out as a snapshot, and puts one back. */
 interface BackupRepository {

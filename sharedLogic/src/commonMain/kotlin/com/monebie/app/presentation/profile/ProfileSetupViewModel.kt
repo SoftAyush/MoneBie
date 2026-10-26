@@ -1,11 +1,11 @@
-package com.aurex.app.presentation.profile
+package com.monebie.app.presentation.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aurex.app.core.getCurrentDateString
-import com.aurex.app.domain.model.Currency
-import com.aurex.app.domain.usecase.currency.GetCurrenciesUseCase
-import com.aurex.app.domain.usecase.user.SaveUserUseCase
+import com.monebie.app.core.getCurrentDateString
+import com.monebie.app.domain.model.Currency
+import com.monebie.app.domain.usecase.currency.GetCurrenciesUseCase
+import com.monebie.app.domain.usecase.user.SaveUserUseCase
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn

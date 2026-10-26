@@ -1,9 +1,9 @@
-package com.aurex.app.domain.usecase.category
+package com.monebie.app.domain.usecase.category
 
-import com.aurex.app.domain.model.TransactionCategory
-import com.aurex.app.domain.model.TransactionType
-import com.aurex.app.domain.repository.CategoryRemoval
-import com.aurex.app.domain.repository.CategoryRepository
+import com.monebie.app.domain.model.TransactionCategory
+import com.monebie.app.domain.model.TransactionType
+import com.monebie.app.domain.repository.CategoryRemoval
+import com.monebie.app.domain.repository.CategoryRepository
 import kotlinx.coroutines.flow.Flow
 
 /** Everything, archived included - the management screen shows what it hid. */

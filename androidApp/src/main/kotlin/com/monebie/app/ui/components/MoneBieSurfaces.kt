@@ -1,4 +1,4 @@
-package com.aurex.app.ui.components
+package com.monebie.app.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -29,7 +29,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.aurex.app.ui.theme.AurexTheme
+import com.monebie.app.ui.theme.MoneBieTheme
 
 /**
  * The single card surface used across the app.
@@ -38,15 +38,15 @@ import com.aurex.app.ui.theme.AurexTheme
  * shadows turn into visual noise at that density.
  */
 @Composable
-fun AurexCard(
+fun MoneBieCard(
     modifier: Modifier = Modifier,
     containerColor: Color = MaterialTheme.colorScheme.surface,
     borderColor: Color = MaterialTheme.colorScheme.outline.copy(alpha = 0.18f),
-    contentPadding: Dp = AurexTheme.spacing.medium,
+    contentPadding: Dp = MoneBieTheme.spacing.medium,
     onClick: (() -> Unit)? = null,
     content: @Composable ColumnScope.() -> Unit
 ) {
-    val shape = RoundedCornerShape(AurexTheme.spacing.large)
+    val shape = RoundedCornerShape(MoneBieTheme.spacing.large)
     Column(
         modifier = modifier
             .clip(shape)
@@ -81,9 +81,9 @@ fun SectionHeader(
         if (actionLabel != null && onActionClick != null) {
             Row(
                 modifier = Modifier
-                    .clip(RoundedCornerShape(AurexTheme.spacing.small))
+                    .clip(RoundedCornerShape(MoneBieTheme.spacing.small))
                     .clickable(onClick = onActionClick)
-                    .padding(horizontal = AurexTheme.spacing.small, vertical = 4.dp),
+                    .padding(horizontal = MoneBieTheme.spacing.small, vertical = 4.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
@@ -142,7 +142,7 @@ fun StatusPill(
         modifier = modifier
             .clip(CircleShape)
             .background(containerColor)
-            .padding(horizontal = AurexTheme.spacing.small, vertical = 3.dp)
+            .padding(horizontal = MoneBieTheme.spacing.small, vertical = 3.dp)
     )
 }
 

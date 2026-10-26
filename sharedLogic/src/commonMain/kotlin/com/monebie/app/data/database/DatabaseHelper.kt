@@ -1,10 +1,10 @@
-package com.aurex.app.data.database
+package com.monebie.app.data.database
 
 import app.cash.sqldelight.db.SqlDriver
-import com.aurex.app.db.AurexDatabase
+import com.monebie.app.db.MoneBieDatabase
 
 class DatabaseHelper(driver: SqlDriver) {
-    val database = AurexDatabase(driver)
+    val database = MoneBieDatabase(driver)
     val userQueries = database.userQueries
     val currencyQueries = database.currencyQueries
     val accountQueries = database.accountQueries

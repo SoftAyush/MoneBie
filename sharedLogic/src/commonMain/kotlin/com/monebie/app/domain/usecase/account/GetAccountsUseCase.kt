@@ -1,7 +1,7 @@
-package com.aurex.app.domain.usecase.account
+package com.monebie.app.domain.usecase.account
 
-import com.aurex.app.domain.model.Account
-import com.aurex.app.domain.repository.AccountRepository
+import com.monebie.app.domain.model.Account
+import com.monebie.app.domain.repository.AccountRepository
 import kotlinx.coroutines.flow.Flow
 
 class GetAccountsUseCase(private val accountRepository: AccountRepository) {

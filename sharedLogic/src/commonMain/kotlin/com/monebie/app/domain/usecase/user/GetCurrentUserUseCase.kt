@@ -1,7 +1,7 @@
-package com.aurex.app.domain.usecase.user
+package com.monebie.app.domain.usecase.user
 
-import com.aurex.app.domain.model.User
-import com.aurex.app.domain.repository.UserRepository
+import com.monebie.app.domain.model.User
+import com.monebie.app.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

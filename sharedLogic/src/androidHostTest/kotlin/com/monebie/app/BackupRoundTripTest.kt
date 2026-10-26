@@ -1,10 +1,10 @@
-package com.aurex.app
+package com.monebie.app
 
 import app.cash.sqldelight.db.SqlDriver
 import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
-import com.aurex.app.data.database.DatabaseHelper
-import com.aurex.app.data.repository.BackupRepositoryImpl
-import com.aurex.app.db.AurexDatabase
+import com.monebie.app.data.database.DatabaseHelper
+import com.monebie.app.data.repository.BackupRepositoryImpl
+import com.monebie.app.db.MoneBieDatabase
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -30,7 +30,7 @@ import kotlin.test.assertTrue
 class BackupRoundTripTest {
 
     private fun freshDatabase(): SqlDriver =
-        JdbcSqliteDriver(JdbcSqliteDriver.IN_MEMORY).also { AurexDatabase.Schema.create(it).value }
+        JdbcSqliteDriver(JdbcSqliteDriver.IN_MEMORY).also { MoneBieDatabase.Schema.create(it).value }
 
     /** A small but complete ledger, using ids no counter would produce by chance. */
     private fun DatabaseHelper.seedLedger() {

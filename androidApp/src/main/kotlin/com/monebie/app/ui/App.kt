@@ -1,4 +1,4 @@
-package com.aurex.app.ui
+package com.monebie.app.ui
 
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -21,18 +21,18 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.aurex.app.AurexApplication
-import com.aurex.app.domain.model.ThemeMode
-import com.aurex.app.presentation.main.MainViewModel
-import com.aurex.app.security.AppLock
-import com.aurex.app.ui.components.AurexLoadingScreen
-import com.aurex.app.ui.navigation.Main
-import com.aurex.app.ui.navigation.MainShell
-import com.aurex.app.ui.screens.setup.AccountSetupScreen
-import com.aurex.app.ui.screens.lock.LockScreen
-import com.aurex.app.ui.screens.onboarding.OnboardingScreen
-import com.aurex.app.ui.screens.setup.ProfileSetupScreen
-import com.aurex.app.ui.theme.AurexTheme
+import com.monebie.app.MoneBieApplication
+import com.monebie.app.domain.model.ThemeMode
+import com.monebie.app.presentation.main.MainViewModel
+import com.monebie.app.security.AppLock
+import com.monebie.app.ui.components.MoneBieLoadingScreen
+import com.monebie.app.ui.navigation.Main
+import com.monebie.app.ui.navigation.MainShell
+import com.monebie.app.ui.screens.setup.AccountSetupScreen
+import com.monebie.app.ui.screens.lock.LockScreen
+import com.monebie.app.ui.screens.onboarding.OnboardingScreen
+import com.monebie.app.ui.screens.setup.ProfileSetupScreen
+import com.monebie.app.ui.theme.MoneBieTheme
 import kotlinx.serialization.Serializable
 
 @Serializable object Onboarding
@@ -49,7 +49,7 @@ fun App(
     onRemindersOpened: () -> Unit = {}
 ) {
     val context = LocalContext.current
-    val app = context.applicationContext as AurexApplication
+    val app = context.applicationContext as MoneBieApplication
 
     val viewModel: MainViewModel = viewModel(
         factory = viewModelFactory {
@@ -68,7 +68,7 @@ fun App(
     val isAccountSetup by viewModel.isAccountSetup.collectAsStateWithLifecycle()
     val themeMode by viewModel.themeMode.collectAsStateWithLifecycle()
 
-    // Resolved once, here, and inherited by every nested AurexTheme call: the
+    // Resolved once, here, and inherited by every nested MoneBieTheme call: the
     // user's choice has to outrank the phone wherever the theme is applied.
     val darkTheme = when (themeMode) {
         ThemeMode.LIGHT -> false
@@ -76,7 +76,7 @@ fun App(
         ThemeMode.SYSTEM -> isSystemInDarkTheme()
     }
 
-    AurexTheme(darkTheme = darkTheme) {
+    MoneBieTheme(darkTheme = darkTheme) {
         val isLocked by AppLock.isLocked
 
         Box(modifier = Modifier.fillMaxSize()) {
@@ -139,7 +139,7 @@ private fun AppContent(
     val destination = startDestination
     if (destination == null) {
         // Still reading the database; a branded placeholder beats a blank frame.
-        AurexLoadingScreen(modifier = Modifier.fillMaxSize())
+        MoneBieLoadingScreen(modifier = Modifier.fillMaxSize())
         return
     }
 

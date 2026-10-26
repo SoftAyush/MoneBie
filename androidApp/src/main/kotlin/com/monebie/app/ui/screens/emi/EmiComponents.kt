@@ -1,4 +1,4 @@
-package com.aurex.app.ui.screens.emi
+package com.monebie.app.ui.screens.emi
 
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
@@ -29,25 +29,25 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.aurex.app.core.MoneyFormatter
-import com.aurex.app.core.formatDisplayDate
-import com.aurex.app.core.relativeDueLabel
-import com.aurex.app.domain.model.EmiStatus
-import com.aurex.app.domain.model.displayName
-import com.aurex.app.presentation.emi.EmiListItem
-import com.aurex.app.ui.components.GlowBadge
-import com.aurex.app.ui.components.GradientTrack
-import com.aurex.app.ui.components.MicroLabel
-import com.aurex.app.ui.components.MoneyText
-import com.aurex.app.ui.components.PremiumCard
-import com.aurex.app.ui.components.StatusPill
-import com.aurex.app.ui.theme.AurexTheme
+import com.monebie.app.core.MoneyFormatter
+import com.monebie.app.core.formatDisplayDate
+import com.monebie.app.core.relativeDueLabel
+import com.monebie.app.domain.model.EmiStatus
+import com.monebie.app.domain.model.displayName
+import com.monebie.app.presentation.emi.EmiListItem
+import com.monebie.app.ui.components.GlowBadge
+import com.monebie.app.ui.components.GradientTrack
+import com.monebie.app.ui.components.MicroLabel
+import com.monebie.app.ui.components.MoneyText
+import com.monebie.app.ui.components.PremiumCard
+import com.monebie.app.ui.components.StatusPill
+import com.monebie.app.ui.theme.MoneBieTheme
 
 @Composable
 fun emiStatusColors(status: EmiStatus): Pair<Color, Color> = when (status) {
-    EmiStatus.OVERDUE -> AurexTheme.finance.negative to AurexTheme.finance.negativeContainer
-    EmiStatus.COMPLETED -> AurexTheme.finance.positive to AurexTheme.finance.positiveContainer
-    EmiStatus.UPCOMING -> AurexTheme.finance.caution to AurexTheme.finance.cautionContainer
+    EmiStatus.OVERDUE -> MoneBieTheme.finance.negative to MoneBieTheme.finance.negativeContainer
+    EmiStatus.COMPLETED -> MoneBieTheme.finance.positive to MoneBieTheme.finance.positiveContainer
+    EmiStatus.UPCOMING -> MoneBieTheme.finance.caution to MoneBieTheme.finance.cautionContainer
     EmiStatus.ACTIVE -> MaterialTheme.colorScheme.primary to
         MaterialTheme.colorScheme.primary.copy(alpha = 0.10f)
 }
@@ -86,7 +86,7 @@ fun EmiCard(
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.medium)
+            horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.medium)
         ) {
             GlowBadge(icon = Icons.Rounded.EventRepeat, tint = accent)
 
@@ -120,7 +120,7 @@ fun EmiCard(
             }
         }
 
-        Spacer(Modifier.height(AurexTheme.spacing.medium))
+        Spacer(Modifier.height(MoneBieTheme.spacing.medium))
 
         InstallmentStrip(
             paid = emi.installmentsPaid,
@@ -128,7 +128,7 @@ fun EmiCard(
             accent = accent
         )
 
-        Spacer(Modifier.height(AurexTheme.spacing.small))
+        Spacer(Modifier.height(MoneBieTheme.spacing.small))
 
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -152,11 +152,11 @@ fun EmiCard(
             )
         }
 
-        Spacer(Modifier.height(AurexTheme.spacing.small))
+        Spacer(Modifier.height(MoneBieTheme.spacing.small))
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small)
+            horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small)
         ) {
             EmiStatusPill(item.status)
 
@@ -165,8 +165,8 @@ fun EmiCard(
                 // The due pill carries its own urgency rather than a flat grey:
                 // "In 3d" and "Overdue by 12d" are not the same news.
                 val dueColor = when {
-                    days < 0L -> AurexTheme.finance.negative
-                    days <= 7L -> AurexTheme.finance.caution
+                    days < 0L -> MoneBieTheme.finance.negative
+                    days <= 7L -> MoneBieTheme.finance.caution
                     else -> MaterialTheme.colorScheme.onSurfaceVariant
                 }
                 StatusPill(
@@ -300,13 +300,13 @@ fun InstallmentHistoryRow(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = AurexTheme.spacing.small),
+            .padding(vertical = MoneBieTheme.spacing.small),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.medium)
+        horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.medium)
     ) {
         GlowBadge(
             icon = Icons.Rounded.EventRepeat,
-            tint = AurexTheme.finance.positive,
+            tint = MoneBieTheme.finance.positive,
             size = 38.dp
         )
 
@@ -331,8 +331,8 @@ fun InstallmentHistoryRow(
                 Spacer(Modifier.height(4.dp))
                 StatusPill(
                     text = "Was due " + formatDisplayDate(dueDay),
-                    contentColor = AurexTheme.finance.caution,
-                    containerColor = AurexTheme.finance.cautionContainer
+                    contentColor = MoneBieTheme.finance.caution,
+                    containerColor = MoneBieTheme.finance.cautionContainer
                 )
             }
         }
@@ -341,7 +341,7 @@ fun InstallmentHistoryRow(
             text = amount,
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.Bold,
-            color = AurexTheme.finance.positive
+            color = MoneBieTheme.finance.positive
         )
     }
 }

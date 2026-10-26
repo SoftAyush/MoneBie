@@ -1,6 +1,6 @@
-package com.aurex.app.presentation.onboarding
+package com.monebie.app.presentation.onboarding
 
-import com.aurex.app.domain.model.OnboardingPage
+import com.monebie.app.domain.model.OnboardingPage
 
 data class OnboardingUiState(
     val currentPageIndex: Int = 0,

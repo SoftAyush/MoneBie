@@ -1,16 +1,16 @@
-package com.aurex.app.presentation.borrowlend
+package com.monebie.app.presentation.borrowlend
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aurex.app.core.Money
-import com.aurex.app.core.daysBetween
-import com.aurex.app.core.getCurrentDay
-import com.aurex.app.domain.calculation.FinancialCalculator
-import com.aurex.app.domain.model.BorrowLendRecord
-import com.aurex.app.domain.model.LoanDirection
-import com.aurex.app.domain.model.LoanStatus
-import com.aurex.app.domain.usecase.borrowlend.GetLoanRecordsUseCase
-import com.aurex.app.domain.usecase.user.GetSelectedCurrencySymbolUseCase
+import com.monebie.app.core.Money
+import com.monebie.app.core.daysBetween
+import com.monebie.app.core.getCurrentDay
+import com.monebie.app.domain.calculation.FinancialCalculator
+import com.monebie.app.domain.model.BorrowLendRecord
+import com.monebie.app.domain.model.LoanDirection
+import com.monebie.app.domain.model.LoanStatus
+import com.monebie.app.domain.usecase.borrowlend.GetLoanRecordsUseCase
+import com.monebie.app.domain.usecase.user.GetSelectedCurrencySymbolUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow

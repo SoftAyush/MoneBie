@@ -1,7 +1,7 @@
-package com.aurex.app.domain.usecase.user
+package com.monebie.app.domain.usecase.user
 
-import com.aurex.app.domain.model.ThemeMode
-import com.aurex.app.domain.repository.UserRepository
+import com.monebie.app.domain.model.ThemeMode
+import com.monebie.app.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
 
 /** The appearance setting, so the whole app can be themed from one source. */

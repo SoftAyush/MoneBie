@@ -1,11 +1,11 @@
-package com.aurex.app
+package com.monebie.app
 
-import com.aurex.app.core.Money
-import com.aurex.app.core.total
-import com.aurex.app.domain.calculation.FinancialCalculator
-import com.aurex.app.domain.model.AccountDelta
-import com.aurex.app.domain.model.Transaction
-import com.aurex.app.domain.model.TransactionType
+import com.monebie.app.core.Money
+import com.monebie.app.core.total
+import com.monebie.app.domain.calculation.FinancialCalculator
+import com.monebie.app.domain.model.AccountDelta
+import com.monebie.app.domain.model.Transaction
+import com.monebie.app.domain.model.TransactionType
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue

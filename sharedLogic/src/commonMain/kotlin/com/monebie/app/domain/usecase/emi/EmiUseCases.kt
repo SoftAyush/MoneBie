@@ -1,11 +1,11 @@
-package com.aurex.app.domain.usecase.emi
+package com.monebie.app.domain.usecase.emi
 
-import com.aurex.app.core.Money
-import com.aurex.app.domain.model.Emi
-import com.aurex.app.domain.model.EmiDraft
-import com.aurex.app.domain.model.EmiPayment
-import com.aurex.app.domain.model.PaymentMethod
-import com.aurex.app.domain.repository.EmiRepository
+import com.monebie.app.core.Money
+import com.monebie.app.domain.model.Emi
+import com.monebie.app.domain.model.EmiDraft
+import com.monebie.app.domain.model.EmiPayment
+import com.monebie.app.domain.model.PaymentMethod
+import com.monebie.app.domain.repository.EmiRepository
 import kotlinx.coroutines.flow.Flow
 
 class GetEmisUseCase(private val repository: EmiRepository) {

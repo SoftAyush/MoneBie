@@ -10,7 +10,7 @@ plugins {
 kotlin {
     
     androidLibrary {
-       namespace = "com.aurex.app.sharedUI"
+       namespace = "com.monebie.app.sharedUI"
        compileSdk = libs.versions.android.compileSdk.get().toInt()
        minSdk = libs.versions.android.minSdk.get().toInt()
     

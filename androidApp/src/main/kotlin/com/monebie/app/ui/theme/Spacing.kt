@@ -1,4 +1,4 @@
-package com.aurex.app.ui.theme
+package com.monebie.app.ui.theme
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf

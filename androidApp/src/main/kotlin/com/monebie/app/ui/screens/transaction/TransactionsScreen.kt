@@ -1,4 +1,4 @@
-package com.aurex.app.ui.screens.transaction
+package com.monebie.app.ui.screens.transaction
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -57,40 +57,40 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.aurex.app.AurexApplication
-import com.aurex.app.core.Money
-import com.aurex.app.core.MoneyFormatter
-import com.aurex.app.core.formatDisplayDate
-import com.aurex.app.core.formatWeekday
-import com.aurex.app.core.getCurrentDay
-import com.aurex.app.domain.model.TransactionType
-import com.aurex.app.presentation.transaction.TransactionsUiState
-import com.aurex.app.presentation.transaction.TransactionsViewModel
-import com.aurex.app.ui.components.AmbientBackdrop
-import com.aurex.app.ui.components.CardDivider
-import com.aurex.app.ui.components.CountUpMoneyText
-import com.aurex.app.ui.components.EmptyState
-import com.aurex.app.ui.components.FilterPill
-import com.aurex.app.ui.components.GlassIconButton
-import com.aurex.app.ui.components.HeroCardShape
-import com.aurex.app.ui.components.HeroDecoration
-import com.aurex.app.ui.components.HeroFinance
-import com.aurex.app.ui.components.HeroTile
-import com.aurex.app.ui.components.HeroTrack
-import com.aurex.app.ui.components.MicroLabel
-import com.aurex.app.ui.components.MoneyText
-import com.aurex.app.ui.components.OnHero
-import com.aurex.app.ui.components.PremiumCard
-import com.aurex.app.ui.components.ShimmerBlock
-import com.aurex.app.ui.components.heroBrush
-import com.aurex.app.ui.components.pressable
-import com.aurex.app.ui.components.signedMoneyColor
-import com.aurex.app.ui.screens.dashboard.TransactionRow
-import com.aurex.app.ui.theme.AurexTheme
-import com.aurex.app.ui.theme.Palette300
-import com.aurex.app.ui.theme.Palette500
-import com.aurex.app.ui.theme.Palette700
-import com.aurex.app.ui.theme.Palette900
+import com.monebie.app.MoneBieApplication
+import com.monebie.app.core.Money
+import com.monebie.app.core.MoneyFormatter
+import com.monebie.app.core.formatDisplayDate
+import com.monebie.app.core.formatWeekday
+import com.monebie.app.core.getCurrentDay
+import com.monebie.app.domain.model.TransactionType
+import com.monebie.app.presentation.transaction.TransactionsUiState
+import com.monebie.app.presentation.transaction.TransactionsViewModel
+import com.monebie.app.ui.components.AmbientBackdrop
+import com.monebie.app.ui.components.CardDivider
+import com.monebie.app.ui.components.CountUpMoneyText
+import com.monebie.app.ui.components.EmptyState
+import com.monebie.app.ui.components.FilterPill
+import com.monebie.app.ui.components.GlassIconButton
+import com.monebie.app.ui.components.HeroCardShape
+import com.monebie.app.ui.components.HeroDecoration
+import com.monebie.app.ui.components.HeroFinance
+import com.monebie.app.ui.components.HeroTile
+import com.monebie.app.ui.components.HeroTrack
+import com.monebie.app.ui.components.MicroLabel
+import com.monebie.app.ui.components.MoneyText
+import com.monebie.app.ui.components.OnHero
+import com.monebie.app.ui.components.PremiumCard
+import com.monebie.app.ui.components.ShimmerBlock
+import com.monebie.app.ui.components.heroBrush
+import com.monebie.app.ui.components.pressable
+import com.monebie.app.ui.components.signedMoneyColor
+import com.monebie.app.ui.screens.dashboard.TransactionRow
+import com.monebie.app.ui.theme.MoneBieTheme
+import com.monebie.app.ui.theme.Palette300
+import com.monebie.app.ui.theme.Palette500
+import com.monebie.app.ui.theme.Palette700
+import com.monebie.app.ui.theme.Palette900
 
 /**
  * The full transaction history, one month at a time.
@@ -111,7 +111,7 @@ fun TransactionsScreen(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
-    val app = context.applicationContext as AurexApplication
+    val app = context.applicationContext as MoneBieApplication
 
     val viewModel: TransactionsViewModel = viewModel(
         factory = viewModelFactory {
@@ -151,12 +151,12 @@ fun TransactionsScreen(
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(
-                    start = AurexTheme.spacing.medium,
-                    end = AurexTheme.spacing.medium,
-                    top = AurexTheme.spacing.small,
+                    start = MoneBieTheme.spacing.medium,
+                    end = MoneBieTheme.spacing.medium,
+                    top = MoneBieTheme.spacing.small,
                     bottom = 96.dp
                 ),
-                verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small)
+                verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small)
             ) {
                 if (uiState.isLoading) {
                     item(key = "skeleton") { TransactionsSkeleton() }
@@ -201,7 +201,7 @@ fun TransactionsScreen(
                     item(key = "group_" + group.day) {
                         PremiumCard(
                             modifier = Modifier.fillMaxWidth(),
-                            contentPadding = AurexTheme.spacing.medium
+                            contentPadding = MoneBieTheme.spacing.medium
                         ) {
                             group.transactions.forEachIndexed { index, transaction ->
                                 if (index > 0) CardDivider(alpha = 0.07f)
@@ -262,8 +262,8 @@ private fun MonthBar(
         modifier = modifier
             .fillMaxWidth()
             .padding(
-                horizontal = AurexTheme.spacing.medium,
-                vertical = AurexTheme.spacing.small
+                horizontal = MoneBieTheme.spacing.medium,
+                vertical = MoneBieTheme.spacing.small
             ),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -325,10 +325,10 @@ private fun FilterBar(
             .fillMaxWidth()
             .horizontalScroll(rememberScrollState())
             .padding(
-                horizontal = AurexTheme.spacing.medium,
-                vertical = AurexTheme.spacing.small
+                horizontal = MoneBieTheme.spacing.medium,
+                vertical = MoneBieTheme.spacing.small
             ),
-        horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small)
+        horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small)
     ) {
         FilterPill(
             label = "All",
@@ -363,7 +363,7 @@ private fun FilterBar(
                 selected = false,
                 onClick = onClearFilters,
                 icon = Icons.Rounded.Close,
-                tint = AurexTheme.finance.negative
+                tint = MoneBieTheme.finance.negative
             )
         }
     }
@@ -544,7 +544,7 @@ private fun DayHeader(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(top = AurexTheme.spacing.small, bottom = 2.dp),
+            .padding(top = MoneBieTheme.spacing.small, bottom = 2.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         // The same brand tick the section headers elsewhere use, so a day break
@@ -613,13 +613,13 @@ private fun DayHeader(
 private fun TransactionsSkeleton(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small)
+        verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small)
     ) {
         ShimmerBlock(modifier = Modifier.fillMaxWidth(), height = 236.dp, cornerRadius = 30.dp)
-        Spacer(Modifier.height(AurexTheme.spacing.extraSmall))
+        Spacer(Modifier.height(MoneBieTheme.spacing.extraSmall))
         ShimmerBlock(modifier = Modifier.fillMaxWidth(0.45f), height = 18.dp)
         ShimmerBlock(modifier = Modifier.fillMaxWidth(), height = 148.dp, cornerRadius = 24.dp)
-        Spacer(Modifier.height(AurexTheme.spacing.extraSmall))
+        Spacer(Modifier.height(MoneBieTheme.spacing.extraSmall))
         ShimmerBlock(modifier = Modifier.fillMaxWidth(0.35f), height = 18.dp)
         ShimmerBlock(modifier = Modifier.fillMaxWidth(), height = 96.dp, cornerRadius = 24.dp)
     }
@@ -641,7 +641,7 @@ private fun FilterSheet(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = AurexTheme.spacing.medium)
+            .padding(horizontal = MoneBieTheme.spacing.medium)
             .navigationBarsPadding()
     ) {
         Row(
@@ -681,7 +681,7 @@ private fun FilterSheet(
             }
         }
 
-        Spacer(Modifier.height(AurexTheme.spacing.large))
+        Spacer(Modifier.height(MoneBieTheme.spacing.large))
 
         FilterGroup(title = "Account") {
             FilterPill(
@@ -698,7 +698,7 @@ private fun FilterSheet(
             }
         }
 
-        Spacer(Modifier.height(AurexTheme.spacing.large))
+        Spacer(Modifier.height(MoneBieTheme.spacing.large))
 
         FilterGroup(title = "Category") {
             FilterPill(
@@ -720,7 +720,7 @@ private fun FilterSheet(
             }
         }
 
-        Spacer(Modifier.height(AurexTheme.spacing.extraExtraLarge))
+        Spacer(Modifier.height(MoneBieTheme.spacing.extraExtraLarge))
     }
 }
 
@@ -728,11 +728,11 @@ private fun FilterSheet(
 @Composable
 private fun FilterGroup(title: String, content: @Composable () -> Unit) {
     MicroLabel(text = title)
-    Spacer(Modifier.height(AurexTheme.spacing.small))
+    Spacer(Modifier.height(MoneBieTheme.spacing.small))
     FlowRow(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small),
-        verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small)
+        horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small),
+        verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small)
     ) {
         content()
     }

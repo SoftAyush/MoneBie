@@ -4,7 +4,7 @@
     <!--
       The activity theme.
 
-      Aurex paints its own light and dark palettes in Compose and remembers
+      MoneBie paints its own light and dark palettes in Compose and remembers
       which one the user chose, so the platform must not paint over it.
 
       The app used to run on Theme.Material.Light.NoActionBar, and Android's
@@ -22,7 +22,7 @@
       Nothing of the parent theme is visible either way: Compose draws every
       pixel above the window background.
     -->
-    <style name="Theme.Aurex" parent="@android:style/Theme.Material.NoActionBar">
+    <style name="Theme.MoneBie" parent="@android:style/Theme.Material.NoActionBar">
         <item name="android:windowBackground">@color/window_background</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>

@@ -1,4 +1,4 @@
-package com.aurex.app.core
+package com.monebie.app.core
 
 import android.os.Build
 

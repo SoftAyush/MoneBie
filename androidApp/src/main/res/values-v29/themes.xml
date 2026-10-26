@@ -9,7 +9,7 @@
       Splitting it keeps the base theme valid at minSdk and still says "no" on
       every version that could actually darken the window.
     -->
-    <style name="Theme.Aurex" parent="@android:style/Theme.Material.NoActionBar">
+    <style name="Theme.MoneBie" parent="@android:style/Theme.Material.NoActionBar">
         <item name="android:forceDarkAllowed">false</item>
         <item name="android:windowBackground">@color/window_background</item>
         <item name="android:statusBarColor">@android:color/transparent</item>

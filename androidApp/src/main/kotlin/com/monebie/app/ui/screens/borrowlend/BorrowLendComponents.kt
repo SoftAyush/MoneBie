@@ -1,4 +1,4 @@
-package com.aurex.app.ui.screens.borrowlend
+package com.monebie.app.ui.screens.borrowlend
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,21 +21,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.aurex.app.core.MoneyFormatter
-import com.aurex.app.core.formatDisplayDate
-import com.aurex.app.core.relativeDueLabel
-import com.aurex.app.domain.model.LoanDirection
-import com.aurex.app.domain.model.LoanStatus
-import com.aurex.app.domain.model.displayName
-import com.aurex.app.presentation.borrowlend.LoanListItem
-import com.aurex.app.ui.components.GlassIconButton
-import com.aurex.app.ui.components.GlowBadge
-import com.aurex.app.ui.components.GradientTrack
-import com.aurex.app.ui.components.MicroLabel
-import com.aurex.app.ui.components.MoneyText
-import com.aurex.app.ui.components.PremiumCard
-import com.aurex.app.ui.components.StatusPill
-import com.aurex.app.ui.theme.AurexTheme
+import com.monebie.app.core.MoneyFormatter
+import com.monebie.app.core.formatDisplayDate
+import com.monebie.app.core.relativeDueLabel
+import com.monebie.app.domain.model.LoanDirection
+import com.monebie.app.domain.model.LoanStatus
+import com.monebie.app.domain.model.displayName
+import com.monebie.app.presentation.borrowlend.LoanListItem
+import com.monebie.app.ui.components.GlassIconButton
+import com.monebie.app.ui.components.GlowBadge
+import com.monebie.app.ui.components.GradientTrack
+import com.monebie.app.ui.components.MicroLabel
+import com.monebie.app.ui.components.MoneyText
+import com.monebie.app.ui.components.PremiumCard
+import com.monebie.app.ui.components.StatusPill
+import com.monebie.app.ui.theme.MoneBieTheme
 
 /**
  * Colour is the primary signal for direction throughout this module.
@@ -46,17 +46,17 @@ import com.aurex.app.ui.theme.AurexTheme
  */
 @Composable
 fun directionColors(direction: LoanDirection): Pair<Color, Color> = when (direction) {
-    LoanDirection.BORROWED -> AurexTheme.finance.negative to AurexTheme.finance.negativeContainer
-    LoanDirection.LENT -> AurexTheme.finance.receivable to AurexTheme.finance.receivableContainer
+    LoanDirection.BORROWED -> MoneBieTheme.finance.negative to MoneBieTheme.finance.negativeContainer
+    LoanDirection.LENT -> MoneBieTheme.finance.receivable to MoneBieTheme.finance.receivableContainer
 }
 
 @Composable
 fun loanStatusColors(status: LoanStatus, direction: LoanDirection): Pair<Color, Color> =
     when (status) {
-        LoanStatus.OVERDUE -> AurexTheme.finance.negative to AurexTheme.finance.negativeContainer
-        LoanStatus.SETTLED -> AurexTheme.finance.positive to AurexTheme.finance.positiveContainer
+        LoanStatus.OVERDUE -> MoneBieTheme.finance.negative to MoneBieTheme.finance.negativeContainer
+        LoanStatus.SETTLED -> MoneBieTheme.finance.positive to MoneBieTheme.finance.positiveContainer
         LoanStatus.PARTIALLY_SETTLED ->
-            AurexTheme.finance.caution to AurexTheme.finance.cautionContainer
+            MoneBieTheme.finance.caution to MoneBieTheme.finance.cautionContainer
         LoanStatus.ACTIVE -> directionColors(direction)
     }
 
@@ -92,7 +92,7 @@ fun LoanCard(
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.medium)
+            horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.medium)
         ) {
             GlowBadge(
                 icon = if (borrowed) {
@@ -135,13 +135,13 @@ fun LoanCard(
         // Only shown once something has been settled; a full progress bar at
         // zero adds noise to what is usually a single-payment arrangement.
         if (record.amountSettled.isPositive) {
-            Spacer(Modifier.height(AurexTheme.spacing.medium))
+            Spacer(Modifier.height(MoneBieTheme.spacing.medium))
             GradientTrack(
                 progress = record.progress,
                 colors = listOf(accent.copy(alpha = 0.55f), accent),
                 height = 6.dp
             )
-            Spacer(Modifier.height(AurexTheme.spacing.small))
+            Spacer(Modifier.height(MoneBieTheme.spacing.small))
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
@@ -169,11 +169,11 @@ fun LoanCard(
             }
         }
 
-        Spacer(Modifier.height(AurexTheme.spacing.small))
+        Spacer(Modifier.height(MoneBieTheme.spacing.small))
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small)
+            horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small)
         ) {
             LoanStatusPill(item.status, record.direction)
 
@@ -182,8 +182,8 @@ fun LoanCard(
                 // The due pill carries its own urgency: a date that has passed
                 // between two people is a different thing from one still ahead.
                 val dueColor = when {
-                    days < 0L -> AurexTheme.finance.negative
-                    days <= 7L -> AurexTheme.finance.caution
+                    days < 0L -> MoneBieTheme.finance.negative
+                    days <= 7L -> MoneBieTheme.finance.caution
                     else -> MaterialTheme.colorScheme.onSurfaceVariant
                 }
                 StatusPill(
@@ -227,9 +227,9 @@ fun RepaymentHistoryRow(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = AurexTheme.spacing.small),
+            .padding(vertical = MoneBieTheme.spacing.small),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.medium)
+        horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.medium)
     ) {
         GlowBadge(
             icon = if (borrowed) {
@@ -277,7 +277,7 @@ fun RepaymentHistoryRow(
             color = accent
         )
 
-        Spacer(Modifier.size(AurexTheme.spacing.small))
+        Spacer(Modifier.size(MoneBieTheme.spacing.small))
 
         // Small and quiet: removing a repayment rewrites the balance above it,
         // so it should be reachable without ever being the loudest thing here.

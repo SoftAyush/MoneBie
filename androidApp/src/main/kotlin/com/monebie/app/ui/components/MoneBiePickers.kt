@@ -1,7 +1,9 @@
-package com.aurex.app.ui.components
+package com.monebie.app.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,12 +25,17 @@ import androidx.compose.material.icons.rounded.CalendarMonth
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.KeyboardArrowDown
+import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowLeft
+import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
+import androidx.compose.material.icons.rounded.KeyboardDoubleArrowLeft
+import androidx.compose.material.icons.rounded.KeyboardDoubleArrowRight
 import androidx.compose.material.icons.rounded.Sell
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerColors
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -45,29 +52,39 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.aurex.app.core.dayToEpochMillis
-import com.aurex.app.core.epochMillisToDay
-import com.aurex.app.core.formatDisplayDate
-import com.aurex.app.core.formatWeekday
-import com.aurex.app.core.getCurrentDay
-import com.aurex.app.domain.model.Account
-import com.aurex.app.domain.model.displayName
-import com.aurex.app.domain.model.TransactionCategory
-import com.aurex.app.domain.model.iconKey
-import com.aurex.app.ui.theme.AurexTheme
+import com.monebie.app.core.BsDate
+import com.monebie.app.core.CalendarSystem
+import com.monebie.app.core.NepaliCalendar
+import com.monebie.app.core.dayToEpochMillis
+import com.monebie.app.core.epochMillisToDay
+import com.monebie.app.core.formatDisplayDate
+import com.monebie.app.core.formatGregorianDate
+import com.monebie.app.core.formatNepaliDate
+import com.monebie.app.core.formatWeekday
+import com.monebie.app.core.getCurrentDay
+import com.monebie.app.domain.model.Account
+import com.monebie.app.domain.model.displayName
+import com.monebie.app.domain.model.TransactionCategory
+import com.monebie.app.domain.model.iconKey
+import com.monebie.app.ui.theme.MoneBieTheme
 
 /**
- * Tappable date row backed by the Material date picker.
+ * Tappable date row backed by the Material date picker, or a Bikram Sambat
+ * month grid when the user reads dates in BS (chosen in Settings).
  *
  * Shared by every form that takes a date, so "Today" is labelled the same way
- * and an optional date is cleared the same way everywhere.
+ * and an optional date is cleared the same way everywhere. The dialog opens in
+ * the app's calendar and can peek at the other one without changing the
+ * setting. The value handed back is always an AD day.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AurexDateField(
+fun MoneBieDateField(
     day: String?,
     onDayChange: (String?) -> Unit,
     modifier: Modifier = Modifier,
@@ -77,8 +94,9 @@ fun AurexDateField(
 ) {
     var showPicker by remember { mutableStateOf(false) }
 
+    val calendar = currentCalendar()
     val scheme = MaterialTheme.colorScheme
-    val shape = RoundedCornerShape(AurexTheme.spacing.medium)
+    val shape = RoundedCornerShape(MoneBieTheme.spacing.medium)
     val isToday = day != null && day == getCurrentDay()
     val isSet = day != null
 
@@ -116,16 +134,23 @@ fun AurexDateField(
             if (day != null) {
                 Spacer(Modifier.height(1.dp))
                 // The weekday earns its line: a date on a form is usually being
-                // checked against a real day, not just read back.
+                // checked against a real day, not just read back. The other
+                // calendar rides along because bills and slips use either.
+                val other = if (calendar == CalendarSystem.BS) {
+                    formatGregorianDate(day)
+                } else {
+                    formatNepaliDate(day)
+                }
+                val weekday = if (isToday) "Today" else formatWeekday(day)
                 MicroLabel(
-                    text = if (isToday) "Today" else formatWeekday(day),
+                    text = if (other != null) "$weekday · $other" else weekday,
                     color = if (isToday) scheme.primary else scheme.onSurfaceVariant
                 )
             }
         }
 
         if (clearable && day != null) {
-            Spacer(Modifier.width(AurexTheme.spacing.small))
+            Spacer(Modifier.width(MoneBieTheme.spacing.small))
             GlassIconButton(
                 icon = Icons.Rounded.Close,
                 contentDescription = "Clear date",
@@ -137,14 +162,32 @@ fun AurexDateField(
     }
 
     if (showPicker) {
+        val initialDay = day ?: getCurrentDay()
+        var mode by remember { mutableStateOf(calendar) }
+        // The BS grid's selection. The AD picker keeps its own, and the two are
+        // synced whenever the user switches calendars.
+        var bsSelected by remember { mutableStateOf(initialDay) }
         val pickerState = rememberDatePickerState(
-            initialSelectedDateMillis = dayToEpochMillis(day ?: getCurrentDay())
+            initialSelectedDateMillis = dayToEpochMillis(initialDay)
         )
+
+        val switchTo: (CalendarSystem) -> Unit = { target ->
+            if (target != mode) {
+                if (target == CalendarSystem.BS) {
+                    pickerState.selectedDateMillis?.let { bsSelected = epochMillisToDay(it) }
+                } else {
+                    val millis = dayToEpochMillis(bsSelected)
+                    pickerState.selectedDateMillis = millis
+                    pickerState.displayedMonthMillis = millis
+                }
+                mode = target
+            }
+        }
 
         DatePickerDialog(
             onDismissRequest = { showPicker = false },
             shape = RoundedCornerShape(28.dp),
-            colors = aurexDatePickerColors(),
+            colors = monebieDatePickerColors(),
             confirmButton = {
                 // The primary action wears the brand fill: on a calendar full of
                 // tappable numbers, two identical text buttons in the corner are
@@ -155,13 +198,16 @@ fun AurexDateField(
                     fontWeight = FontWeight.Bold,
                     color = onBrandColor(),
                     modifier = Modifier
-                        .padding(end = AurexTheme.spacing.small, bottom = 4.dp)
+                        .padding(end = MoneBieTheme.spacing.small, bottom = 4.dp)
                         .clip(CircleShape)
                         .background(brandBrush())
                         .pressable {
-                            pickerState.selectedDateMillis?.let {
-                                onDayChange(epochMillisToDay(it))
+                            val picked = if (mode == CalendarSystem.AD) {
+                                pickerState.selectedDateMillis?.let(::epochMillisToDay)
+                            } else {
+                                bsSelected
                             }
+                            picked?.let(onDayChange)
                             showPicker = false
                         }
                         .padding(horizontal = 20.dp, vertical = 10.dp)
@@ -181,22 +227,221 @@ fun AurexDateField(
                 )
             }
         ) {
-            DatePicker(
-                state = pickerState,
-                colors = aurexDatePickerColors(),
-                title = {
-                    Column(
-                        modifier = Modifier.padding(
-                            start = 24.dp,
-                            end = 24.dp,
-                            top = 20.dp
-                        )
-                    ) {
-                        MicroLabel(text = "Pick a date", color = MaterialTheme.colorScheme.primary)
+            val header: @Composable () -> Unit = {
+                CalendarToggle(
+                    selected = mode,
+                    onSelect = switchTo,
+                    modifier = Modifier.padding(start = 24.dp, end = 24.dp, top = 20.dp)
+                )
+            }
+            if (mode == CalendarSystem.AD) {
+                DatePicker(
+                    state = pickerState,
+                    colors = monebieDatePickerColors(),
+                    title = header
+                )
+            } else {
+                NepaliDatePicker(
+                    selectedDay = bsSelected,
+                    onSelect = { bsSelected = it },
+                    header = header
+                )
+            }
+        }
+    }
+}
+
+/** The AD / BS switch at the top of the date dialog. */
+@Composable
+private fun CalendarToggle(
+    selected: CalendarSystem,
+    onSelect: (CalendarSystem) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small)
+    ) {
+        SelectableChip(
+            label = "English (AD)",
+            selected = selected == CalendarSystem.AD,
+            onClick = { onSelect(CalendarSystem.AD) },
+            modifier = Modifier.weight(1f)
+        )
+        SelectableChip(
+            label = "नेपाली (BS)",
+            selected = selected == CalendarSystem.BS,
+            onClick = { onSelect(CalendarSystem.BS) },
+            modifier = Modifier.weight(1f)
+        )
+    }
+}
+
+private val bsWeekdays = listOf("आइत", "सोम", "मंगल", "बुध", "बिही", "शुक्र", "शनि")
+
+/**
+ * A month of the Bikram Sambat calendar, laid out like the Material picker it
+ * stands in for so switching calendars does not feel like opening another app.
+ *
+ * Always six rows tall, so the dialog does not jump in height between months.
+ */
+@Composable
+private fun NepaliDatePicker(
+    selectedDay: String,
+    onSelect: (String) -> Unit,
+    header: @Composable () -> Unit
+) {
+    val scheme = MaterialTheme.colorScheme
+    val today = getCurrentDay()
+    val selectedBs = NepaliCalendar.fromAd(selectedDay)
+    val todayBs = NepaliCalendar.fromAd(today)
+    val start = selectedBs ?: todayBs ?: BsDate(NepaliCalendar.MAX_YEAR, 12, 1)
+
+    var year by remember { mutableStateOf(start.year) }
+    var month by remember { mutableStateOf(start.month) }
+
+    fun shiftMonths(delta: Int) {
+        val index = (year * 12 + month - 1 + delta)
+            .coerceIn(NepaliCalendar.MIN_YEAR * 12, NepaliCalendar.MAX_YEAR * 12 + 11)
+        year = index / 12
+        month = index % 12 + 1
+    }
+
+    Column(modifier = Modifier.fillMaxWidth()) {
+        header()
+
+        Column(modifier = Modifier.padding(start = 24.dp, end = 24.dp, top = 16.dp, bottom = 8.dp)) {
+            Text(
+                text = formatNepaliDate(selectedDay) ?: formatGregorianDate(selectedDay),
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.SemiBold,
+                color = scheme.onSurface
+            )
+            Spacer(Modifier.height(2.dp))
+            MicroLabel(text = "${formatWeekday(selectedDay)} · ${formatGregorianDate(selectedDay)}")
+        }
+
+        HorizontalDivider(color = scheme.outline.copy(alpha = 0.2f))
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp, vertical = 4.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            val atStart = year == NepaliCalendar.MIN_YEAR && month == 1
+            val atEnd = year == NepaliCalendar.MAX_YEAR && month == 12
+            IconButton(onClick = { shiftMonths(-12) }, enabled = !atStart) {
+                Icon(Icons.Rounded.KeyboardDoubleArrowLeft, contentDescription = "Previous year")
+            }
+            IconButton(onClick = { shiftMonths(-1) }, enabled = !atStart) {
+                Icon(Icons.AutoMirrored.Rounded.KeyboardArrowLeft, contentDescription = "Previous month")
+            }
+            Column(
+                modifier = Modifier.weight(1f),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "${NepaliCalendar.monthNames[month - 1]} $year",
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.SemiBold,
+                    color = scheme.onSurface
+                )
+                Text(
+                    text = NepaliCalendar.monthNamesNepali[month - 1],
+                    style = MaterialTheme.typography.labelSmall,
+                    color = scheme.onSurfaceVariant
+                )
+            }
+            IconButton(onClick = { shiftMonths(1) }, enabled = !atEnd) {
+                Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, contentDescription = "Next month")
+            }
+            IconButton(onClick = { shiftMonths(12) }, enabled = !atEnd) {
+                Icon(Icons.Rounded.KeyboardDoubleArrowRight, contentDescription = "Next year")
+            }
+        }
+
+        Column(modifier = Modifier.padding(start = 12.dp, end = 12.dp, bottom = 8.dp)) {
+            Row(modifier = Modifier.fillMaxWidth()) {
+                bsWeekdays.forEachIndexed { index, label ->
+                    Text(
+                        text = label,
+                        style = MaterialTheme.typography.labelSmall,
+                        // Saturday is the weekly holiday, so it gets the accent.
+                        color = if (index == 6) scheme.error else scheme.onSurfaceVariant.copy(alpha = 0.7f),
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(vertical = 6.dp)
+                    )
+                }
+            }
+
+            val leading = NepaliCalendar.weekday(BsDate(year, month, 1))
+            val length = NepaliCalendar.daysInMonth(year, month)
+            for (week in 0 until 6) {
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    for (column in 0 until 7) {
+                        val date = week * 7 + column - leading + 1
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .aspectRatio(1f)
+                                .padding(2.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            if (date in 1..length) {
+                                BsDayCell(
+                                    date = date,
+                                    selected = BsDate(year, month, date) == selectedBs,
+                                    today = BsDate(year, month, date) == todayBs,
+                                    holiday = column == 6,
+                                    onClick = { onSelect(NepaliCalendar.toAd(BsDate(year, month, date))) }
+                                )
+                            }
+                        }
                     }
                 }
-            )
+            }
         }
+    }
+}
+
+/** One day in the BS grid, styled to match the Material picker's days. */
+@Composable
+private fun BsDayCell(
+    date: Int,
+    selected: Boolean,
+    today: Boolean,
+    holiday: Boolean,
+    onClick: () -> Unit
+) {
+    val scheme = MaterialTheme.colorScheme
+    val outlined = today && !selected
+
+    Box(
+        modifier = Modifier
+            .size(40.dp)
+            .clip(CircleShape)
+            .background(if (selected) scheme.primary else Color.Transparent)
+            .border(
+                width = if (outlined) 1.dp else 0.dp,
+                color = if (outlined) scheme.primary else Color.Transparent,
+                shape = CircleShape
+            )
+            .clickable(onClick = onClick),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = date.toString(),
+            style = MaterialTheme.typography.bodyLarge,
+            color = when {
+                selected -> scheme.onPrimary
+                today -> scheme.primary
+                holiday -> scheme.error
+                else -> scheme.onSurface
+            }
+        )
     }
 }
 
@@ -209,7 +454,7 @@ fun AurexDateField(
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun aurexDatePickerColors(): DatePickerColors {
+private fun monebieDatePickerColors(): DatePickerColors {
     val scheme = MaterialTheme.colorScheme
 
     return DatePickerDefaults.colors(
@@ -255,7 +500,7 @@ fun AccountPicker(
 
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small)
+        verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small)
     ) {
         accounts.forEach { account ->
             AccountOption(
@@ -286,7 +531,7 @@ private fun AccountOption(
     val scheme = MaterialTheme.colorScheme
     val shape = RoundedCornerShape(18.dp)
     val negative = account.balance.isNegative
-    val accent = if (negative) AurexTheme.finance.negative else scheme.primary
+    val accent = if (negative) MoneBieTheme.finance.negative else scheme.primary
 
     Row(
         modifier = modifier
@@ -308,7 +553,7 @@ private fun AccountOption(
         verticalAlignment = Alignment.CenterVertically
     ) {
         GlowBadge(
-            icon = AurexIcons.forAccount(account.type.iconKey),
+            icon = MoneBieIcons.forAccount(account.type.iconKey),
             tint = accent,
             size = 34.dp
         )
@@ -332,14 +577,14 @@ private fun AccountOption(
             )
         }
 
-        Spacer(Modifier.width(AurexTheme.spacing.small))
+        Spacer(Modifier.width(MoneBieTheme.spacing.small))
 
         Column(horizontalAlignment = Alignment.End) {
             MoneyText(
                 money = if (negative) account.balance.absolute else account.balance,
                 currencySymbol = currencySymbol,
                 style = MaterialTheme.typography.titleSmall,
-                color = if (negative) AurexTheme.finance.negative else scheme.onSurface,
+                color = if (negative) MoneBieTheme.finance.negative else scheme.onSurface,
                 showDecimals = false
             )
             Spacer(Modifier.height(1.dp))
@@ -410,7 +655,7 @@ fun CategoryPicker(
         verticalAlignment = Alignment.CenterVertically
     ) {
         GlowBadge(
-            icon = AurexIcons.forCategory(selected?.iconKey.orEmpty()),
+            icon = MoneBieIcons.forCategory(selected?.iconKey.orEmpty()),
             tint = scheme.primary,
             size = 34.dp
         )
@@ -464,12 +709,12 @@ private fun CategorySheet(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = AurexTheme.spacing.medium)
+            .padding(horizontal = MoneBieTheme.spacing.medium)
             .navigationBarsPadding()
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             GlowBadge(icon = Icons.Rounded.Sell, tint = MaterialTheme.colorScheme.primary)
-            Spacer(Modifier.width(AurexTheme.spacing.medium))
+            Spacer(Modifier.width(MoneBieTheme.spacing.medium))
             Column {
                 Text(
                     text = "Category",
@@ -488,13 +733,13 @@ private fun CategorySheet(
             }
         }
 
-        Spacer(Modifier.height(AurexTheme.spacing.large))
+        Spacer(Modifier.height(MoneBieTheme.spacing.large))
 
         // Scrolls rather than fits: a user who has added their own categories
         // can have far more than a screenful, and the sheet must not cut them.
         LazyColumn(
             modifier = Modifier.weight(1f, fill = false),
-            verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small)
+            verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small)
         ) {
             items(categories, key = { it.id }) { category ->
                 CategoryOption(
@@ -505,7 +750,7 @@ private fun CategorySheet(
             }
         }
 
-        Spacer(Modifier.height(AurexTheme.spacing.extraExtraLarge))
+        Spacer(Modifier.height(MoneBieTheme.spacing.extraExtraLarge))
     }
 }
 
@@ -539,7 +784,7 @@ private fun CategoryOption(
         verticalAlignment = Alignment.CenterVertically
     ) {
         GlowBadge(
-            icon = AurexIcons.forCategory(category.iconKey),
+            icon = MoneBieIcons.forCategory(category.iconKey),
             tint = if (isSelected) scheme.primary else scheme.onSurfaceVariant,
             size = 34.dp
         )

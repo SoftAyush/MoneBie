@@ -1,8 +1,8 @@
-package com.aurex.app.domain.repository
+package com.monebie.app.domain.repository
 
-import com.aurex.app.domain.model.RecurringPostingResult
-import com.aurex.app.domain.model.RecurringTransaction
-import com.aurex.app.domain.model.RecurringTransactionDraft
+import com.monebie.app.domain.model.RecurringPostingResult
+import com.monebie.app.domain.model.RecurringTransaction
+import com.monebie.app.domain.model.RecurringTransactionDraft
 import kotlinx.coroutines.flow.Flow
 
 /**

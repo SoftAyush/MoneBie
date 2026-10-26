@@ -1,12 +1,12 @@
-package com.aurex.app.data.mapper
+package com.monebie.app.data.mapper
 
-import com.aurex.app.core.Money
-import com.aurex.app.domain.model.BorrowLendRecord
-import com.aurex.app.domain.model.LoanDirection
-import com.aurex.app.domain.model.LoanRepayment
-import com.aurex.app.db.LoanRepayment as DbLoanRepayment
-import com.aurex.app.db.SelectAllLoanRecords
-import com.aurex.app.db.SelectLoanRecordById
+import com.monebie.app.core.Money
+import com.monebie.app.domain.model.BorrowLendRecord
+import com.monebie.app.domain.model.LoanDirection
+import com.monebie.app.domain.model.LoanRepayment
+import com.monebie.app.db.LoanRepayment as DbLoanRepayment
+import com.monebie.app.db.SelectAllLoanRecords
+import com.monebie.app.db.SelectLoanRecordById
 
 fun SelectAllLoanRecords.toDomain(): BorrowLendRecord = buildRecord(
     id = id,

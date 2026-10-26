@@ -43,7 +43,7 @@ androidApp/google-services.json
 
 # Local/generated Firebase and build artifacts that are specific to this machine
 # and should not be committed.
-androidApp/aurex-release
+androidApp/monebie-release
 firebase.json
 firestore.indexes.json
 firestore.rules

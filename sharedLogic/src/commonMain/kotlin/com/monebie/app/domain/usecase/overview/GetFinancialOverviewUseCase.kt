@@ -1,16 +1,17 @@
-package com.aurex.app.domain.usecase.overview
+package com.monebie.app.domain.usecase.overview
 
-import com.aurex.app.core.getCurrentDay
-import com.aurex.app.domain.calculation.PositionComposer
-import com.aurex.app.domain.model.BorrowLendRecord
-import com.aurex.app.domain.model.Debt
-import com.aurex.app.domain.model.Emi
-import com.aurex.app.domain.model.FinancialOverview
-import com.aurex.app.domain.repository.AccountRepository
-import com.aurex.app.domain.repository.BorrowLendRepository
-import com.aurex.app.domain.repository.DebtRepository
-import com.aurex.app.domain.repository.EmiRepository
-import com.aurex.app.domain.repository.UserRepository
+import com.monebie.app.core.AppCalendar
+import com.monebie.app.core.getCurrentDay
+import com.monebie.app.domain.calculation.PositionComposer
+import com.monebie.app.domain.model.BorrowLendRecord
+import com.monebie.app.domain.model.Debt
+import com.monebie.app.domain.model.Emi
+import com.monebie.app.domain.model.FinancialOverview
+import com.monebie.app.domain.repository.AccountRepository
+import com.monebie.app.domain.repository.BorrowLendRepository
+import com.monebie.app.domain.repository.DebtRepository
+import com.monebie.app.domain.repository.EmiRepository
+import com.monebie.app.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 
@@ -45,11 +46,13 @@ class GetFinancialOverviewUseCase(
             borrowLendRepository.observeRecords()
         ) { debts, emis, records -> Obligations(debts, emis, records) }
 
+        // The calendar rides along because "due this month" depends on it.
         return combine(
             accountRepository.observeActiveAccounts(),
             obligations,
-            userRepository.getSelectedCurrencySymbol()
-        ) { accounts, obligation, symbol ->
+            userRepository.getSelectedCurrencySymbol(),
+            AppCalendar.system
+        ) { accounts, obligation, symbol, _ ->
             PositionComposer.compose(
                 accounts = accounts,
                 debts = obligation.debts,

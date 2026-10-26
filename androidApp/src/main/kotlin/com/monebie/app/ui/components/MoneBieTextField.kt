@@ -1,4 +1,4 @@
-package com.aurex.app.ui.components
+package com.monebie.app.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -29,10 +29,10 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.aurex.app.ui.theme.AurexTheme
+import com.monebie.app.ui.theme.MoneBieTheme
 
 @Composable
-fun AurexTextField(
+fun MoneBieTextField(
     value: String,
     onValueChange: (String) -> Unit,
     placeholder: String,
@@ -72,7 +72,7 @@ fun AurexTextField(
                     .fillMaxWidth()
                     .background(
                         MaterialTheme.colorScheme.surfaceContainer,
-                        RoundedCornerShape(AurexTheme.spacing.medium)
+                        RoundedCornerShape(MoneBieTheme.spacing.medium)
                     )
                     .border(
                         width = 1.dp,
@@ -81,11 +81,11 @@ fun AurexTextField(
                         } else {
                             MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
                         },
-                        shape = RoundedCornerShape(AurexTheme.spacing.medium)
+                        shape = RoundedCornerShape(MoneBieTheme.spacing.medium)
                     )
                     .padding(
-                        horizontal = AurexTheme.spacing.large,
-                        vertical = AurexTheme.spacing.medium
+                        horizontal = MoneBieTheme.spacing.large,
+                        vertical = MoneBieTheme.spacing.medium
                     ),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -96,12 +96,12 @@ fun AurexTextField(
                         tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
                         modifier = Modifier.size(20.dp)
                     )
-                    Spacer(Modifier.width(AurexTheme.spacing.medium))
+                    Spacer(Modifier.width(MoneBieTheme.spacing.medium))
                 }
 
                 prefix?.let {
                     it()
-                    Spacer(Modifier.width(AurexTheme.spacing.small))
+                    Spacer(Modifier.width(MoneBieTheme.spacing.small))
                 }
 
                 Box(modifier = Modifier.weight(1f)) {
@@ -122,10 +122,10 @@ fun AurexTextField(
 
 @Preview(showBackground = true)
 @Composable
-private fun AurexTextFieldPreview() {
-    AurexTheme {
-        Box(modifier = Modifier.padding(AurexTheme.spacing.medium)) {
-            AurexTextField(
+private fun MoneBieTextFieldPreview() {
+    MoneBieTheme {
+        Box(modifier = Modifier.padding(MoneBieTheme.spacing.medium)) {
+            MoneBieTextField(
                 value = "",
                 onValueChange = {},
                 placeholder = "e.g. Jane Doe"

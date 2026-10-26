@@ -1,11 +1,11 @@
-package com.aurex.app.presentation.main
+package com.monebie.app.presentation.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aurex.app.domain.model.ThemeMode
-import com.aurex.app.domain.usecase.account.HasAccountUseCase
-import com.aurex.app.domain.usecase.user.GetThemeModeUseCase
-import com.aurex.app.domain.usecase.user.GetUsersUseCase
+import com.monebie.app.domain.model.ThemeMode
+import com.monebie.app.domain.usecase.account.HasAccountUseCase
+import com.monebie.app.domain.usecase.user.GetThemeModeUseCase
+import com.monebie.app.domain.usecase.user.GetUsersUseCase
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map

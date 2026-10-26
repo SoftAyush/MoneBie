@@ -1,4 +1,4 @@
-package com.aurex.app.ui.screens.lock
+package com.monebie.app.ui.screens.lock
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -43,22 +43,22 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.aurex.app.security.AppLock
-import com.aurex.app.security.AppLockSettings
-import com.aurex.app.ui.components.AmbientBackdrop
-import com.aurex.app.ui.components.AurexButton
-import com.aurex.app.ui.components.AurexSnackbarHost
-import com.aurex.app.ui.components.CardDivider
-import com.aurex.app.ui.components.ConfirmDialog
-import com.aurex.app.ui.components.DetailTopBar
-import com.aurex.app.ui.components.FormNotice
-import com.aurex.app.ui.components.GlowBadge
-import com.aurex.app.ui.components.PremiumCard
-import com.aurex.app.ui.components.PremiumSectionHeader
-import com.aurex.app.ui.components.SelectableChip
-import com.aurex.app.ui.components.pressable
-import com.aurex.app.ui.components.showAurexMessage
-import com.aurex.app.ui.theme.AurexTheme
+import com.monebie.app.security.AppLock
+import com.monebie.app.security.AppLockSettings
+import com.monebie.app.ui.components.AmbientBackdrop
+import com.monebie.app.ui.components.MoneBieButton
+import com.monebie.app.ui.components.MoneBieSnackbarHost
+import com.monebie.app.ui.components.CardDivider
+import com.monebie.app.ui.components.ConfirmDialog
+import com.monebie.app.ui.components.DetailTopBar
+import com.monebie.app.ui.components.FormNotice
+import com.monebie.app.ui.components.GlowBadge
+import com.monebie.app.ui.components.PremiumCard
+import com.monebie.app.ui.components.PremiumSectionHeader
+import com.monebie.app.ui.components.SelectableChip
+import com.monebie.app.ui.components.pressable
+import com.monebie.app.ui.components.showMoneBieMessage
+import com.monebie.app.ui.theme.MoneBieTheme
 
 /**
  * The app lock settings.
@@ -87,7 +87,7 @@ fun AppLockSettingsScreen(
     var message by remember { mutableStateOf<String?>(null) }
 
     LaunchedEffect(message) {
-        message?.let { snackbarHostState.showAurexMessage(it) }
+        message?.let { snackbarHostState.showMoneBieMessage(it) }
         message = null
     }
 
@@ -105,16 +105,16 @@ fun AppLockSettingsScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
-                    .padding(horizontal = AurexTheme.spacing.medium)
+                    .padding(horizontal = MoneBieTheme.spacing.medium)
                     .navigationBarsPadding(),
-                verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.medium)
+                verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.medium)
             ) {
-                Spacer(Modifier.height(AurexTheme.spacing.extraSmall))
+                Spacer(Modifier.height(MoneBieTheme.spacing.extraSmall))
 
                 PremiumCard(modifier = Modifier.fillMaxWidth()) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.medium)
+                        horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.medium)
                     ) {
                         GlowBadge(
                             icon = if (enabled) Icons.Rounded.Lock else Icons.Rounded.LockOpen,
@@ -128,9 +128,9 @@ fun AppLockSettingsScreen(
                             )
                             Text(
                                 text = if (enabled) {
-                                    "Aurex locks when you leave it and asks on the way back in."
+                                    "MoneBie locks when you leave it and asks on the way back in."
                                 } else {
-                                    "Anyone who picks up your phone can open Aurex."
+                                    "Anyone who picks up your phone can open MoneBie."
                                 },
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -154,9 +154,9 @@ fun AppLockSettingsScreen(
                                 .fillMaxWidth()
                                 .clip(MaterialTheme.shapes.medium)
                                 .pressable { pinSheet = PinSheetReason.CHANGE }
-                                .padding(vertical = AurexTheme.spacing.small),
+                                .padding(vertical = MoneBieTheme.spacing.small),
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.medium)
+                            horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.medium)
                         ) {
                             GlowBadge(icon = Icons.Rounded.Password, tint = MaterialTheme.colorScheme.primary)
                             Column(modifier = Modifier.weight(1f)) {
@@ -176,9 +176,9 @@ fun AppLockSettingsScreen(
                         CardDivider(alpha = 0.07f)
 
                         Row(
-                            modifier = Modifier.padding(vertical = AurexTheme.spacing.small),
+                            modifier = Modifier.padding(vertical = MoneBieTheme.spacing.small),
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.medium)
+                            horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.medium)
                         ) {
                             GlowBadge(icon = Icons.Rounded.Fingerprint, tint = MaterialTheme.colorScheme.primary)
                             Column(modifier = Modifier.weight(1f)) {
@@ -213,7 +213,7 @@ fun AppLockSettingsScreen(
                     PremiumCard(modifier = Modifier.fillMaxWidth()) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.medium)
+                            horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.medium)
                         ) {
                             GlowBadge(icon = Icons.Rounded.Timer, tint = MaterialTheme.colorScheme.primary)
                             Column(modifier = Modifier.weight(1f)) {
@@ -231,11 +231,11 @@ fun AppLockSettingsScreen(
                             }
                         }
 
-                        Spacer(Modifier.height(AurexTheme.spacing.medium))
+                        Spacer(Modifier.height(MoneBieTheme.spacing.medium))
 
                         FlowRow(
-                            horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small),
-                            verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small)
+                            horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small),
+                            verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small)
                         ) {
                             AppLockSettings.Timeout.entries.forEach { option ->
                                 SelectableChip(
@@ -258,11 +258,11 @@ fun AppLockSettingsScreen(
                         "the settings screen and restore a backup."
                 )
 
-                Spacer(Modifier.height(AurexTheme.spacing.extraExtraLarge))
+                Spacer(Modifier.height(MoneBieTheme.spacing.extraExtraLarge))
             }
         }
 
-        AurexSnackbarHost(
+        MoneBieSnackbarHost(
             hostState = snackbarHostState,
             modifier = Modifier.align(Alignment.BottomCenter)
         )
@@ -290,7 +290,7 @@ fun AppLockSettingsScreen(
     if (confirmDisable) {
         ConfirmDialog(
             title = "Turn off the app lock?",
-            message = "Aurex will open without asking for anything.",
+            message = "MoneBie will open without asking for anything.",
             confirmLabel = "Turn off",
             isDestructive = true,
             onConfirm = {
@@ -329,7 +329,7 @@ private fun SetPinSheet(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = AurexTheme.spacing.large)
+            .padding(horizontal = MoneBieTheme.spacing.large)
             .navigationBarsPadding(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -339,7 +339,7 @@ private fun SetPinSheet(
             fontWeight = FontWeight.SemiBold
         )
 
-        Spacer(Modifier.height(AurexTheme.spacing.small))
+        Spacer(Modifier.height(MoneBieTheme.spacing.small))
 
         Text(
             text = when {
@@ -351,7 +351,7 @@ private fun SetPinSheet(
             color = if (mismatch) scheme.error else scheme.onSurfaceVariant
         )
 
-        Spacer(Modifier.height(AurexTheme.spacing.large))
+        Spacer(Modifier.height(MoneBieTheme.spacing.large))
 
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
             repeat(AppLockSettings.PIN_MAX_LENGTH) { index ->
@@ -366,7 +366,7 @@ private fun SetPinSheet(
             }
         }
 
-        Spacer(Modifier.height(AurexTheme.spacing.large))
+        Spacer(Modifier.height(MoneBieTheme.spacing.large))
 
         PinPad(
             onDigit = { digit ->
@@ -376,10 +376,10 @@ private fun SetPinSheet(
             onBackspace = { entered = entered.dropLast(1) }
         )
 
-        Spacer(Modifier.height(AurexTheme.spacing.medium))
+        Spacer(Modifier.height(MoneBieTheme.spacing.medium))
 
         val canContinue = entered.length >= AppLockSettings.PIN_MIN_LENGTH
-        AurexButton(
+        MoneBieButton(
             text = if (confirming) "Set PIN" else "Continue",
             enabled = canContinue,
             onClick = {
@@ -400,6 +400,6 @@ private fun SetPinSheet(
             modifier = Modifier.fillMaxWidth()
         )
 
-        Spacer(Modifier.height(AurexTheme.spacing.large))
+        Spacer(Modifier.height(MoneBieTheme.spacing.large))
     }
 }

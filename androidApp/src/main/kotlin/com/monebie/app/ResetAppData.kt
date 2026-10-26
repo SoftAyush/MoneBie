@@ -1,16 +1,17 @@
-package com.aurex.app
+package com.monebie.app
 
 import android.content.Context
 import android.content.Intent
-import com.aurex.app.data.database.AUREX_DATABASE_NAME
-import com.aurex.app.notifications.PaymentReminderSettings
-import com.aurex.app.notifications.PaymentReminders
-import com.aurex.app.notifications.RecurringPosting
-import com.aurex.app.security.AppLockSettings
-import com.aurex.app.ui.theme.ThemeStartupCache
+import com.monebie.app.data.database.MONEBIE_DATABASE_NAME
+import com.monebie.app.notifications.PaymentReminderSettings
+import com.monebie.app.notifications.PaymentReminders
+import com.monebie.app.notifications.RecurringPosting
+import com.monebie.app.security.AppLockSettings
+import com.monebie.app.ui.components.DateCalendarSettings
+import com.monebie.app.ui.theme.ThemeStartupCache
 
 /**
- * Wipes Aurex back to a fresh install.
+ * Wipes MoneBie back to a fresh install.
  *
  * The database file is deleted rather than emptied table by table. Emptying it
  * would leave the built-in categories and the currency list to be re-seeded by
@@ -38,7 +39,7 @@ object ResetAppData {
     fun wipeAndRestart(context: Context): Boolean {
         val app = context.applicationContext
 
-        val deleted = runCatching { app.deleteDatabase(AUREX_DATABASE_NAME) }.getOrDefault(false)
+        val deleted = runCatching { app.deleteDatabase(MONEBIE_DATABASE_NAME) }.getOrDefault(false)
         if (!deleted && databaseStillExists(app)) return false
 
         // The theme is mirrored outside the database, so it has to be cleared
@@ -56,6 +57,9 @@ object ResetAppData {
         // would lock the next user out of an empty app.
         AppLockSettings.clear(app)
 
+        // The AD/BS choice for date fields lives in its own small file too.
+        DateCalendarSettings.clear(app)
+
         val intent = Intent(app, MainActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         }
@@ -68,5 +72,5 @@ object ResetAppData {
     }
 
     private fun databaseStillExists(context: Context): Boolean =
-        context.getDatabasePath(AUREX_DATABASE_NAME).exists()
+        context.getDatabasePath(MONEBIE_DATABASE_NAME).exists()
 }

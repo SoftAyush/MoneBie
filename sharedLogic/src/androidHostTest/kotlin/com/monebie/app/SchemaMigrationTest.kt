@@ -1,8 +1,8 @@
-package com.aurex.app
+package com.monebie.app
 
 import app.cash.sqldelight.db.SqlDriver
 import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
-import com.aurex.app.db.AurexDatabase
+import com.monebie.app.db.MoneBieDatabase
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -65,14 +65,14 @@ class SchemaMigrationTest {
     fun theCurrentSchemaIsVersionTen() {
         // Guards against adding a .sqm without the version moving, which would
         // leave existing installs on an older schema with no migration run.
-        assertEquals(10L, AurexDatabase.Schema.version)
+        assertEquals(10L, MoneBieDatabase.Schema.version)
     }
 
     @Test
     fun anInstallFromTheFirstReleaseMigratesAllTheWayUp() {
         val driver = driverAtVersion1()
 
-        AurexDatabase.Schema.migrate(driver, 1L, AurexDatabase.Schema.version).value
+        MoneBieDatabase.Schema.migrate(driver, 1L, MoneBieDatabase.Schema.version).value
 
         val tables = tableNames(driver)
         listOf(
@@ -97,17 +97,17 @@ class SchemaMigrationTest {
     fun everyIntermediateStartingPointReachesTheSameSchema() {
         // Users are spread across whichever version they last updated on, so
         // each starting point has to arrive at the identical end state.
-        val target = AurexDatabase.Schema.version
+        val target = MoneBieDatabase.Schema.version
         val fromV1 = driverAtVersion1().also {
-            AurexDatabase.Schema.migrate(it, 1L, target).value
+            MoneBieDatabase.Schema.migrate(it, 1L, target).value
         }
         val expected = tableNames(fromV1)
 
         (2L until target).forEach { start ->
             val driver = driverAtVersion1()
             // Walk up to the intermediate point, then finish the journey.
-            AurexDatabase.Schema.migrate(driver, 1L, start).value
-            AurexDatabase.Schema.migrate(driver, start, target).value
+            MoneBieDatabase.Schema.migrate(driver, 1L, start).value
+            MoneBieDatabase.Schema.migrate(driver, start, target).value
 
             assertEquals(
                 expected,
@@ -133,7 +133,7 @@ class SchemaMigrationTest {
             0
         )
 
-        AurexDatabase.Schema.migrate(driver, 1L, AurexDatabase.Schema.version).value
+        MoneBieDatabase.Schema.migrate(driver, 1L, MoneBieDatabase.Schema.version).value
 
         // The whole point of migrating rather than recreating: the profile the
         // user set up on day one is still there afterwards.

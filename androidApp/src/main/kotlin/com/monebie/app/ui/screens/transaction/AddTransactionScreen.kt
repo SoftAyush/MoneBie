@@ -1,4 +1,4 @@
-package com.aurex.app.ui.screens.transaction
+package com.monebie.app.ui.screens.transaction
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,28 +30,28 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.aurex.app.AurexApplication
-import com.aurex.app.domain.model.TransactionType
-import com.aurex.app.presentation.transaction.AddTransactionViewModel
-import com.aurex.app.ui.components.AccountPicker
-import com.aurex.app.ui.components.AmbientBackdrop
-import com.aurex.app.ui.components.AurexButton
-import com.aurex.app.ui.components.AurexDateField
-import com.aurex.app.ui.components.AurexTextField
-import com.aurex.app.ui.components.CategoryPicker
-import com.aurex.app.ui.components.ConfirmDialog
-import com.aurex.app.ui.components.DetailTopBar
-import com.aurex.app.ui.components.EmptyState
-import com.aurex.app.ui.components.FieldError
-import com.aurex.app.ui.components.FormField
-import com.aurex.app.ui.components.FormLabel
-import com.aurex.app.ui.components.FormSection
-import com.aurex.app.ui.components.GlassIconButton
-import com.aurex.app.ui.components.MoneyInputField
-import com.aurex.app.ui.components.PremiumCard
-import com.aurex.app.ui.components.Segment
-import com.aurex.app.ui.components.SegmentedSelector
-import com.aurex.app.ui.theme.AurexTheme
+import com.monebie.app.MoneBieApplication
+import com.monebie.app.domain.model.TransactionType
+import com.monebie.app.presentation.transaction.AddTransactionViewModel
+import com.monebie.app.ui.components.AccountPicker
+import com.monebie.app.ui.components.AmbientBackdrop
+import com.monebie.app.ui.components.MoneBieButton
+import com.monebie.app.ui.components.MoneBieDateField
+import com.monebie.app.ui.components.MoneBieTextField
+import com.monebie.app.ui.components.CategoryPicker
+import com.monebie.app.ui.components.ConfirmDialog
+import com.monebie.app.ui.components.DetailTopBar
+import com.monebie.app.ui.components.EmptyState
+import com.monebie.app.ui.components.FieldError
+import com.monebie.app.ui.components.FormField
+import com.monebie.app.ui.components.FormLabel
+import com.monebie.app.ui.components.FormSection
+import com.monebie.app.ui.components.GlassIconButton
+import com.monebie.app.ui.components.MoneyInputField
+import com.monebie.app.ui.components.PremiumCard
+import com.monebie.app.ui.components.Segment
+import com.monebie.app.ui.components.SegmentedSelector
+import com.monebie.app.ui.theme.MoneBieTheme
 
 /**
  * Fast entry for income, expenses and transfers.
@@ -70,7 +70,7 @@ fun AddTransactionScreen(
     presetType: TransactionType = TransactionType.EXPENSE
 ) {
     val context = LocalContext.current
-    val app = context.applicationContext as AurexApplication
+    val app = context.applicationContext as MoneBieApplication
 
     val viewModel: AddTransactionViewModel = viewModel(
         // Keyed so opening a different transaction builds a fresh form rather
@@ -130,7 +130,7 @@ fun AddTransactionScreen(
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(AurexTheme.spacing.medium),
+                        .padding(MoneBieTheme.spacing.medium),
                     contentAlignment = Alignment.Center
                 ) {
                     PremiumCard(modifier = Modifier.fillMaxWidth()) {
@@ -153,12 +153,12 @@ fun AddTransactionScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
-                    .padding(horizontal = AurexTheme.spacing.medium)
+                    .padding(horizontal = MoneBieTheme.spacing.medium)
                     .imePadding()
                     .navigationBarsPadding(),
-                verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.large)
+                verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.large)
             ) {
-                Spacer(Modifier.height(AurexTheme.spacing.extraSmall))
+                Spacer(Modifier.height(MoneBieTheme.spacing.extraSmall))
 
                 // The entry block: what kind, and how much.
                 PremiumCard(modifier = Modifier.fillMaxWidth()) {
@@ -167,12 +167,12 @@ fun AddTransactionScreen(
                             Segment(
                                 value = TransactionType.INCOME,
                                 label = "Income",
-                                accent = AurexTheme.finance.positive
+                                accent = MoneBieTheme.finance.positive
                             ),
                             Segment(
                                 value = TransactionType.EXPENSE,
                                 label = "Expense",
-                                accent = AurexTheme.finance.negative
+                                accent = MoneBieTheme.finance.negative
                             ),
                             Segment(
                                 value = TransactionType.TRANSFER,
@@ -184,11 +184,11 @@ fun AddTransactionScreen(
                         onSelect = viewModel::setType
                     )
 
-                    Spacer(Modifier.height(AurexTheme.spacing.large))
+                    Spacer(Modifier.height(MoneBieTheme.spacing.large))
 
                     FormLabel(text = "Amount")
 
-                    Spacer(Modifier.height(AurexTheme.spacing.small))
+                    Spacer(Modifier.height(MoneBieTheme.spacing.small))
 
                     MoneyInputField(
                         value = uiState.amountInput,
@@ -239,14 +239,14 @@ fun AddTransactionScreen(
 
                 FormSection(title = "Details") {
                     FormField(label = "Date") {
-                        AurexDateField(
+                        MoneBieDateField(
                             day = uiState.day,
                             onDayChange = { day -> day?.let(viewModel::setDay) }
                         )
                     }
 
                     FormField(label = "Note (optional)") {
-                        AurexTextField(
+                        MoneBieTextField(
                             value = uiState.note,
                             onValueChange = viewModel::setNote,
                             placeholder = "What was this for?",
@@ -256,13 +256,13 @@ fun AddTransactionScreen(
                     }
                 }
 
-                AurexButton(
+                MoneBieButton(
                     text = if (uiState.isEditing) "Save changes" else "Add transaction",
                     loading = uiState.isSaving,
                     onClick = viewModel::save
                 )
 
-                Spacer(Modifier.height(AurexTheme.spacing.extraExtraLarge))
+                Spacer(Modifier.height(MoneBieTheme.spacing.extraExtraLarge))
             }
         }
     }

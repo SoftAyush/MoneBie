@@ -1,4 +1,4 @@
-package com.aurex.app.domain.model
+package com.monebie.app.domain.model
 
 /**
  * How soon an obligation needs attention.

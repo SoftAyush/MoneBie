@@ -1,4 +1,4 @@
-package com.aurex.app.domain.model
+package com.monebie.app.domain.model
 
 /** How often a scheduled obligation recurs. Drives next-due-date projection. */
 enum class PaymentFrequency {

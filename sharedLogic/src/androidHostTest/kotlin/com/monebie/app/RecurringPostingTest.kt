@@ -1,16 +1,16 @@
-package com.aurex.app
+package com.monebie.app
 
 import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
-import com.aurex.app.core.Money
-import com.aurex.app.data.database.DatabaseHelper
-import com.aurex.app.data.repository.RecurringTransactionRepositoryImpl
-import com.aurex.app.data.repository.TransactionRepositoryImpl
-import com.aurex.app.db.AurexDatabase
-import com.aurex.app.domain.model.PaymentFrequency
-import com.aurex.app.domain.model.PaymentMethod
-import com.aurex.app.domain.model.RecurringTransactionDraft
-import com.aurex.app.domain.model.TransactionSourceType
-import com.aurex.app.domain.model.TransactionType
+import com.monebie.app.core.Money
+import com.monebie.app.data.database.DatabaseHelper
+import com.monebie.app.data.repository.RecurringTransactionRepositoryImpl
+import com.monebie.app.data.repository.TransactionRepositoryImpl
+import com.monebie.app.db.MoneBieDatabase
+import com.monebie.app.domain.model.PaymentFrequency
+import com.monebie.app.domain.model.PaymentMethod
+import com.monebie.app.domain.model.RecurringTransactionDraft
+import com.monebie.app.domain.model.TransactionSourceType
+import com.monebie.app.domain.model.TransactionType
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
@@ -28,7 +28,7 @@ class RecurringPostingTest {
 
     private fun freshDatabase(): DatabaseHelper {
         val driver = JdbcSqliteDriver(JdbcSqliteDriver.IN_MEMORY).also {
-            AurexDatabase.Schema.create(it).value
+            MoneBieDatabase.Schema.create(it).value
         }
         return DatabaseHelper(driver).also {
             it.accountQueries.backupInsertAccount(

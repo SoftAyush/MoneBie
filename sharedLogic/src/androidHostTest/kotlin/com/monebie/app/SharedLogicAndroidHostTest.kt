@@ -1,4 +1,4 @@
-package com.aurex.app
+package com.monebie.app
 
 import kotlin.test.Test
 import kotlin.test.assertEquals

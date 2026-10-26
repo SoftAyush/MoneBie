@@ -1,4 +1,4 @@
-package com.aurex.app.ui.screens.onboarding
+package com.monebie.app.ui.screens.onboarding
 
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode
@@ -48,7 +48,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.aurex.app.ui.theme.AurexTheme
+import com.monebie.app.ui.theme.MoneBieTheme
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
@@ -137,8 +137,8 @@ private fun GrowthHero(progress: Float) {
             HeroChip(
                 text = "+12.4%",
                 icon = Icons.AutoMirrored.Rounded.TrendingUp,
-                content = AurexTheme.finance.positive,
-                container = AurexTheme.finance.positiveContainer
+                content = MoneBieTheme.finance.positive,
+                container = MoneBieTheme.finance.positiveContainer
             )
         }
 
@@ -200,7 +200,7 @@ private fun GrowthHero(progress: Float) {
 @Composable
 private fun LedgerHero(progress: Float) {
     val scheme = MaterialTheme.colorScheme
-    val finance = AurexTheme.finance
+    val finance = MoneBieTheme.finance
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -312,7 +312,7 @@ private fun LedgerRow(
 @Composable
 private fun RepaymentHero(progress: Float) {
     val scheme = MaterialTheme.colorScheme
-    val finance = AurexTheme.finance
+    val finance = MoneBieTheme.finance
     val sweep = 0.68f * stagger(progress, 0, step = 0f, window = 0.9f)
 
     Column(

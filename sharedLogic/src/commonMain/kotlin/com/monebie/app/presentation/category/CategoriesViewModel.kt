@@ -1,15 +1,15 @@
-package com.aurex.app.presentation.category
+package com.monebie.app.presentation.category
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aurex.app.domain.model.TransactionCategory
-import com.aurex.app.domain.model.TransactionType
-import com.aurex.app.domain.repository.CategoryRemoval
-import com.aurex.app.domain.usecase.category.CountCategoryUsageUseCase
-import com.aurex.app.domain.usecase.category.GetCategoriesUseCase
-import com.aurex.app.domain.usecase.category.RemoveCategoryUseCase
-import com.aurex.app.domain.usecase.category.RestoreCategoryUseCase
-import com.aurex.app.domain.usecase.category.SaveCategoryUseCase
+import com.monebie.app.domain.model.TransactionCategory
+import com.monebie.app.domain.model.TransactionType
+import com.monebie.app.domain.repository.CategoryRemoval
+import com.monebie.app.domain.usecase.category.CountCategoryUsageUseCase
+import com.monebie.app.domain.usecase.category.GetCategoriesUseCase
+import com.monebie.app.domain.usecase.category.RemoveCategoryUseCase
+import com.monebie.app.domain.usecase.category.RestoreCategoryUseCase
+import com.monebie.app.domain.usecase.category.SaveCategoryUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -180,7 +180,7 @@ class CategoriesViewModel(
                     CategoryEvent.Hidden(category.name, outcome.transactionCount)
 
                 is CategoryRemoval.Protected -> CategoryEvent.Refused(
-                    "Aurex files debt, EMI and loan payments under ${category.name}, " +
+                    "MoneBie files debt, EMI and loan payments under ${category.name}, " +
                         "so it has to stay."
                 )
             }

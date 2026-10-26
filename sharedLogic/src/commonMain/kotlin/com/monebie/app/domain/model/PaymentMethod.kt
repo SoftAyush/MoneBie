@@ -1,4 +1,4 @@
-package com.aurex.app.domain.model
+package com.monebie.app.domain.model
 
 enum class PaymentMethod {
     CASH, CARD, BANK_TRANSFER, DIGITAL_WALLET, CHEQUE, OTHER

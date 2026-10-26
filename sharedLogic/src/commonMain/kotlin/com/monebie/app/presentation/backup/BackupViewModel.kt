@@ -1,14 +1,14 @@
-package com.aurex.app.presentation.backup
+package com.monebie.app.presentation.backup
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aurex.app.domain.repository.BackupIdentity
-import com.aurex.app.domain.repository.BackupMetadata
-import com.aurex.app.domain.repository.RemoteBackupStore
-import com.aurex.app.domain.usecase.backup.BackUpNowUseCase
-import com.aurex.app.domain.usecase.backup.BackupOutcome
-import com.aurex.app.domain.usecase.backup.RestoreBackupUseCase
-import com.aurex.app.domain.usecase.backup.RestoreOutcome
+import com.monebie.app.domain.repository.BackupIdentity
+import com.monebie.app.domain.repository.BackupMetadata
+import com.monebie.app.domain.repository.RemoteBackupStore
+import com.monebie.app.domain.usecase.backup.BackUpNowUseCase
+import com.monebie.app.domain.usecase.backup.BackupOutcome
+import com.monebie.app.domain.usecase.backup.RestoreBackupUseCase
+import com.monebie.app.domain.usecase.backup.RestoreOutcome
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -213,7 +213,7 @@ class BackupViewModel(
                             )
                         is RestoreOutcome.FormatTooNew ->
                             BackupEvent.Failed(
-                                "That backup was made by a newer version of Aurex. " +
+                                "That backup was made by a newer version of MoneBie. " +
                                     "Update the app to restore it."
                             )
                     }

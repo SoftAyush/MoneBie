@@ -1,7 +1,7 @@
-package com.aurex.app.domain.repository
+package com.monebie.app.domain.repository
 
-import com.aurex.app.domain.model.TransactionCategory
-import com.aurex.app.domain.model.TransactionType
+import com.monebie.app.domain.model.TransactionCategory
+import com.monebie.app.domain.model.TransactionType
 import kotlinx.coroutines.flow.Flow
 
 /** What happened to a category the user asked to remove. */

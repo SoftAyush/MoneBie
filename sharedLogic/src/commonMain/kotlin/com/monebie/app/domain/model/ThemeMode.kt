@@ -1,4 +1,4 @@
-package com.aurex.app.domain.model
+package com.monebie.app.domain.model
 
 /**
  * How the app decides between the light and dark palettes.

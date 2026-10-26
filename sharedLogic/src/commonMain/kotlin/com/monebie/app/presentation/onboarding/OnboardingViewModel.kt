@@ -1,7 +1,7 @@
-package com.aurex.app.presentation.onboarding
+package com.monebie.app.presentation.onboarding
 
 import androidx.lifecycle.ViewModel
-import com.aurex.app.domain.usecase.onboarding.GetOnboardingPagesUseCase
+import com.monebie.app.domain.usecase.onboarding.GetOnboardingPagesUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

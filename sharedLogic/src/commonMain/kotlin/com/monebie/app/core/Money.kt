@@ -1,4 +1,4 @@
-package com.aurex.app.core
+package com.monebie.app.core
 
 import kotlin.jvm.JvmInline
 import kotlin.math.abs
@@ -10,7 +10,7 @@ import kotlin.math.round
  * Money is never represented as [Double] anywhere in the domain: floating point
  * accumulation drifts, and this application sums hundreds of transactions,
  * debt payments and EMI installments into a single net-position figure.
- * Every financial calculation in [com.aurex.app.domain.calculation] operates on
+ * Every financial calculation in [com.monebie.app.domain.calculation] operates on
  * this type so rounding happens exactly once - at the input boundary.
  */
 @JvmInline

@@ -1,7 +1,7 @@
-package com.aurex.app.domain.model
+package com.monebie.app.domain.model
 
-import com.aurex.app.core.Money
-import com.aurex.app.core.daysBetween
+import com.monebie.app.core.Money
+import com.monebie.app.core.daysBetween
 
 /**
  * A transaction that repeats on a schedule.

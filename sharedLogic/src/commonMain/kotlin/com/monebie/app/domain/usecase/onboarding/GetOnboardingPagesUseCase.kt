@@ -1,6 +1,6 @@
-package com.aurex.app.domain.usecase.onboarding
+package com.monebie.app.domain.usecase.onboarding
 
-import com.aurex.app.domain.model.OnboardingPage
+import com.monebie.app.domain.model.OnboardingPage
 
 class GetOnboardingPagesUseCase {
     operator fun invoke(): List<OnboardingPage> {

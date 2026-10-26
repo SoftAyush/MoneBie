@@ -1,10 +1,10 @@
-package com.aurex.app
+package com.monebie.app
 
 import app.cash.sqldelight.db.QueryResult
 import app.cash.sqldelight.db.SqlDriver
 import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
-import com.aurex.app.db.AurexDatabase
-import com.aurex.app.domain.model.TransactionCategories
+import com.monebie.app.db.MoneBieDatabase
+import com.monebie.app.domain.model.TransactionCategories
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -56,12 +56,12 @@ class CategorySeedTest {
 
     private fun freshDriver(): SqlDriver =
         JdbcSqliteDriver(JdbcSqliteDriver.IN_MEMORY).also {
-            AurexDatabase.Schema.create(it).value
+            MoneBieDatabase.Schema.create(it).value
         }
 
     private fun migratedDriver(): SqlDriver =
         driverAtVersion1().also {
-            AurexDatabase.Schema.migrate(it, 1L, AurexDatabase.Schema.version).value
+            MoneBieDatabase.Schema.migrate(it, 1L, MoneBieDatabase.Schema.version).value
         }
 
     /** id, name, icon, side, built-in and protected flags - everything that matters. */

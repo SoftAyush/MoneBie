@@ -1,4 +1,4 @@
-package com.aurex.app.ui.screens.overview
+package com.monebie.app.ui.screens.overview
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
@@ -52,39 +52,39 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.aurex.app.AurexApplication
-import com.aurex.app.core.Money
-import com.aurex.app.core.MoneyFormatter
-import com.aurex.app.domain.model.FinancialOverview
-import com.aurex.app.domain.model.PositionGroup
-import com.aurex.app.domain.model.PositionGroupKey
-import com.aurex.app.presentation.overview.FinancialOverviewUiState
-import com.aurex.app.presentation.overview.FinancialOverviewViewModel
-import com.aurex.app.ui.components.AmbientBackdrop
-import com.aurex.app.ui.components.CardDivider
-import com.aurex.app.ui.components.CountUpMoneyText
-import com.aurex.app.ui.components.DetailTopBar
-import com.aurex.app.ui.components.EmptyState
-import com.aurex.app.ui.components.ErrorState
-import com.aurex.app.ui.components.FormNotice
-import com.aurex.app.ui.components.GlowBadge
-import com.aurex.app.ui.components.GradientTrack
-import com.aurex.app.ui.components.HeroCardShape
-import com.aurex.app.ui.components.HeroDecoration
-import com.aurex.app.ui.components.HeroFinance
-import com.aurex.app.ui.components.HeroPill
-import com.aurex.app.ui.components.HeroSplitBar
-import com.aurex.app.ui.components.HeroTile
-import com.aurex.app.ui.components.MicroLabel
-import com.aurex.app.ui.components.MoneyText
-import com.aurex.app.ui.components.OnHero
-import com.aurex.app.ui.components.PremiumCard
-import com.aurex.app.ui.components.PremiumSectionHeader
-import com.aurex.app.ui.components.ShimmerBlock
-import com.aurex.app.ui.components.heroBrush
-import com.aurex.app.ui.theme.AurexTheme
-import com.aurex.app.ui.theme.Palette700
-import com.aurex.app.ui.theme.Palette900
+import com.monebie.app.MoneBieApplication
+import com.monebie.app.core.Money
+import com.monebie.app.core.MoneyFormatter
+import com.monebie.app.domain.model.FinancialOverview
+import com.monebie.app.domain.model.PositionGroup
+import com.monebie.app.domain.model.PositionGroupKey
+import com.monebie.app.presentation.overview.FinancialOverviewUiState
+import com.monebie.app.presentation.overview.FinancialOverviewViewModel
+import com.monebie.app.ui.components.AmbientBackdrop
+import com.monebie.app.ui.components.CardDivider
+import com.monebie.app.ui.components.CountUpMoneyText
+import com.monebie.app.ui.components.DetailTopBar
+import com.monebie.app.ui.components.EmptyState
+import com.monebie.app.ui.components.ErrorState
+import com.monebie.app.ui.components.FormNotice
+import com.monebie.app.ui.components.GlowBadge
+import com.monebie.app.ui.components.GradientTrack
+import com.monebie.app.ui.components.HeroCardShape
+import com.monebie.app.ui.components.HeroDecoration
+import com.monebie.app.ui.components.HeroFinance
+import com.monebie.app.ui.components.HeroPill
+import com.monebie.app.ui.components.HeroSplitBar
+import com.monebie.app.ui.components.HeroTile
+import com.monebie.app.ui.components.MicroLabel
+import com.monebie.app.ui.components.MoneyText
+import com.monebie.app.ui.components.OnHero
+import com.monebie.app.ui.components.PremiumCard
+import com.monebie.app.ui.components.PremiumSectionHeader
+import com.monebie.app.ui.components.ShimmerBlock
+import com.monebie.app.ui.components.heroBrush
+import com.monebie.app.ui.theme.MoneBieTheme
+import com.monebie.app.ui.theme.Palette700
+import com.monebie.app.ui.theme.Palette900
 
 /**
  * The complete balance sheet: what the user owns, what they owe, and the
@@ -100,7 +100,7 @@ fun FinancialOverviewScreen(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
-    val app = context.applicationContext as AurexApplication
+    val app = context.applicationContext as MoneBieApplication
 
     val viewModel: FinancialOverviewViewModel = viewModel(
         factory = viewModelFactory {
@@ -130,12 +130,12 @@ fun FinancialOverviewScreen(
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(
-                    start = AurexTheme.spacing.medium,
-                    end = AurexTheme.spacing.medium,
-                    top = AurexTheme.spacing.small,
-                    bottom = AurexTheme.spacing.extraExtraLarge
+                    start = MoneBieTheme.spacing.medium,
+                    end = MoneBieTheme.spacing.medium,
+                    top = MoneBieTheme.spacing.small,
+                    bottom = MoneBieTheme.spacing.extraExtraLarge
                 ),
-                verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small)
+                verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small)
             ) {
                 when (val state = uiState) {
                     is FinancialOverviewUiState.Loading -> item(key = "skeleton") {
@@ -173,7 +173,7 @@ fun FinancialOverviewScreen(
                                 title = "Assets",
                                 total = overview.totalAssets,
                                 currencySymbol = overview.currencySymbol,
-                                accent = AurexTheme.finance.positive
+                                accent = MoneBieTheme.finance.positive
                             )
                         }
 
@@ -182,7 +182,7 @@ fun FinancialOverviewScreen(
                                 group = group,
                                 sideTotal = overview.totalAssets,
                                 currencySymbol = overview.currencySymbol,
-                                accent = AurexTheme.finance.positive,
+                                accent = MoneBieTheme.finance.positive,
                                 isExpanded = expanded[group.key] == true,
                                 onToggle = { expanded[group.key] = expanded[group.key] != true }
                             )
@@ -193,7 +193,7 @@ fun FinancialOverviewScreen(
                                 title = "Liabilities",
                                 total = overview.totalLiabilities,
                                 currencySymbol = overview.currencySymbol,
-                                accent = AurexTheme.finance.negative
+                                accent = MoneBieTheme.finance.negative
                             )
                         }
 
@@ -217,14 +217,14 @@ fun FinancialOverviewScreen(
                                 group = group,
                                 sideTotal = overview.totalLiabilities,
                                 currencySymbol = overview.currencySymbol,
-                                accent = AurexTheme.finance.negative,
+                                accent = MoneBieTheme.finance.negative,
                                 isExpanded = expanded[group.key] == true,
                                 onToggle = { expanded[group.key] = expanded[group.key] != true }
                             )
                         }
 
                         item(key = "footnote") {
-                            Spacer(Modifier.height(AurexTheme.spacing.small))
+                            Spacer(Modifier.height(MoneBieTheme.spacing.small))
                             MethodologyNote()
                         }
                     }
@@ -409,7 +409,7 @@ private fun SideHeader(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(top = AurexTheme.spacing.small, bottom = 2.dp),
+            .padding(top = MoneBieTheme.spacing.small, bottom = 2.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
@@ -466,7 +466,7 @@ private fun PositionGroupCard(
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.medium)
+            horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.medium)
         ) {
             GlowBadge(icon = iconFor(group.key), tint = accent)
 
@@ -515,7 +515,7 @@ private fun PositionGroupCard(
             }
         }
 
-        Spacer(Modifier.height(AurexTheme.spacing.medium))
+        Spacer(Modifier.height(MoneBieTheme.spacing.medium))
 
         GradientTrack(
             progress = group.shareOf(sideTotal),
@@ -524,7 +524,7 @@ private fun PositionGroupCard(
         )
 
         if (isExpanded && group.hasDetail) {
-            Spacer(Modifier.height(AurexTheme.spacing.medium))
+            Spacer(Modifier.height(MoneBieTheme.spacing.medium))
             CardDivider(alpha = 0.07f)
 
             group.lines.forEach { line ->
@@ -589,14 +589,14 @@ private fun MethodologyNote(modifier: Modifier = Modifier) {
 private fun OverviewSkeleton(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small)
+        verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small)
     ) {
         ShimmerBlock(modifier = Modifier.fillMaxWidth(), height = 268.dp, cornerRadius = 30.dp)
-        Spacer(Modifier.height(AurexTheme.spacing.extraSmall))
+        Spacer(Modifier.height(MoneBieTheme.spacing.extraSmall))
         ShimmerBlock(modifier = Modifier.fillMaxWidth(0.4f), height = 18.dp)
         ShimmerBlock(modifier = Modifier.fillMaxWidth(), height = 104.dp, cornerRadius = 24.dp)
         ShimmerBlock(modifier = Modifier.fillMaxWidth(), height = 104.dp, cornerRadius = 24.dp)
-        Spacer(Modifier.height(AurexTheme.spacing.extraSmall))
+        Spacer(Modifier.height(MoneBieTheme.spacing.extraSmall))
         ShimmerBlock(modifier = Modifier.fillMaxWidth(0.4f), height = 18.dp)
         ShimmerBlock(modifier = Modifier.fillMaxWidth(), height = 104.dp, cornerRadius = 24.dp)
     }

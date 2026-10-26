@@ -1,12 +1,12 @@
-package com.aurex.app.presentation.account
+package com.monebie.app.presentation.account
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aurex.app.core.Money
-import com.aurex.app.domain.model.AccountType
-import com.aurex.app.domain.usecase.account.CreateAccountUseCase
-import com.aurex.app.domain.usecase.user.GetCurrentUserUseCase
-import com.aurex.app.domain.usecase.user.GetSelectedCurrencySymbolUseCase
+import com.monebie.app.core.Money
+import com.monebie.app.domain.model.AccountType
+import com.monebie.app.domain.usecase.account.CreateAccountUseCase
+import com.monebie.app.domain.usecase.user.GetCurrentUserUseCase
+import com.monebie.app.domain.usecase.user.GetSelectedCurrencySymbolUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow

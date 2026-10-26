@@ -1,19 +1,19 @@
-package com.aurex.app.domain.usecase.insights
+package com.monebie.app.domain.usecase.insights
 
-import com.aurex.app.core.addMonths
-import com.aurex.app.core.firstDayOfMonth
-import com.aurex.app.core.formatMonthYear
-import com.aurex.app.core.getCurrentDay
-import com.aurex.app.core.monthOf
-import com.aurex.app.core.shiftMonth
-import com.aurex.app.domain.calculation.FinancialCalculator
-import com.aurex.app.domain.model.CategoryLookup
-import com.aurex.app.domain.model.PeriodChange
-import com.aurex.app.domain.model.SpendingInsights
-import com.aurex.app.domain.model.TransactionType
-import com.aurex.app.domain.repository.CategoryRepository
-import com.aurex.app.domain.repository.TransactionRepository
-import com.aurex.app.domain.repository.UserRepository
+import com.monebie.app.core.firstDayAfterMonth
+import com.monebie.app.core.firstDayOfMonth
+import com.monebie.app.core.formatMonth
+import com.monebie.app.core.getCurrentDay
+import com.monebie.app.core.isInMonth
+import com.monebie.app.core.shiftMonth
+import com.monebie.app.domain.calculation.FinancialCalculator
+import com.monebie.app.domain.model.CategoryLookup
+import com.monebie.app.domain.model.PeriodChange
+import com.monebie.app.domain.model.SpendingInsights
+import com.monebie.app.domain.model.TransactionType
+import com.monebie.app.domain.repository.CategoryRepository
+import com.monebie.app.domain.repository.TransactionRepository
+import com.monebie.app.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 
@@ -31,14 +31,13 @@ class GetSpendingInsightsUseCase(
     private val todayProvider: () -> String = ::getCurrentDay
 ) {
 
-    /** [month] is yyyy-MM. */
+    /** [month] is a month key from monthOf. */
     operator fun invoke(month: String): Flow<SpendingInsights> {
         val today = todayProvider()
-        val currentMonth = monthOf(today)
 
         val previousMonth = shiftMonth(month, -1)
         val windowStart = firstDayOfMonth(previousMonth)
-        val windowEnd = addMonths(firstDayOfMonth(month), 1)
+        val windowEnd = firstDayAfterMonth(month)
 
         return combine(
             transactionRepository.observeTransactionsBetween(windowStart, windowEnd),
@@ -48,17 +47,17 @@ class GetSpendingInsightsUseCase(
             categoryRepository.observeCategories()
         ) { transactions, symbol, categories ->
             val lookup = CategoryLookup(categories)
-            val thisMonth = transactions.filter { monthOf(it.date) == month }
-            val lastMonth = transactions.filter { monthOf(it.date) == previousMonth }
+            val thisMonth = transactions.filter { isInMonth(it.date, month) }
+            val lastMonth = transactions.filter { isInMonth(it.date, previousMonth) }
 
             val summary = FinancialCalculator.summarise(thisMonth)
             val previousSummary = FinancialCalculator.summarise(lastMonth)
 
             SpendingInsights(
                 month = month,
-                monthLabel = formatMonthYear(firstDayOfMonth(month)),
+                monthLabel = formatMonth(month),
                 currencySymbol = symbol ?: DEFAULT_CURRENCY_SYMBOL,
-                canGoToNextMonth = month < currentMonth,
+                canGoToNextMonth = today >= windowEnd,
 
                 summary = summary,
                 expenseChange = PeriodChange(summary.expense, previousSummary.expense),

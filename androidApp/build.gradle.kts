@@ -43,11 +43,11 @@ dependencies {
 }
 
 android {
-    namespace = "com.aurex.app"
+    namespace = "com.monebie.app"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "com.aurex.app"
+        applicationId = "com.monebie.app"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 2

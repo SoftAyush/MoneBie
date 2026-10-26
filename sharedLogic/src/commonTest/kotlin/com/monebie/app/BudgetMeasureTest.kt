@@ -1,13 +1,13 @@
-package com.aurex.app
+package com.monebie.app
 
-import com.aurex.app.core.Money
-import com.aurex.app.domain.model.Budget
-import com.aurex.app.domain.model.BudgetLevel
-import com.aurex.app.domain.model.CategoryLookup
-import com.aurex.app.domain.model.Transaction
-import com.aurex.app.domain.model.TransactionCategories
-import com.aurex.app.domain.model.TransactionType
-import com.aurex.app.domain.usecase.budget.BudgetMeasure
+import com.monebie.app.core.Money
+import com.monebie.app.domain.model.Budget
+import com.monebie.app.domain.model.BudgetLevel
+import com.monebie.app.domain.model.CategoryLookup
+import com.monebie.app.domain.model.Transaction
+import com.monebie.app.domain.model.TransactionCategories
+import com.monebie.app.domain.model.TransactionType
+import com.monebie.app.domain.usecase.budget.BudgetMeasure
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse

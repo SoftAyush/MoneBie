@@ -1,9 +1,9 @@
-package com.aurex.app.data.repository
+package com.monebie.app.data.repository
 
-import com.aurex.app.data.database.DatabaseHelper
-import com.aurex.app.data.mapper.toDomain
-import com.aurex.app.domain.model.Currency
-import com.aurex.app.domain.repository.CurrencyRepository
+import com.monebie.app.data.database.DatabaseHelper
+import com.monebie.app.data.mapper.toDomain
+import com.monebie.app.domain.model.Currency
+import com.monebie.app.domain.repository.CurrencyRepository
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import kotlinx.coroutines.CoroutineDispatcher

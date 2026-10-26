@@ -1,10 +1,10 @@
-package com.aurex.app
+package com.monebie.app
 
-import com.aurex.app.core.Money
-import com.aurex.app.domain.calculation.EmiSchedule
-import com.aurex.app.domain.calculation.FinancialCalculator
-import com.aurex.app.domain.model.Emi
-import com.aurex.app.domain.model.EmiStatus
+import com.monebie.app.core.Money
+import com.monebie.app.domain.calculation.EmiSchedule
+import com.monebie.app.domain.calculation.FinancialCalculator
+import com.monebie.app.domain.model.Emi
+import com.monebie.app.domain.model.EmiStatus
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull

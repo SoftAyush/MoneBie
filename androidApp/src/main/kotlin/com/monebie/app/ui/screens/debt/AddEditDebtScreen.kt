@@ -1,4 +1,4 @@
-package com.aurex.app.ui.screens.debt
+package com.monebie.app.ui.screens.debt
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,21 +30,21 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.aurex.app.AurexApplication
-import com.aurex.app.domain.model.PaymentFrequency
-import com.aurex.app.domain.model.displayName
-import com.aurex.app.presentation.debt.AddEditDebtViewModel
-import com.aurex.app.ui.components.AccountPicker
-import com.aurex.app.ui.components.AmbientBackdrop
-import com.aurex.app.ui.components.AurexButton
-import com.aurex.app.ui.components.AurexDateField
-import com.aurex.app.ui.components.AurexTextField
-import com.aurex.app.ui.components.DetailTopBar
-import com.aurex.app.ui.components.FilterPill
-import com.aurex.app.ui.components.FormField
-import com.aurex.app.ui.components.FormSection
-import com.aurex.app.ui.components.MoneyInputField
-import com.aurex.app.ui.theme.AurexTheme
+import com.monebie.app.MoneBieApplication
+import com.monebie.app.domain.model.PaymentFrequency
+import com.monebie.app.domain.model.displayName
+import com.monebie.app.presentation.debt.AddEditDebtViewModel
+import com.monebie.app.ui.components.AccountPicker
+import com.monebie.app.ui.components.AmbientBackdrop
+import com.monebie.app.ui.components.MoneBieButton
+import com.monebie.app.ui.components.MoneBieDateField
+import com.monebie.app.ui.components.MoneBieTextField
+import com.monebie.app.ui.components.DetailTopBar
+import com.monebie.app.ui.components.FilterPill
+import com.monebie.app.ui.components.FormField
+import com.monebie.app.ui.components.FormSection
+import com.monebie.app.ui.components.MoneyInputField
+import com.monebie.app.ui.theme.MoneBieTheme
 
 /**
  * Create or edit a debt.
@@ -64,7 +64,7 @@ fun AddEditDebtScreen(
     debtId: Long? = null
 ) {
     val context = LocalContext.current
-    val app = context.applicationContext as AurexApplication
+    val app = context.applicationContext as MoneBieApplication
 
     val viewModel: AddEditDebtViewModel = viewModel(
         key = "add_edit_debt_" + (debtId ?: -1L),
@@ -101,16 +101,16 @@ fun AddEditDebtScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
-                    .padding(horizontal = AurexTheme.spacing.medium)
+                    .padding(horizontal = MoneBieTheme.spacing.medium)
                     .imePadding()
                     .navigationBarsPadding(),
-                verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.large)
+                verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.large)
             ) {
-                Spacer(Modifier.height(AurexTheme.spacing.extraSmall))
+                Spacer(Modifier.height(MoneBieTheme.spacing.extraSmall))
 
                 FormSection(title = "The debt") {
                     FormField(label = "What is it", error = uiState.nameError) {
-                        AurexTextField(
+                        MoneBieTextField(
                             value = uiState.name,
                             onValueChange = viewModel::setName,
                             placeholder = "e.g. Car loan",
@@ -120,7 +120,7 @@ fun AddEditDebtScreen(
                     }
 
                     FormField(label = "Owed to", error = uiState.lenderError) {
-                        AurexTextField(
+                        MoneBieTextField(
                             value = uiState.lender,
                             onValueChange = viewModel::setLender,
                             placeholder = "Bank, company or person",
@@ -140,14 +140,14 @@ fun AddEditDebtScreen(
 
                 FormSection(title = "How it runs") {
                     FormField(label = "Start date") {
-                        AurexDateField(
+                        MoneBieDateField(
                             day = uiState.startDate,
                             onDayChange = { day -> day?.let(viewModel::setStartDate) }
                         )
                     }
 
                     FormField(label = "Due date (optional)") {
-                        AurexDateField(
+                        MoneBieDateField(
                             day = uiState.dueDate,
                             onDayChange = viewModel::setDueDate,
                             placeholder = "No due date set",
@@ -158,8 +158,8 @@ fun AddEditDebtScreen(
                     FormField(label = "Payment frequency") {
                         FlowRow(
                             modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small),
-                            verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small)
+                            horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small),
+                            verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small)
                         ) {
                             PaymentFrequency.entries.forEach { frequency ->
                                 FilterPill(
@@ -187,7 +187,7 @@ fun AddEditDebtScreen(
 
                 FormSection(title = "Details") {
                     FormField(label = "Interest rate (optional)") {
-                        AurexTextField(
+                        MoneBieTextField(
                             value = uiState.interestRateInput,
                             onValueChange = viewModel::setInterestRate,
                             placeholder = "0.0",
@@ -208,7 +208,7 @@ fun AddEditDebtScreen(
                     }
 
                     FormField(label = "Notes (optional)") {
-                        AurexTextField(
+                        MoneBieTextField(
                             value = uiState.notes,
                             onValueChange = viewModel::setNotes,
                             placeholder = "Anything worth remembering",
@@ -218,13 +218,13 @@ fun AddEditDebtScreen(
                     }
                 }
 
-                AurexButton(
+                MoneBieButton(
                     text = if (uiState.isEditing) "Save changes" else "Add debt",
                     loading = uiState.isSaving,
                     onClick = viewModel::save
                 )
 
-                Spacer(Modifier.height(AurexTheme.spacing.extraExtraLarge))
+                Spacer(Modifier.height(MoneBieTheme.spacing.extraExtraLarge))
             }
         }
     }

@@ -1,12 +1,12 @@
-package com.aurex.app.data.mapper
+package com.monebie.app.data.mapper
 
-import com.aurex.app.core.Money
-import com.aurex.app.domain.model.PaymentMethod
-import com.aurex.app.domain.model.Transaction
-import com.aurex.app.domain.model.TransactionSource
-import com.aurex.app.domain.model.TransactionSourceType
-import com.aurex.app.domain.model.TransactionType
-import com.aurex.app.db.TransactionRecord as DbTransaction
+import com.monebie.app.core.Money
+import com.monebie.app.domain.model.PaymentMethod
+import com.monebie.app.domain.model.Transaction
+import com.monebie.app.domain.model.TransactionSource
+import com.monebie.app.domain.model.TransactionSourceType
+import com.monebie.app.domain.model.TransactionType
+import com.monebie.app.db.TransactionRecord as DbTransaction
 
 fun DbTransaction.toDomain(): Transaction = Transaction(
     id = id,

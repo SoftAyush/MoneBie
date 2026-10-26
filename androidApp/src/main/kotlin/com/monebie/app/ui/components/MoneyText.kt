@@ -1,4 +1,4 @@
-package com.aurex.app.ui.components
+package com.monebie.app.ui.components
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -8,9 +8,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import com.aurex.app.core.Money
-import com.aurex.app.core.MoneyFormatter
-import com.aurex.app.ui.theme.AurexTheme
+import com.monebie.app.core.Money
+import com.monebie.app.core.MoneyFormatter
+import com.monebie.app.ui.theme.MoneBieTheme
 
 /**
  * Renders a monetary value.
@@ -50,7 +50,7 @@ fun MoneyText(
 /** Colour for a value where the sign carries meaning (net balance, net position). */
 @Composable
 fun signedMoneyColor(money: Money): Color = when {
-    money.isPositive -> AurexTheme.finance.positive
-    money.isNegative -> AurexTheme.finance.negative
+    money.isPositive -> MoneBieTheme.finance.positive
+    money.isNegative -> MoneBieTheme.finance.negative
     else -> MaterialTheme.colorScheme.onSurfaceVariant
 }

@@ -1,4 +1,4 @@
-package com.aurex.app.ui.components
+package com.monebie.app.ui.components
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ReceiptLong
@@ -35,7 +35,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
  * mapping is the only place the two worlds meet - and iOS can map the same keys
  * to its own symbols later.
  */
-object AurexIcons {
+object MoneBieIcons {
 
     fun forCategory(iconKey: String): ImageVector = when (iconKey) {
         "salary" -> Icons.Rounded.Work

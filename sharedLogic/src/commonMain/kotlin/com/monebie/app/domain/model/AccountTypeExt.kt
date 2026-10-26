@@ -1,6 +1,6 @@
-package com.aurex.app.domain.model
+package com.monebie.app.domain.model
 
-import com.aurex.app.core.Money
+import com.monebie.app.core.Money
 
 /**
  * Presentation and balance-sheet facts about [AccountType], kept outside the enum
@@ -44,9 +44,9 @@ val AccountType.isAsset: Boolean
 /**
  * Which end of the signed scale a new account starts on.
  *
- * Every balance in Aurex lives on one scale where negative means the account is
+ * Every balance in MoneBie lives on one scale where negative means the account is
  * a claim against the user - that is what
- * [com.aurex.app.domain.model.Account.outstanding] reads, and what every
+ * [com.monebie.app.domain.model.Account.outstanding] reads, and what every
  * liability total is built from. An entry field can only offer digits, so the
  * figure a user types for a card is what they *owe*, and it belongs on the
  * other end of that scale from the figure they type for a bank account.

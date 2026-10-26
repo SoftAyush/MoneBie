@@ -1,17 +1,18 @@
-package com.aurex.app.presentation.emi
+package com.monebie.app.presentation.emi
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aurex.app.core.Money
-import com.aurex.app.core.daysBetween
-import com.aurex.app.core.getCurrentDay
-import com.aurex.app.core.monthOf
-import com.aurex.app.core.totalOf
-import com.aurex.app.domain.calculation.FinancialCalculator
-import com.aurex.app.domain.model.Emi
-import com.aurex.app.domain.model.EmiStatus
-import com.aurex.app.domain.usecase.emi.GetEmisUseCase
-import com.aurex.app.domain.usecase.user.GetSelectedCurrencySymbolUseCase
+import com.monebie.app.core.Money
+import com.monebie.app.core.daysBetween
+import com.monebie.app.core.AppCalendar
+import com.monebie.app.core.getCurrentDay
+import com.monebie.app.core.monthOf
+import com.monebie.app.core.totalOf
+import com.monebie.app.domain.calculation.FinancialCalculator
+import com.monebie.app.domain.model.Emi
+import com.monebie.app.domain.model.EmiStatus
+import com.monebie.app.domain.usecase.emi.GetEmisUseCase
+import com.monebie.app.domain.usecase.user.GetSelectedCurrencySymbolUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -79,8 +80,10 @@ class EmiListViewModel(
     val uiState: StateFlow<EmiListUiState> = combine(
         getEmisUseCase(),
         getSelectedCurrencySymbolUseCase(),
-        statusFilter
-    ) { emis, symbol, filter ->
+        statusFilter,
+        // "Due this month" depends on whether months are AD or BS.
+        AppCalendar.system
+    ) { emis, symbol, filter, _ ->
         val today = todayProvider()
 
         val all = emis.map { emi ->

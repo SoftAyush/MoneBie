@@ -1,23 +1,23 @@
-package com.aurex.app.presentation.debt
+package com.monebie.app.presentation.debt
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aurex.app.core.Money
-import com.aurex.app.core.getCurrentDay
-import com.aurex.app.domain.calculation.FinancialCalculator
-import com.aurex.app.domain.model.Account
-import com.aurex.app.domain.model.Debt
-import com.aurex.app.domain.model.DebtPayment
-import com.aurex.app.domain.model.DebtStatus
-import com.aurex.app.domain.model.PaymentMethod
-import com.aurex.app.domain.model.defaultPaymentMethodFor
-import com.aurex.app.domain.usecase.account.GetAccountsUseCase
-import com.aurex.app.domain.usecase.debt.DeleteDebtPaymentUseCase
-import com.aurex.app.domain.usecase.debt.DeleteDebtUseCase
-import com.aurex.app.domain.usecase.debt.GetDebtPaymentsUseCase
-import com.aurex.app.domain.usecase.debt.GetDebtUseCase
-import com.aurex.app.domain.usecase.debt.RecordDebtPaymentUseCase
-import com.aurex.app.domain.usecase.user.GetSelectedCurrencySymbolUseCase
+import com.monebie.app.core.Money
+import com.monebie.app.core.getCurrentDay
+import com.monebie.app.domain.calculation.FinancialCalculator
+import com.monebie.app.domain.model.Account
+import com.monebie.app.domain.model.Debt
+import com.monebie.app.domain.model.DebtPayment
+import com.monebie.app.domain.model.DebtStatus
+import com.monebie.app.domain.model.PaymentMethod
+import com.monebie.app.domain.model.defaultPaymentMethodFor
+import com.monebie.app.domain.usecase.account.GetAccountsUseCase
+import com.monebie.app.domain.usecase.debt.DeleteDebtPaymentUseCase
+import com.monebie.app.domain.usecase.debt.DeleteDebtUseCase
+import com.monebie.app.domain.usecase.debt.GetDebtPaymentsUseCase
+import com.monebie.app.domain.usecase.debt.GetDebtUseCase
+import com.monebie.app.domain.usecase.debt.RecordDebtPaymentUseCase
+import com.monebie.app.domain.usecase.user.GetSelectedCurrencySymbolUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -84,7 +84,7 @@ class DebtDetailViewModel(
             debt = debt,
             status = debt?.let { FinancialCalculator.debtStatus(it, today) } ?: DebtStatus.ACTIVE,
             nextDueDate = nextDue,
-            daysUntilDue = nextDue?.let { com.aurex.app.core.daysBetween(today, it) },
+            daysUntilDue = nextDue?.let { com.monebie.app.core.daysBetween(today, it) },
             payments = payments,
             accounts = accounts,
             currencySymbol = symbol ?: "$",

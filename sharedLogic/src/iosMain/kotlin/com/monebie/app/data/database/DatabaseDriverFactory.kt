@@ -1,11 +1,11 @@
-package com.aurex.app.data.database
+package com.monebie.app.data.database
 
 import app.cash.sqldelight.db.SqlDriver
 import app.cash.sqldelight.driver.native.NativeSqliteDriver
-import com.aurex.app.db.AurexDatabase
+import com.monebie.app.db.MoneBieDatabase
 
 actual class DatabaseDriverFactory {
     actual fun createDriver(): SqlDriver {
-        return NativeSqliteDriver(AurexDatabase.Schema, AUREX_DATABASE_NAME)
+        return NativeSqliteDriver(MoneBieDatabase.Schema, MONEBIE_DATABASE_NAME)
     }
 }

@@ -1,4 +1,4 @@
-package com.aurex.app.security
+package com.monebie.app.security
 
 import android.content.Context
 import java.security.MessageDigest
@@ -21,7 +21,7 @@ import java.security.SecureRandom
  */
 object AppLockSettings {
 
-    private const val FILE = "aurex_app_lock"
+    private const val FILE = "monebie_app_lock"
     private const val KEY_ENABLED = "enabled"
     private const val KEY_PIN_HASH = "pin_hash"
     private const val KEY_PIN_SALT = "pin_salt"

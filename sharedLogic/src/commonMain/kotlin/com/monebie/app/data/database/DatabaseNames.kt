@@ -1,4 +1,4 @@
-package com.aurex.app.data.database
+package com.monebie.app.data.database
 
 /**
  * The on-disk name of the database, shared by every platform's driver.
@@ -8,4 +8,4 @@ package com.aurex.app.data.database
  * that misses because one copy of the string drifted would look like it worked
  * and leave everything in place.
  */
-const val AUREX_DATABASE_NAME = "aurex.db"
+const val MONEBIE_DATABASE_NAME = "monebie.db"

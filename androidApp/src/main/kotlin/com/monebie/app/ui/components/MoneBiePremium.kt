@@ -1,4 +1,4 @@
-package com.aurex.app.ui.components
+package com.monebie.app.ui.components
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -57,18 +57,18 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.aurex.app.core.Money
-import com.aurex.app.core.MoneyFormatter
-import com.aurex.app.ui.theme.DarkFinanceColors
-import com.aurex.app.ui.theme.FinanceColors
-import com.aurex.app.ui.theme.Palette500
-import com.aurex.app.ui.theme.Palette700
-import com.aurex.app.ui.theme.Palette900
+import com.monebie.app.core.Money
+import com.monebie.app.core.MoneyFormatter
+import com.monebie.app.ui.theme.DarkFinanceColors
+import com.monebie.app.ui.theme.FinanceColors
+import com.monebie.app.ui.theme.Palette500
+import com.monebie.app.ui.theme.Palette700
+import com.monebie.app.ui.theme.Palette900
 
 /*
  * The elevated visual layer.
  *
- * The plain [AurexCard] surfaces still carry the dense working screens, where a
+ * The plain [MoneBieCard] surfaces still carry the dense working screens, where a
  * user is scanning for one figure. The screens a user opens every day - the
  * dashboard, the ledger - are allowed the depth those are not: an ambient
  * backdrop, a deep brand-filled hero, and cards that sit above the page rather

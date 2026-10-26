@@ -1,9 +1,9 @@
-package com.aurex.app.presentation.reminders
+package com.monebie.app.presentation.reminders
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aurex.app.domain.usecase.reminders.GetUpcomingPaymentsUseCase
-import com.aurex.app.domain.usecase.reminders.ReminderBoard
+import com.monebie.app.domain.usecase.reminders.GetUpcomingPaymentsUseCase
+import com.monebie.app.domain.usecase.reminders.ReminderBoard
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn

@@ -1,10 +1,10 @@
-package com.aurex.app.domain.usecase.export
+package com.monebie.app.domain.usecase.export
 
-import com.aurex.app.core.dayOf
-import com.aurex.app.domain.model.Account
-import com.aurex.app.domain.model.Transaction
-import com.aurex.app.domain.model.CategoryLookup
-import com.aurex.app.domain.model.displayName
+import com.monebie.app.core.dayOf
+import com.monebie.app.domain.model.Account
+import com.monebie.app.domain.model.Transaction
+import com.monebie.app.domain.model.CategoryLookup
+import com.monebie.app.domain.model.displayName
 
 /** A generated file, ready for the platform layer to write and share. */
 data class ExportedFile(
@@ -30,7 +30,7 @@ object TransactionCsv {
     private const val HEADER =
         "Date,Type,Category,Account,Transfer To,Amount,Payment Method,Note,Source"
 
-    const val FILE_NAME = "aurex-transactions.csv"
+    const val FILE_NAME = "monebie-transactions.csv"
     const val MIME_TYPE = "text/csv"
 
     fun build(

@@ -1,4 +1,4 @@
-package com.aurex.app.ui.navigation
+package com.monebie.app.ui.navigation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ReceiptLong

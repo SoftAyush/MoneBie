@@ -1,8 +1,8 @@
-package com.aurex.app.domain.usecase.account
+package com.monebie.app.domain.usecase.account
 
-import com.aurex.app.core.Money
-import com.aurex.app.domain.model.AccountType
-import com.aurex.app.domain.repository.AccountRepository
+import com.monebie.app.core.Money
+import com.monebie.app.domain.model.AccountType
+import com.monebie.app.domain.repository.AccountRepository
 
 /**
  * Creates a financial account.

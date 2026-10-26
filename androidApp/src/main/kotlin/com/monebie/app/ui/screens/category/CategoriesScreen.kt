@@ -1,4 +1,4 @@
-package com.aurex.app.ui.screens.category
+package com.monebie.app.ui.screens.category
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -73,46 +73,46 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.aurex.app.AurexApplication
-import com.aurex.app.domain.model.TransactionCategory
-import com.aurex.app.domain.model.TransactionType
-import com.aurex.app.presentation.category.CategoriesViewModel
-import com.aurex.app.presentation.category.CategoryEvent
-import com.aurex.app.presentation.category.CategoryFormState
-import com.aurex.app.ui.components.AmbientBackdrop
-import com.aurex.app.ui.components.AurexButton
-import com.aurex.app.ui.components.AurexIcons
-import com.aurex.app.ui.components.AurexSnackbarHost
-import com.aurex.app.ui.components.AurexTextField
-import com.aurex.app.ui.components.ConfirmDialog
-import com.aurex.app.ui.components.DetailTopBar
-import com.aurex.app.ui.components.EmptyState
-import com.aurex.app.ui.components.FilterPill
-import com.aurex.app.ui.components.FormField
-import com.aurex.app.ui.components.GlassIconButton
-import com.aurex.app.ui.components.GlowBadge
-import com.aurex.app.ui.components.HeroCardShape
-import com.aurex.app.ui.components.HeroDecoration
-import com.aurex.app.ui.components.HeroFinance
-import com.aurex.app.ui.components.HeroNote
-import com.aurex.app.ui.components.HeroPill
-import com.aurex.app.ui.components.HeroSplitBar
-import com.aurex.app.ui.components.HeroTile
-import com.aurex.app.ui.components.MicroLabel
-import com.aurex.app.ui.components.OnHero
-import com.aurex.app.ui.components.PremiumCard
-import com.aurex.app.ui.components.PremiumSectionHeader
-import com.aurex.app.ui.components.Segment
-import com.aurex.app.ui.components.SegmentedSelector
-import com.aurex.app.ui.components.ShimmerBlock
-import com.aurex.app.ui.components.entrance
-import com.aurex.app.ui.components.heroBrush
-import com.aurex.app.ui.components.pressable
-import com.aurex.app.ui.components.rememberEntrance
-import com.aurex.app.ui.components.showAurexMessage
-import com.aurex.app.ui.theme.AurexTheme
-import com.aurex.app.ui.theme.Palette700
-import com.aurex.app.ui.theme.Palette900
+import com.monebie.app.MoneBieApplication
+import com.monebie.app.domain.model.TransactionCategory
+import com.monebie.app.domain.model.TransactionType
+import com.monebie.app.presentation.category.CategoriesViewModel
+import com.monebie.app.presentation.category.CategoryEvent
+import com.monebie.app.presentation.category.CategoryFormState
+import com.monebie.app.ui.components.AmbientBackdrop
+import com.monebie.app.ui.components.MoneBieButton
+import com.monebie.app.ui.components.MoneBieIcons
+import com.monebie.app.ui.components.MoneBieSnackbarHost
+import com.monebie.app.ui.components.MoneBieTextField
+import com.monebie.app.ui.components.ConfirmDialog
+import com.monebie.app.ui.components.DetailTopBar
+import com.monebie.app.ui.components.EmptyState
+import com.monebie.app.ui.components.FilterPill
+import com.monebie.app.ui.components.FormField
+import com.monebie.app.ui.components.GlassIconButton
+import com.monebie.app.ui.components.GlowBadge
+import com.monebie.app.ui.components.HeroCardShape
+import com.monebie.app.ui.components.HeroDecoration
+import com.monebie.app.ui.components.HeroFinance
+import com.monebie.app.ui.components.HeroNote
+import com.monebie.app.ui.components.HeroPill
+import com.monebie.app.ui.components.HeroSplitBar
+import com.monebie.app.ui.components.HeroTile
+import com.monebie.app.ui.components.MicroLabel
+import com.monebie.app.ui.components.OnHero
+import com.monebie.app.ui.components.PremiumCard
+import com.monebie.app.ui.components.PremiumSectionHeader
+import com.monebie.app.ui.components.Segment
+import com.monebie.app.ui.components.SegmentedSelector
+import com.monebie.app.ui.components.ShimmerBlock
+import com.monebie.app.ui.components.entrance
+import com.monebie.app.ui.components.heroBrush
+import com.monebie.app.ui.components.pressable
+import com.monebie.app.ui.components.rememberEntrance
+import com.monebie.app.ui.components.showMoneBieMessage
+import com.monebie.app.ui.theme.MoneBieTheme
+import com.monebie.app.ui.theme.Palette700
+import com.monebie.app.ui.theme.Palette900
 
 /**
  * Category management.
@@ -133,7 +133,7 @@ fun CategoriesScreen(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
-    val app = context.applicationContext as AurexApplication
+    val app = context.applicationContext as MoneBieApplication
 
     val viewModel: CategoriesViewModel = viewModel(
         factory = viewModelFactory {
@@ -174,9 +174,9 @@ fun CategoriesScreen(
 
     LaunchedEffect(event) {
         when (val current = event) {
-            is CategoryEvent.Saved -> snackbarHostState.showAurexMessage("Saved ${current.name}.")
-            is CategoryEvent.Deleted -> snackbarHostState.showAurexMessage("Deleted ${current.name}.")
-            is CategoryEvent.Hidden -> snackbarHostState.showAurexMessage(
+            is CategoryEvent.Saved -> snackbarHostState.showMoneBieMessage("Saved ${current.name}.")
+            is CategoryEvent.Deleted -> snackbarHostState.showMoneBieMessage("Deleted ${current.name}.")
+            is CategoryEvent.Hidden -> snackbarHostState.showMoneBieMessage(
                 current.name + " is hidden. Its " +
                     (
                         if (current.transactionCount == 1) {
@@ -187,8 +187,8 @@ fun CategoriesScreen(
                         ) + " the label."
             )
 
-            is CategoryEvent.Restored -> snackbarHostState.showAurexMessage("${current.name} is back.")
-            is CategoryEvent.Refused -> snackbarHostState.showAurexMessage(current.message)
+            is CategoryEvent.Restored -> snackbarHostState.showMoneBieMessage("${current.name} is back.")
+            is CategoryEvent.Refused -> snackbarHostState.showMoneBieMessage(current.message)
             null -> Unit
         }
         if (event != null) viewModel.consumeEvent()
@@ -209,8 +209,8 @@ fun CategoriesScreen(
     val nothingMatches = term.isNotEmpty() &&
         expense.isEmpty() && income.isEmpty() && hidden.isEmpty()
 
-    val negative = AurexTheme.finance.negative
-    val positive = AurexTheme.finance.positive
+    val negative = MoneBieTheme.finance.negative
+    val positive = MoneBieTheme.finance.positive
 
     val openEditor: (TransactionCategory) -> Unit = { category ->
         editing = category
@@ -255,13 +255,13 @@ fun CategoriesScreen(
                 columns = GridCells.Fixed(2),
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(
-                    start = AurexTheme.spacing.medium,
-                    end = AurexTheme.spacing.medium,
-                    top = AurexTheme.spacing.small,
-                    bottom = AurexTheme.spacing.extraExtraLarge
+                    start = MoneBieTheme.spacing.medium,
+                    end = MoneBieTheme.spacing.medium,
+                    top = MoneBieTheme.spacing.small,
+                    bottom = MoneBieTheme.spacing.extraExtraLarge
                 ),
-                horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small),
-                verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small)
+                horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small),
+                verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small)
             ) {
                 item(key = "hero", span = { GridItemSpan(maxLineSpan) }) {
                     CategoryHero(
@@ -282,7 +282,7 @@ fun CategoriesScreen(
                     CategorySearchField(
                         value = query,
                         onValueChange = { query = it },
-                        modifier = Modifier.padding(top = AurexTheme.spacing.extraSmall)
+                        modifier = Modifier.padding(top = MoneBieTheme.spacing.extraSmall)
                     )
                 }
 
@@ -339,9 +339,9 @@ fun CategoriesScreen(
 
                 if (showHidden) {
                     item(key = "hidden_header", span = { GridItemSpan(maxLineSpan) }) {
-                        Column(modifier = Modifier.padding(top = AurexTheme.spacing.small)) {
+                        Column(modifier = Modifier.padding(top = MoneBieTheme.spacing.small)) {
                             PremiumSectionHeader(title = "Hidden")
-                            Spacer(Modifier.height(AurexTheme.spacing.extraSmall))
+                            Spacer(Modifier.height(MoneBieTheme.spacing.extraSmall))
                             Text(
                                 text = "Not offered when recording, but still naming the " +
                                     "transactions already filed under them.",
@@ -374,7 +374,7 @@ fun CategoriesScreen(
          * it landed.
          */
 
-        AurexSnackbarHost(
+        MoneBieSnackbarHost(
             hostState = snackbarHostState,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
@@ -548,7 +548,7 @@ private fun CategoryTile(
             verticalAlignment = Alignment.Top
         ) {
             GlowBadge(
-                icon = AurexIcons.forCategory(category.iconKey),
+                icon = MoneBieIcons.forCategory(category.iconKey),
                 tint = accent,
                 size = 40.dp
             )
@@ -559,7 +559,7 @@ private fun CategoryTile(
                 // Nothing to offer but the reason: this one cannot be removed.
                 category.isProtected -> Icon(
                     imageVector = Icons.Rounded.Lock,
-                    contentDescription = "Aurex posts to this category",
+                    contentDescription = "MoneBie posts to this category",
                     tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.45f),
                     modifier = Modifier.size(15.dp)
                 )
@@ -901,9 +901,9 @@ private fun LensRow(
     FlowRow(
         modifier = modifier
             .fillMaxWidth()
-            .padding(top = AurexTheme.spacing.extraSmall),
-        horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small),
-        verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small)
+            .padding(top = MoneBieTheme.spacing.extraSmall),
+        horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small),
+        verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small)
     ) {
         FilterPill(
             label = "All",
@@ -948,7 +948,7 @@ private fun SideHeader(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(top = AurexTheme.spacing.small, bottom = 2.dp),
+            .padding(top = MoneBieTheme.spacing.small, bottom = 2.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
@@ -1001,19 +1001,19 @@ private fun HiddenCategoryCard(
     modifier: Modifier = Modifier
 ) {
     val side = if (category.appliesTo == TransactionType.INCOME) {
-        AurexTheme.finance.positive
+        MoneBieTheme.finance.positive
     } else {
-        AurexTheme.finance.negative
+        MoneBieTheme.finance.negative
     }
 
     PremiumCard(modifier = modifier.fillMaxWidth(), contentPadding = 14.dp) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.medium)
+            horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.medium)
         ) {
             GlowBadge(
-                icon = AurexIcons.forCategory(category.iconKey),
+                icon = MoneBieIcons.forCategory(category.iconKey),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 size = 38.dp
             )
@@ -1072,24 +1072,24 @@ private fun CategoryFormSheet(
     onRemove: (TransactionCategory) -> Unit
 ) {
     val accent = if (form.appliesTo == TransactionType.INCOME) {
-        AurexTheme.finance.positive
+        MoneBieTheme.finance.positive
     } else {
-        AurexTheme.finance.negative
+        MoneBieTheme.finance.negative
     }
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = AurexTheme.spacing.medium)
+            .padding(horizontal = MoneBieTheme.spacing.medium)
             .imePadding()
             .navigationBarsPadding()
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             // The badge previews the choice: icon and side at the size they
             // will appear at in the picker this is being built for.
-            GlowBadge(icon = AurexIcons.forCategory(form.iconKey), tint = accent)
-            Spacer(Modifier.width(AurexTheme.spacing.medium))
+            GlowBadge(icon = MoneBieIcons.forCategory(form.iconKey), tint = accent)
+            Spacer(Modifier.width(MoneBieTheme.spacing.medium))
             Column {
                 Text(
                     text = if (form.isEditing) "Edit category" else "New category",
@@ -1106,7 +1106,7 @@ private fun CategoryFormSheet(
             }
         }
 
-        Spacer(Modifier.height(AurexTheme.spacing.large))
+        Spacer(Modifier.height(MoneBieTheme.spacing.large))
 
         if (form.canChangeSide) {
             FormField(label = "Side of the ledger") {
@@ -1115,12 +1115,12 @@ private fun CategoryFormSheet(
                         Segment(
                             value = TransactionType.EXPENSE,
                             label = "Money out",
-                            accent = AurexTheme.finance.negative
+                            accent = MoneBieTheme.finance.negative
                         ),
                         Segment(
                             value = TransactionType.INCOME,
                             label = "Money in",
-                            accent = AurexTheme.finance.positive
+                            accent = MoneBieTheme.finance.positive
                         )
                     ),
                     selected = form.appliesTo,
@@ -1128,7 +1128,7 @@ private fun CategoryFormSheet(
                 )
             }
 
-            Spacer(Modifier.height(AurexTheme.spacing.large))
+            Spacer(Modifier.height(MoneBieTheme.spacing.large))
         }
 
         FormField(
@@ -1140,7 +1140,7 @@ private fun CategoryFormSheet(
                 null
             }
         ) {
-            AurexTextField(
+            MoneBieTextField(
                 value = form.name,
                 onValueChange = onNameChange,
                 placeholder = "e.g. Coffee",
@@ -1149,15 +1149,15 @@ private fun CategoryFormSheet(
             )
         }
 
-        Spacer(Modifier.height(AurexTheme.spacing.large))
+        Spacer(Modifier.height(MoneBieTheme.spacing.large))
 
         FormField(label = "Icon") {
             FlowRow(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small),
-                verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small)
+                horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small),
+                verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small)
             ) {
-                AurexIcons.categoryChoices.forEach { key ->
+                MoneBieIcons.categoryChoices.forEach { key ->
                     IconChoice(
                         iconKey = key,
                         selected = key == form.iconKey,
@@ -1168,16 +1168,16 @@ private fun CategoryFormSheet(
             }
         }
 
-        Spacer(Modifier.height(AurexTheme.spacing.extraLarge))
+        Spacer(Modifier.height(MoneBieTheme.spacing.extraLarge))
 
-        AurexButton(
+        MoneBieButton(
             text = if (form.isEditing) "Save changes" else "Add category",
             loading = form.isSaving,
             onClick = onSave
         )
 
         if (removable != null) {
-            Spacer(Modifier.height(AurexTheme.spacing.small))
+            Spacer(Modifier.height(MoneBieTheme.spacing.small))
 
             RemoveCategoryButton(
                 label = if (removable.isBuiltIn) {
@@ -1189,7 +1189,7 @@ private fun CategoryFormSheet(
             )
         }
 
-        Spacer(Modifier.height(AurexTheme.spacing.extraExtraLarge))
+        Spacer(Modifier.height(MoneBieTheme.spacing.extraExtraLarge))
     }
 }
 
@@ -1276,7 +1276,7 @@ private fun IconChoice(
         contentAlignment = Alignment.Center
     ) {
         Icon(
-            imageVector = AurexIcons.forCategory(iconKey),
+            imageVector = MoneBieIcons.forCategory(iconKey),
             contentDescription = iconKey,
             tint = if (selected) accent else scheme.onSurfaceVariant,
             modifier = Modifier.size(23.dp)

@@ -1,4 +1,4 @@
-package com.aurex.app.ui.navigation
+package com.monebie.app.ui.navigation
 
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -31,33 +31,33 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.aurex.app.domain.model.LoanDirection
-import com.aurex.app.domain.model.TransactionType
-import com.aurex.app.ui.screens.dashboard.DashboardScreen
-import com.aurex.app.ui.screens.backup.BackupScreen
-import com.aurex.app.ui.screens.budget.BudgetsScreen
-import com.aurex.app.ui.screens.csvimport.ImportCsvScreen
-import com.aurex.app.ui.screens.lock.AppLockSettingsScreen
-import com.aurex.app.ui.screens.recurring.AddEditRecurringScreen
-import com.aurex.app.ui.screens.recurring.RecurringScreen
-import com.aurex.app.ui.screens.category.CategoriesScreen
-import com.aurex.app.ui.screens.module.AccountsScreen
+import com.monebie.app.domain.model.LoanDirection
+import com.monebie.app.domain.model.TransactionType
+import com.monebie.app.ui.screens.dashboard.DashboardScreen
+import com.monebie.app.ui.screens.backup.BackupScreen
+import com.monebie.app.ui.screens.budget.BudgetsScreen
+import com.monebie.app.ui.screens.csvimport.ImportCsvScreen
+import com.monebie.app.ui.screens.lock.AppLockSettingsScreen
+import com.monebie.app.ui.screens.recurring.AddEditRecurringScreen
+import com.monebie.app.ui.screens.recurring.RecurringScreen
+import com.monebie.app.ui.screens.category.CategoriesScreen
+import com.monebie.app.ui.screens.module.AccountsScreen
 
-import com.aurex.app.ui.screens.borrowlend.AddEditBorrowLendScreen
-import com.aurex.app.ui.screens.borrowlend.BorrowLendDetailScreen
-import com.aurex.app.ui.screens.borrowlend.BorrowLendScreen
-import com.aurex.app.ui.screens.debt.AddEditDebtScreen
-import com.aurex.app.ui.screens.emi.AddEditEmiScreen
-import com.aurex.app.ui.screens.emi.EmiDetailScreen
-import com.aurex.app.ui.screens.emi.EmiScreen
-import com.aurex.app.ui.screens.insights.InsightsScreen
-import com.aurex.app.ui.screens.overview.FinancialOverviewScreen
-import com.aurex.app.ui.screens.reminders.RemindersScreen
-import com.aurex.app.ui.screens.settings.SettingsScreen
-import com.aurex.app.ui.screens.debt.DebtDetailScreen
-import com.aurex.app.ui.screens.debt.DebtScreen
-import com.aurex.app.ui.screens.transaction.AddTransactionScreen
-import com.aurex.app.ui.screens.transaction.TransactionsScreen
+import com.monebie.app.ui.screens.borrowlend.AddEditBorrowLendScreen
+import com.monebie.app.ui.screens.borrowlend.BorrowLendDetailScreen
+import com.monebie.app.ui.screens.borrowlend.BorrowLendScreen
+import com.monebie.app.ui.screens.debt.AddEditDebtScreen
+import com.monebie.app.ui.screens.emi.AddEditEmiScreen
+import com.monebie.app.ui.screens.emi.EmiDetailScreen
+import com.monebie.app.ui.screens.emi.EmiScreen
+import com.monebie.app.ui.screens.insights.InsightsScreen
+import com.monebie.app.ui.screens.overview.FinancialOverviewScreen
+import com.monebie.app.ui.screens.reminders.RemindersScreen
+import com.monebie.app.ui.screens.settings.SettingsScreen
+import com.monebie.app.ui.screens.debt.DebtDetailScreen
+import com.monebie.app.ui.screens.debt.DebtScreen
+import com.monebie.app.ui.screens.transaction.AddTransactionScreen
+import com.monebie.app.ui.screens.transaction.TransactionsScreen
 
 /**
  * The authenticated application shell.
@@ -102,7 +102,7 @@ fun MainShell(
                 enter = fadeIn(),
                 exit = fadeOut()
             ) {
-                AurexNavigationBar(
+                MoneBieNavigationBar(
                     selectedTab = selectedTab,
                     onTabSelected = { tab -> navController.switchTab(tab) }
                 )
@@ -300,7 +300,7 @@ fun MainShell(
 }
 
 @Composable
-private fun AurexNavigationBar(
+private fun MoneBieNavigationBar(
     selectedTab: MainTab?,
     onTabSelected: (MainTab) -> Unit
 ) {

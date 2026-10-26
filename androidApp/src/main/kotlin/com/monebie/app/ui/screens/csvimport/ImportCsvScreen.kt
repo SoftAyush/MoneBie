@@ -1,4 +1,4 @@
-package com.aurex.app.ui.screens.csvimport
+package com.monebie.app.ui.screens.csvimport
 
 import android.content.Context
 import android.net.Uri
@@ -43,30 +43,30 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.aurex.app.AurexApplication
-import com.aurex.app.core.Money
-import com.aurex.app.core.MoneyFormatter
-import com.aurex.app.domain.model.Account
-import com.aurex.app.domain.model.TransactionType
-import com.aurex.app.domain.usecase.csvimport.CsvImportPlanner
-import com.aurex.app.domain.usecase.csvimport.ParsedCsvRow
-import com.aurex.app.presentation.csvimport.CsvImportStep
-import com.aurex.app.presentation.csvimport.CsvImportViewModel
-import com.aurex.app.security.AppLock
-import com.aurex.app.ui.components.AmbientBackdrop
-import com.aurex.app.ui.components.AurexButton
-import com.aurex.app.ui.components.AurexLoadingScreen
-import com.aurex.app.ui.components.CardDivider
-import com.aurex.app.ui.components.DetailTopBar
-import com.aurex.app.ui.components.EmptyState
-import com.aurex.app.ui.components.FieldError
-import com.aurex.app.ui.components.FormNotice
-import com.aurex.app.ui.components.GlowBadge
-import com.aurex.app.ui.components.PremiumCard
-import com.aurex.app.ui.components.PremiumSectionHeader
-import com.aurex.app.ui.components.pressable
-import com.aurex.app.ui.components.SelectableChip
-import com.aurex.app.ui.theme.AurexTheme
+import com.monebie.app.MoneBieApplication
+import com.monebie.app.core.Money
+import com.monebie.app.core.MoneyFormatter
+import com.monebie.app.domain.model.Account
+import com.monebie.app.domain.model.TransactionType
+import com.monebie.app.domain.usecase.csvimport.CsvImportPlanner
+import com.monebie.app.domain.usecase.csvimport.ParsedCsvRow
+import com.monebie.app.presentation.csvimport.CsvImportStep
+import com.monebie.app.presentation.csvimport.CsvImportViewModel
+import com.monebie.app.security.AppLock
+import com.monebie.app.ui.components.AmbientBackdrop
+import com.monebie.app.ui.components.MoneBieButton
+import com.monebie.app.ui.components.MoneBieLoadingScreen
+import com.monebie.app.ui.components.CardDivider
+import com.monebie.app.ui.components.DetailTopBar
+import com.monebie.app.ui.components.EmptyState
+import com.monebie.app.ui.components.FieldError
+import com.monebie.app.ui.components.FormNotice
+import com.monebie.app.ui.components.GlowBadge
+import com.monebie.app.ui.components.PremiumCard
+import com.monebie.app.ui.components.PremiumSectionHeader
+import com.monebie.app.ui.components.pressable
+import com.monebie.app.ui.components.SelectableChip
+import com.monebie.app.ui.theme.MoneBieTheme
 
 /**
  * CSV import.
@@ -84,7 +84,7 @@ fun ImportCsvScreen(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
-    val app = context.applicationContext as AurexApplication
+    val app = context.applicationContext as MoneBieApplication
 
     val viewModel: CsvImportViewModel = viewModel(
         factory = viewModelFactory {
@@ -141,11 +141,11 @@ fun ImportCsvScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
-                    .padding(horizontal = AurexTheme.spacing.medium)
+                    .padding(horizontal = MoneBieTheme.spacing.medium)
                     .navigationBarsPadding(),
-                verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.medium)
+                verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.medium)
             ) {
-                Spacer(Modifier.height(AurexTheme.spacing.extraSmall))
+                Spacer(Modifier.height(MoneBieTheme.spacing.extraSmall))
 
                 when (val step = uiState.step) {
                     CsvImportStep.Pick -> PickStep(
@@ -154,7 +154,7 @@ fun ImportCsvScreen(
                         onOpenAccounts = onOpenAccounts
                     )
 
-                    CsvImportStep.Reading -> AurexLoadingScreen(Modifier.fillMaxWidth().height(240.dp))
+                    CsvImportStep.Reading -> MoneBieLoadingScreen(Modifier.fillMaxWidth().height(240.dp))
 
                     is CsvImportStep.Review -> ReviewStep(
                         step = step,
@@ -195,7 +195,7 @@ fun ImportCsvScreen(
                     }
                 }
 
-                Spacer(Modifier.height(AurexTheme.spacing.extraExtraLarge))
+                Spacer(Modifier.height(MoneBieTheme.spacing.extraExtraLarge))
             }
         }
     }
@@ -224,7 +224,7 @@ private fun PickStep(
         EmptyState(
             icon = Icons.Rounded.UploadFile,
             title = "Choose a CSV file",
-            message = "The file Aurex exports imports straight back. Any other file works " +
+            message = "The file MoneBie exports imports straight back. Any other file works " +
                 "with the columns Date, Type, Amount and Account - Category, Note and " +
                 "Payment Method are welcome too.",
             actionLabel = "Choose file",
@@ -247,7 +247,7 @@ private fun PickStep(
 
 @Composable
 private fun HowItWorksRow(title: String, subtitle: String) {
-    Column(modifier = Modifier.padding(vertical = AurexTheme.spacing.small)) {
+    Column(modifier = Modifier.padding(vertical = MoneBieTheme.spacing.small)) {
         Text(
             text = title,
             style = MaterialTheme.typography.titleSmall,
@@ -278,7 +278,7 @@ private fun ReviewStep(
     PremiumCard(modifier = Modifier.fillMaxWidth()) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.medium)
+            horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.medium)
         ) {
             GlowBadge(icon = Icons.Rounded.FileUpload, tint = MaterialTheme.colorScheme.primary)
             Column(modifier = Modifier.weight(1f)) {
@@ -296,13 +296,13 @@ private fun ReviewStep(
         }
 
         if (plan.errors.isNotEmpty()) {
-            Spacer(Modifier.height(AurexTheme.spacing.small))
+            Spacer(Modifier.height(MoneBieTheme.spacing.small))
             FormNotice(
                 icon = Icons.Rounded.ErrorOutline,
                 text = (if (plan.errors.size == 1) "1 line" else "${plan.errors.size} lines") +
                     " could not be read and will be left out. Line " +
                     plan.errors.first().line + ": " + plan.errors.first().message,
-                accent = AurexTheme.finance.caution
+                accent = MoneBieTheme.finance.caution
             )
         }
     }
@@ -317,17 +317,17 @@ private fun ReviewStep(
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             plan.unmatchedAccounts.forEach { name ->
-                Spacer(Modifier.height(AurexTheme.spacing.medium))
+                Spacer(Modifier.height(MoneBieTheme.spacing.medium))
                 Text(
                     text = "\"$name\" in the file",
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold
                 )
-                Spacer(Modifier.height(AurexTheme.spacing.small))
+                Spacer(Modifier.height(MoneBieTheme.spacing.small))
                 val chosen = step.accountMapping[CsvImportPlanner.key(name)]
                 FlowRow(
-                    horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small),
-                    verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small)
+                    horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small),
+                    verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small)
                 ) {
                     accounts.forEach { account ->
                         SelectableChip(
@@ -346,7 +346,7 @@ private fun ReviewStep(
         PremiumCard(modifier = Modifier.fillMaxWidth()) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.medium)
+                horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.medium)
             ) {
                 GlowBadge(icon = Icons.Rounded.Sell, tint = MaterialTheme.colorScheme.primary, size = 36.dp)
                 Text(
@@ -360,13 +360,13 @@ private fun ReviewStep(
     }
 
     if (plan.likelyDuplicates.isNotEmpty()) {
-        PremiumSectionHeader(title = "Already in Aurex")
+        PremiumSectionHeader(title = "Already in MoneBie")
         PremiumCard(modifier = Modifier.fillMaxWidth()) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.medium)
+                horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.medium)
             ) {
-                GlowBadge(icon = Icons.Rounded.ContentCopy, tint = AurexTheme.finance.caution, size = 36.dp)
+                GlowBadge(icon = Icons.Rounded.ContentCopy, tint = MoneBieTheme.finance.caution, size = 36.dp)
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         text = "Skip " + plan.likelyDuplicates.size +
@@ -397,14 +397,14 @@ private fun ReviewStep(
                 text = "and ${plan.rows.size - 5} more",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(top = AurexTheme.spacing.small)
+                modifier = Modifier.padding(top = MoneBieTheme.spacing.small)
             )
         }
     }
 
     FieldError(step.error)
 
-    AurexButton(
+    MoneBieButton(
         text = if (step.willImport == 1) "Import 1 transaction" else "Import ${step.willImport} transactions",
         onClick = onCommit,
         loading = step.isCommitting,
@@ -421,7 +421,7 @@ private fun ReviewStep(
             modifier = Modifier
                 .clip(MaterialTheme.shapes.medium)
                 .pressable(onPickAnother)
-                .padding(AurexTheme.spacing.small)
+                .padding(MoneBieTheme.spacing.small)
         )
     }
 }
@@ -429,14 +429,14 @@ private fun ReviewStep(
 @Composable
 private fun PreviewRow(row: ParsedCsvRow, currencySymbol: String) {
     val accent = when (row.type) {
-        TransactionType.INCOME -> AurexTheme.finance.positive
-        TransactionType.EXPENSE -> AurexTheme.finance.negative
+        TransactionType.INCOME -> MoneBieTheme.finance.positive
+        TransactionType.EXPENSE -> MoneBieTheme.finance.negative
         TransactionType.TRANSFER -> MaterialTheme.colorScheme.primary
     }
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = AurexTheme.spacing.small),
+            .padding(vertical = MoneBieTheme.spacing.small),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(modifier = Modifier.weight(1f)) {

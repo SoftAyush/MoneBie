@@ -1,7 +1,7 @@
-package com.aurex.app.domain.model
+package com.monebie.app.domain.model
 
-import com.aurex.app.core.Money
-import com.aurex.app.core.total
+import com.monebie.app.core.Money
+import com.monebie.app.core.total
 
 /**
  * Everything the user owns, itemised.

@@ -1,4 +1,4 @@
-package com.aurex.app.data.database
+package com.monebie.app.data.database
 
 import app.cash.sqldelight.db.SqlDriver
 

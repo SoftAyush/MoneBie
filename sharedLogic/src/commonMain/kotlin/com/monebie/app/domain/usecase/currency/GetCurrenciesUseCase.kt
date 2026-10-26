@@ -1,7 +1,7 @@
-package com.aurex.app.domain.usecase.currency
+package com.monebie.app.domain.usecase.currency
 
-import com.aurex.app.domain.model.Currency
-import com.aurex.app.domain.repository.CurrencyRepository
+import com.monebie.app.domain.model.Currency
+import com.monebie.app.domain.repository.CurrencyRepository
 import kotlinx.coroutines.flow.Flow
 
 class GetCurrenciesUseCase(private val currencyRepository: CurrencyRepository) {

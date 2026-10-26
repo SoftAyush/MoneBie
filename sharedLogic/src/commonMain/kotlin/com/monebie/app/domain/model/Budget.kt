@@ -1,6 +1,6 @@
-package com.aurex.app.domain.model
+package com.monebie.app.domain.model
 
-import com.aurex.app.core.Money
+import com.monebie.app.core.Money
 
 /** How often a budget resets. Only monthly exists yet; stored by name so more can follow. */
 enum class BudgetPeriod { MONTHLY }

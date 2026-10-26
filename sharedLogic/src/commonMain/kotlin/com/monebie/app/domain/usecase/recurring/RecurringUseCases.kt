@@ -1,12 +1,12 @@
-package com.aurex.app.domain.usecase.recurring
+package com.monebie.app.domain.usecase.recurring
 
-import com.aurex.app.core.getCurrentDay
-import com.aurex.app.domain.model.PaymentFrequency
-import com.aurex.app.domain.model.RecurringPostingResult
-import com.aurex.app.domain.model.RecurringTransaction
-import com.aurex.app.domain.model.RecurringTransactionDraft
-import com.aurex.app.domain.model.TransactionType
-import com.aurex.app.domain.repository.RecurringTransactionRepository
+import com.monebie.app.core.getCurrentDay
+import com.monebie.app.domain.model.PaymentFrequency
+import com.monebie.app.domain.model.RecurringPostingResult
+import com.monebie.app.domain.model.RecurringTransaction
+import com.monebie.app.domain.model.RecurringTransactionDraft
+import com.monebie.app.domain.model.TransactionType
+import com.monebie.app.domain.repository.RecurringTransactionRepository
 import kotlinx.coroutines.flow.Flow
 
 class GetRecurringTransactionsUseCase(private val repository: RecurringTransactionRepository) {

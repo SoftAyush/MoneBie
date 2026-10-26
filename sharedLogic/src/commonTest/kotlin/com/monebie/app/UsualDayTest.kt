@@ -1,10 +1,10 @@
-package com.aurex.app
+package com.monebie.app
 
-import com.aurex.app.core.Money
-import com.aurex.app.domain.model.DailyTotal
-import com.aurex.app.domain.model.DashboardSnapshot
-import com.aurex.app.domain.model.NetPosition
-import com.aurex.app.domain.model.PeriodSummary
+import com.monebie.app.core.Money
+import com.monebie.app.domain.model.DailyTotal
+import com.monebie.app.domain.model.DashboardSnapshot
+import com.monebie.app.domain.model.NetPosition
+import com.monebie.app.domain.model.PeriodSummary
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

@@ -1,4 +1,4 @@
-package com.aurex.app.ui.screens.dashboard
+package com.monebie.app.ui.screens.dashboard
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
@@ -54,53 +54,57 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.aurex.app.core.Money
-import com.aurex.app.domain.model.BudgetLevel
-import com.aurex.app.domain.model.BudgetStatus
-import com.aurex.app.core.MoneyFormatter
-import com.aurex.app.core.formatDisplayDate
-import com.aurex.app.core.formatWeekday
-import com.aurex.app.core.relativeDueLabel
-import com.aurex.app.domain.model.Account
-import com.aurex.app.domain.model.DailyTotal
-import com.aurex.app.domain.model.DashboardSnapshot
-import com.aurex.app.domain.model.NetPosition
-import com.aurex.app.domain.model.PeriodSummary
-import com.aurex.app.domain.model.Transaction
-import com.aurex.app.domain.model.TransactionCategory
-import com.aurex.app.domain.model.TransactionSourceType
-import com.aurex.app.domain.model.TransactionType
-import com.aurex.app.domain.model.UpcomingPayment
-import com.aurex.app.domain.model.UpcomingPaymentKind
-import com.aurex.app.domain.model.displayName
-import com.aurex.app.domain.model.iconKey
-import com.aurex.app.ui.components.AurexIcons
-import com.aurex.app.ui.components.CardDivider
-import com.aurex.app.ui.components.CountUpMoneyText
-import com.aurex.app.ui.components.GlowBadge
-import com.aurex.app.ui.components.GradientTrack
-import com.aurex.app.ui.components.HeroCardShape
-import com.aurex.app.ui.components.HeroDecoration
-import com.aurex.app.ui.components.HeroFinance
-import com.aurex.app.ui.components.HeroIconButton
-import com.aurex.app.ui.components.HeroSplitBar
-import com.aurex.app.ui.components.HeroTile
-import com.aurex.app.ui.components.MicroLabel
-import com.aurex.app.ui.components.OnHero
-import com.aurex.app.ui.components.PremiumCard
-import com.aurex.app.ui.components.PremiumSectionHeader
-import com.aurex.app.ui.components.heroBrush
-import com.aurex.app.ui.components.maskedValue
-import com.aurex.app.ui.components.pressable
-import com.aurex.app.ui.components.EmptyState
-import com.aurex.app.ui.components.MoneyText
-import com.aurex.app.ui.components.StatusPill
-import com.aurex.app.ui.components.brandBrush
-import com.aurex.app.ui.components.onBrandColor
-import com.aurex.app.ui.components.signedMoneyColor
-import com.aurex.app.ui.theme.AurexTheme
-import com.aurex.app.ui.theme.Palette700
-import com.aurex.app.ui.theme.Palette900
+import com.monebie.app.core.Money
+import com.monebie.app.domain.model.BudgetLevel
+import com.monebie.app.domain.model.BudgetStatus
+import com.monebie.app.core.MoneyFormatter
+import com.monebie.app.core.AppCalendar
+import com.monebie.app.core.BsDate
+import com.monebie.app.core.CalendarSystem
+import com.monebie.app.core.NepaliCalendar
+import com.monebie.app.core.formatDisplayDate
+import com.monebie.app.core.formatWeekday
+import com.monebie.app.core.relativeDueLabel
+import com.monebie.app.domain.model.Account
+import com.monebie.app.domain.model.DailyTotal
+import com.monebie.app.domain.model.DashboardSnapshot
+import com.monebie.app.domain.model.NetPosition
+import com.monebie.app.domain.model.PeriodSummary
+import com.monebie.app.domain.model.Transaction
+import com.monebie.app.domain.model.TransactionCategory
+import com.monebie.app.domain.model.TransactionSourceType
+import com.monebie.app.domain.model.TransactionType
+import com.monebie.app.domain.model.UpcomingPayment
+import com.monebie.app.domain.model.UpcomingPaymentKind
+import com.monebie.app.domain.model.displayName
+import com.monebie.app.domain.model.iconKey
+import com.monebie.app.ui.components.MoneBieIcons
+import com.monebie.app.ui.components.CardDivider
+import com.monebie.app.ui.components.CountUpMoneyText
+import com.monebie.app.ui.components.GlowBadge
+import com.monebie.app.ui.components.GradientTrack
+import com.monebie.app.ui.components.HeroCardShape
+import com.monebie.app.ui.components.HeroDecoration
+import com.monebie.app.ui.components.HeroFinance
+import com.monebie.app.ui.components.HeroIconButton
+import com.monebie.app.ui.components.HeroSplitBar
+import com.monebie.app.ui.components.HeroTile
+import com.monebie.app.ui.components.MicroLabel
+import com.monebie.app.ui.components.OnHero
+import com.monebie.app.ui.components.PremiumCard
+import com.monebie.app.ui.components.PremiumSectionHeader
+import com.monebie.app.ui.components.heroBrush
+import com.monebie.app.ui.components.maskedValue
+import com.monebie.app.ui.components.pressable
+import com.monebie.app.ui.components.EmptyState
+import com.monebie.app.ui.components.MoneyText
+import com.monebie.app.ui.components.StatusPill
+import com.monebie.app.ui.components.brandBrush
+import com.monebie.app.ui.components.onBrandColor
+import com.monebie.app.ui.components.signedMoneyColor
+import com.monebie.app.ui.theme.MoneBieTheme
+import com.monebie.app.ui.theme.Palette700
+import com.monebie.app.ui.theme.Palette900
 
 // -----------------------------------------------------------------------------
 // Header
@@ -411,14 +415,14 @@ fun QuickActionsRow(
         QuickAction(
             label = "Income",
             icon = Icons.Rounded.Add,
-            tint = AurexTheme.finance.positive,
+            tint = MoneBieTheme.finance.positive,
             onClick = onAddIncome,
             modifier = Modifier.weight(1f)
         )
         QuickAction(
             label = "Expense",
             icon = Icons.Rounded.Remove,
-            tint = AurexTheme.finance.negative,
+            tint = MoneBieTheme.finance.negative,
             onClick = onAddExpense,
             modifier = Modifier.weight(1f)
         )
@@ -432,7 +436,7 @@ fun QuickActionsRow(
         QuickAction(
             label = "Reminders",
             icon = Icons.Rounded.NotificationsNone,
-            tint = AurexTheme.finance.caution,
+            tint = MoneBieTheme.finance.caution,
             onClick = onOpenReminders,
             modifier = Modifier.weight(1f)
         )
@@ -533,7 +537,7 @@ fun TodayCard(
                         money = spent,
                         currencySymbol = currencySymbol,
                         style = MaterialTheme.typography.headlineMedium,
-                        color = if (spent.isZero) scheme.onSurface else AurexTheme.finance.negative,
+                        color = if (spent.isZero) scheme.onSurface else MoneBieTheme.finance.negative,
                         showDecimals = false
                     )
                     Spacer(Modifier.height(2.dp))
@@ -552,15 +556,15 @@ fun TodayCard(
 
             // Only on the days it happened, rather than a permanent zero.
             if (!summary.income.isZero) {
-                Spacer(Modifier.width(AurexTheme.spacing.small))
+                Spacer(Modifier.width(MoneBieTheme.spacing.small))
                 StatusPill(
                     text = "+" + MoneyFormatter.format(
                         summary.income,
                         currencySymbol,
                         showDecimals = false
                     ) + " in",
-                    contentColor = AurexTheme.finance.positive,
-                    containerColor = AurexTheme.finance.positive.copy(alpha = 0.12f)
+                    contentColor = MoneBieTheme.finance.positive,
+                    containerColor = MoneBieTheme.finance.positive.copy(alpha = 0.12f)
                 )
             }
         }
@@ -621,13 +625,13 @@ private fun UsualDayComparison(
             Icons.Rounded.ArrowDownward,
             MoneyFormatter.format(delta.absolute, currencySymbol, showDecimals = false) +
                 " less than a usual day ($usualText)",
-            AurexTheme.finance.positive
+            MoneBieTheme.finance.positive
         )
         else -> Line(
             Icons.Rounded.ArrowUpward,
             MoneyFormatter.format(delta, currencySymbol, showDecimals = false) +
                 " more than a usual day ($usualText)",
-            AurexTheme.finance.caution
+            MoneBieTheme.finance.caution
         )
     }
 
@@ -738,14 +742,14 @@ fun MonthOverviewCard(
             StatusPill(
                 text = if (overspending) "Overspending" else "On track",
                 contentColor = if (overspending) {
-                    AurexTheme.finance.negative
+                    MoneBieTheme.finance.negative
                 } else {
-                    AurexTheme.finance.positive
+                    MoneBieTheme.finance.positive
                 },
                 containerColor = if (overspending) {
-                    AurexTheme.finance.negativeContainer
+                    MoneBieTheme.finance.negativeContainer
                 } else {
-                    AurexTheme.finance.positiveContainer
+                    MoneBieTheme.finance.positiveContainer
                 }
             )
         }
@@ -757,7 +761,7 @@ fun MonthOverviewCard(
                 label = "Income",
                 money = summary.income,
                 currencySymbol = currencySymbol,
-                color = AurexTheme.finance.positive,
+                color = MoneBieTheme.finance.positive,
                 icon = Icons.Rounded.ArrowUpward,
                 modifier = Modifier.weight(1f)
             )
@@ -766,7 +770,7 @@ fun MonthOverviewCard(
                 label = "Expenses",
                 money = summary.expense,
                 currencySymbol = currencySymbol,
-                color = AurexTheme.finance.negative,
+                color = MoneBieTheme.finance.negative,
                 icon = Icons.Rounded.ArrowDownward,
                 modifier = Modifier.weight(1f)
             )
@@ -794,7 +798,7 @@ fun MonthOverviewCard(
                 style = MaterialTheme.typography.labelLarge,
                 fontWeight = FontWeight.Bold,
                 color = if (summary.expenseRatio > 0.85f) {
-                    AurexTheme.finance.negative
+                    MoneBieTheme.finance.negative
                 } else {
                     MaterialTheme.colorScheme.onSurface
                 }
@@ -806,7 +810,7 @@ fun MonthOverviewCard(
         GradientTrack(
             progress = summary.expenseRatio,
             colors = if (summary.expenseRatio > 0.85f) {
-                listOf(AurexTheme.finance.caution, AurexTheme.finance.negative)
+                listOf(MoneBieTheme.finance.caution, MoneBieTheme.finance.negative)
             } else {
                 listOf(MaterialTheme.colorScheme.secondary, MaterialTheme.colorScheme.primary)
             }
@@ -836,9 +840,9 @@ fun MonthOverviewCard(
             ) {
                 MicroLabel(text = "Last 7 days")
                 Spacer(Modifier.weight(1f))
-                LegendDot(color = AurexTheme.finance.positive, label = "In")
+                LegendDot(color = MoneBieTheme.finance.positive, label = "In")
                 Spacer(Modifier.width(12.dp))
-                LegendDot(color = AurexTheme.finance.negative, label = "Out")
+                LegendDot(color = MoneBieTheme.finance.negative, label = "Out")
             }
 
             Spacer(Modifier.height(12.dp))
@@ -927,12 +931,12 @@ private fun WeeklyTrendChart(
                     TrendBar(
                         value = day.income.minorUnits,
                         peak = peak,
-                        color = AurexTheme.finance.positive
+                        color = MoneBieTheme.finance.positive
                     )
                     TrendBar(
                         value = day.expense.minorUnits,
                         peak = peak,
-                        color = AurexTheme.finance.negative
+                        color = MoneBieTheme.finance.negative
                     )
                 }
 
@@ -1005,7 +1009,7 @@ fun OweAndOwedRow(
             icon = Icons.AutoMirrored.Rounded.ReceiptLong,
             money = snapshot.totalOwed,
             currencySymbol = snapshot.currencySymbol,
-            accent = AurexTheme.finance.negative,
+            accent = MoneBieTheme.finance.negative,
             breakdown = listOf(
                 "Debt" to snapshot.totalDebtOwed,
                 "EMI" to snapshot.remainingEmiAmount,
@@ -1021,7 +1025,7 @@ fun OweAndOwedRow(
             icon = Icons.Rounded.Savings,
             money = snapshot.totalOwedToUser,
             currencySymbol = snapshot.currencySymbol,
-            accent = AurexTheme.finance.receivable,
+            accent = MoneBieTheme.finance.receivable,
             breakdown = listOf("Lent out" to snapshot.totalMoneyLent),
             onClick = onOpenBorrowLend,
             modifier = Modifier
@@ -1130,15 +1134,15 @@ fun UpcomingPaymentRow(
     modifier: Modifier = Modifier
 ) {
     val accent = when {
-        payment.isOverdue -> AurexTheme.finance.negative
-        payment.isReceivable -> AurexTheme.finance.receivable
-        payment.daysUntilDue <= 7L -> AurexTheme.finance.caution
+        payment.isOverdue -> MoneBieTheme.finance.negative
+        payment.isReceivable -> MoneBieTheme.finance.receivable
+        payment.daysUntilDue <= 7L -> MoneBieTheme.finance.caution
         else -> MaterialTheme.colorScheme.primary
     }
     val accentContainer = when {
-        payment.isOverdue -> AurexTheme.finance.negativeContainer
-        payment.isReceivable -> AurexTheme.finance.receivableContainer
-        payment.daysUntilDue <= 7L -> AurexTheme.finance.cautionContainer
+        payment.isOverdue -> MoneBieTheme.finance.negativeContainer
+        payment.isReceivable -> MoneBieTheme.finance.receivableContainer
+        payment.daysUntilDue <= 7L -> MoneBieTheme.finance.cautionContainer
         else -> MaterialTheme.colorScheme.primary.copy(alpha = 0.10f)
     }
 
@@ -1260,14 +1264,25 @@ private val MonthAbbreviations = listOf(
     "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"
 )
 
+private val BsMonthAbbreviations = listOf(
+    "BAI", "JES", "ASA", "SHR", "BHA", "ASH", "KAR", "MAN", "POU", "MAG", "FAL", "CHA"
+)
+
+/** The BS form of [day] when the user reads dates in BS, else null. */
+private fun bsDateOrNull(day: String): BsDate? =
+    if (AppCalendar.current == CalendarSystem.BS) NepaliCalendar.fromAd(day) else null
+
 /**
  * Read straight off the stored `yyyy-MM-dd` rather than through the platform
  * date formatter, so the block never depends on how a locale orders a date.
  */
-private fun dayOfMonth(day: String): String =
-    day.takeIf { it.length >= 10 }?.substring(8, 10)?.trimStart('0').orEmpty().ifEmpty { "-" }
+private fun dayOfMonth(day: String): String {
+    bsDateOrNull(day)?.let { return it.day.toString() }
+    return day.takeIf { it.length >= 10 }?.substring(8, 10)?.trimStart('0').orEmpty().ifEmpty { "-" }
+}
 
 private fun monthAbbreviation(day: String): String {
+    bsDateOrNull(day)?.let { return BsMonthAbbreviations[it.month - 1] }
     val index = day.takeIf { it.length >= 7 }?.substring(5, 7)?.toIntOrNull() ?: return ""
     return MonthAbbreviations.getOrElse(index - 1) { "" }
 }
@@ -1285,7 +1300,7 @@ fun OverduePrompt(
     onOpenReminders: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val accent = AurexTheme.finance.negative
+    val accent = MoneBieTheme.finance.negative
 
     PremiumCard(
         modifier = modifier.fillMaxWidth(),
@@ -1357,8 +1372,8 @@ fun TransactionRow(
     // A transfer is neither a gain nor a loss, so it stays neutral rather than
     // borrowing the expense colour and reading as money leaving.
     val accent = when (transaction.type) {
-        TransactionType.INCOME -> AurexTheme.finance.positive
-        TransactionType.EXPENSE -> AurexTheme.finance.negative
+        TransactionType.INCOME -> MoneBieTheme.finance.positive
+        TransactionType.EXPENSE -> MoneBieTheme.finance.negative
         TransactionType.TRANSFER -> MaterialTheme.colorScheme.onSurfaceVariant
     }
 
@@ -1370,7 +1385,7 @@ fun TransactionRow(
         horizontalArrangement = Arrangement.spacedBy(14.dp)
     ) {
         GlowBadge(
-            icon = AurexIcons.forCategory(category.iconKey),
+            icon = MoneBieIcons.forCategory(category.iconKey),
             tint = accent
         )
 
@@ -1441,7 +1456,7 @@ fun AccountChip(
     // A card at -20,000 is money owed, not money available, and it says so here
     // in the same colour the accounts screen uses for it.
     val negative = account.balance.isNegative
-    val accent = if (negative) AurexTheme.finance.negative else MaterialTheme.colorScheme.primary
+    val accent = if (negative) MoneBieTheme.finance.negative else MaterialTheme.colorScheme.primary
 
     PremiumCard(modifier = modifier.width(158.dp), contentPadding = 14.dp) {
         Row(
@@ -1449,7 +1464,7 @@ fun AccountChip(
             verticalAlignment = Alignment.CenterVertically
         ) {
             GlowBadge(
-                icon = AurexIcons.forAccount(account.type.iconKey),
+                icon = MoneBieIcons.forAccount(account.type.iconKey),
                 tint = accent,
                 size = 34.dp
             )
@@ -1553,8 +1568,8 @@ fun BudgetsCard(
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     color = when {
-                        over > 0 -> AurexTheme.finance.negative
-                        near > 0 -> AurexTheme.finance.caution
+                        over > 0 -> MoneBieTheme.finance.negative
+                        near > 0 -> MoneBieTheme.finance.caution
                         else -> MaterialTheme.colorScheme.onSurface
                     }
                 )
@@ -1570,16 +1585,16 @@ fun BudgetsCard(
                     money = remaining.absolute,
                     currencySymbol = currencySymbol,
                     style = MaterialTheme.typography.titleMedium,
-                    color = if (remaining.isNegative) AurexTheme.finance.negative else MaterialTheme.colorScheme.onSurface,
+                    color = if (remaining.isNegative) MoneBieTheme.finance.negative else MaterialTheme.colorScheme.onSurface,
                     showDecimals = false
                 )
             }
         }
 
-        Spacer(Modifier.height(AurexTheme.spacing.medium))
+        Spacer(Modifier.height(MoneBieTheme.spacing.medium))
 
         budgets.take(3).forEachIndexed { index, status ->
-            if (index > 0) Spacer(Modifier.height(AurexTheme.spacing.small))
+            if (index > 0) Spacer(Modifier.height(MoneBieTheme.spacing.small))
             BudgetMiniRow(status = status, currencySymbol = currencySymbol)
         }
     }
@@ -1588,9 +1603,9 @@ fun BudgetsCard(
 @Composable
 private fun BudgetMiniRow(status: BudgetStatus, currencySymbol: String) {
     val accent = when (status.level) {
-        BudgetLevel.OK -> AurexTheme.finance.positive
-        BudgetLevel.NEAR -> AurexTheme.finance.caution
-        BudgetLevel.OVER -> AurexTheme.finance.negative
+        BudgetLevel.OK -> MoneBieTheme.finance.positive
+        BudgetLevel.NEAR -> MoneBieTheme.finance.caution
+        BudgetLevel.OVER -> MoneBieTheme.finance.negative
     }
     val width by animateFloatAsState(targetValue = status.progress, label = "budget_mini")
 

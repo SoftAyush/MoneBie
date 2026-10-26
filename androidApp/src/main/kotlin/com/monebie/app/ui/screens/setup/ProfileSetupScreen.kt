@@ -1,4 +1,4 @@
-package com.aurex.app.ui.screens.setup
+package com.monebie.app.ui.screens.setup
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -54,30 +54,30 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.aurex.app.AurexApplication
-import com.aurex.app.domain.model.Currency
-import com.aurex.app.presentation.profile.ProfileSetupViewModel
-import com.aurex.app.ui.components.AurexBrandBar
-import com.aurex.app.ui.components.AurexGlassCard
-import com.aurex.app.ui.components.AurexGradientButton
-import com.aurex.app.ui.components.AurexStepPill
-import com.aurex.app.ui.components.AurexTextField
-import com.aurex.app.ui.components.AuroraBackground
-import com.aurex.app.ui.components.CurrencySelector
-import com.aurex.app.ui.components.FormField
-import com.aurex.app.ui.components.PremiumCard
-import com.aurex.app.ui.components.brandBrush
-import com.aurex.app.ui.components.entrance
-import com.aurex.app.ui.components.onBrandColor
-import com.aurex.app.ui.components.rememberEntrance
-import com.aurex.app.ui.theme.AurexTheme
+import com.monebie.app.MoneBieApplication
+import com.monebie.app.domain.model.Currency
+import com.monebie.app.presentation.profile.ProfileSetupViewModel
+import com.monebie.app.ui.components.MoneBieBrandBar
+import com.monebie.app.ui.components.MoneBieGlassCard
+import com.monebie.app.ui.components.MoneBieGradientButton
+import com.monebie.app.ui.components.MoneBieStepPill
+import com.monebie.app.ui.components.MoneBieTextField
+import com.monebie.app.ui.components.AuroraBackground
+import com.monebie.app.ui.components.CurrencySelector
+import com.monebie.app.ui.components.FormField
+import com.monebie.app.ui.components.PremiumCard
+import com.monebie.app.ui.components.brandBrush
+import com.monebie.app.ui.components.entrance
+import com.monebie.app.ui.components.onBrandColor
+import com.monebie.app.ui.components.rememberEntrance
+import com.monebie.app.ui.theme.MoneBieTheme
 
 @Composable
 fun ProfileSetupScreen(
     onFinished: () -> Unit = {}
 ) {
     val context = LocalContext.current
-    val app = context.applicationContext as AurexApplication
+    val app = context.applicationContext as MoneBieApplication
 
     val viewModel: ProfileSetupViewModel = viewModel(
         factory = viewModelFactory {
@@ -125,7 +125,7 @@ fun ProfileSetupContent(
     val formIn = rememberEntrance(delayMillis = 320)
     val ctaIn = rememberEntrance(delayMillis = 440)
 
-    AurexTheme {
+    MoneBieTheme {
         Box(modifier = Modifier.fillMaxSize()) {
             AuroraBackground(modifier = Modifier.fillMaxSize())
 
@@ -135,18 +135,18 @@ fun ProfileSetupContent(
                     .safeContentPadding()
                     .imePadding()
             ) {
-                AurexBrandBar(
-                    trailing = { AurexStepPill(current = 1, total = 2) }
+                MoneBieBrandBar(
+                    trailing = { MoneBieStepPill(current = 1, total = 2) }
                 )
 
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
                         .verticalScroll(rememberScrollState())
-                        .padding(horizontal = AurexTheme.spacing.large)
+                        .padding(horizontal = MoneBieTheme.spacing.large)
                         .navigationBarsPadding()
                 ) {
-                    Spacer(Modifier.height(AurexTheme.spacing.large))
+                    Spacer(Modifier.height(MoneBieTheme.spacing.large))
 
                     Column(modifier = Modifier.entrance(headerIn)) {
                         Text(
@@ -156,16 +156,16 @@ fun ProfileSetupContent(
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurface
                         )
-                        Spacer(Modifier.height(AurexTheme.spacing.medium))
+                        Spacer(Modifier.height(MoneBieTheme.spacing.medium))
                         Text(
                             text = "Your name and base currency shape every figure " +
-                                "Aurex shows you from here on.",
+                                "MoneBie shows you from here on.",
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             style = MaterialTheme.typography.bodyLarge
                         )
                     }
 
-                    Spacer(Modifier.height(AurexTheme.spacing.large))
+                    Spacer(Modifier.height(MoneBieTheme.spacing.large))
 
                     GreetingPreview(
                         name = fullName,
@@ -173,14 +173,14 @@ fun ProfileSetupContent(
                         modifier = Modifier.entrance(previewIn)
                     )
 
-                    Spacer(Modifier.height(AurexTheme.spacing.large))
+                    Spacer(Modifier.height(MoneBieTheme.spacing.large))
 
-                    AurexGlassCard(modifier = Modifier.entrance(formIn)) {
+                    MoneBieGlassCard(modifier = Modifier.entrance(formIn)) {
                         Column(
-                            verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.large)
+                            verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.large)
                         ) {
                             FormField(label = "Full name", error = nameError) {
-                                AurexTextField(
+                                MoneBieTextField(
                                     value = fullName,
                                     onValueChange = {
                                         fullName = it
@@ -203,9 +203,9 @@ fun ProfileSetupContent(
                         }
                     }
 
-                    Spacer(Modifier.height(AurexTheme.spacing.extraLarge))
+                    Spacer(Modifier.height(MoneBieTheme.spacing.extraLarge))
 
-                    AurexGradientButton(
+                    MoneBieGradientButton(
                         text = "Continue",
                         icon = Icons.AutoMirrored.Rounded.ArrowForward,
                         modifier = Modifier.entrance(ctaIn),
@@ -219,7 +219,7 @@ fun ProfileSetupContent(
                         }
                     )
 
-                    Spacer(Modifier.height(AurexTheme.spacing.large))
+                    Spacer(Modifier.height(MoneBieTheme.spacing.large))
                 }
             }
         }
@@ -258,7 +258,7 @@ private fun GreetingPreview(
     // makes is "this is what you will see", and the surface is part of that.
     PremiumCard(
         modifier = modifier.fillMaxWidth(),
-        contentPadding = AurexTheme.spacing.medium
+        contentPadding = MoneBieTheme.spacing.medium
     ) {
       Row(verticalAlignment = Alignment.CenterVertically) {
         Box(contentAlignment = Alignment.Center) {
@@ -294,7 +294,7 @@ private fun GreetingPreview(
             }
         }
 
-        Spacer(Modifier.width(AurexTheme.spacing.medium))
+        Spacer(Modifier.width(MoneBieTheme.spacing.medium))
 
         Column(modifier = Modifier.weight(1f)) {
             Text(

@@ -1,4 +1,4 @@
-package com.aurex.app.ui.screens.module
+package com.monebie.app.ui.screens.module
 
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
@@ -65,55 +65,55 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.aurex.app.AurexApplication
-import com.aurex.app.core.Money
-import com.aurex.app.core.MoneyFormatter
-import com.aurex.app.core.total
-import com.aurex.app.domain.model.Account
-import com.aurex.app.domain.model.AccountType
-import com.aurex.app.domain.model.displayName
-import com.aurex.app.domain.model.iconKey
-import com.aurex.app.domain.model.isAsset
-import com.aurex.app.presentation.account.AccountEvent
-import com.aurex.app.presentation.account.AccountFormState
-import com.aurex.app.presentation.account.AccountListUiState
-import com.aurex.app.presentation.account.AccountListViewModel
-import com.aurex.app.ui.components.AmbientBackdrop
-import com.aurex.app.ui.components.AurexButton
-import com.aurex.app.ui.components.AurexSnackbarHost
-import com.aurex.app.ui.components.showAurexMessage
-import com.aurex.app.ui.components.AurexIcons
-import com.aurex.app.ui.components.AurexTextField
-import com.aurex.app.ui.components.ConfirmDialog
-import com.aurex.app.ui.components.CountUpMoneyText
-import com.aurex.app.ui.components.DetailTopBar
-import com.aurex.app.ui.components.EmptyState
-import com.aurex.app.ui.components.FilterPill
-import com.aurex.app.ui.components.FormField
-import com.aurex.app.ui.components.FormNotice
-import com.aurex.app.ui.components.GlassIconButton
-import com.aurex.app.ui.components.GlowBadge
-import com.aurex.app.ui.components.GradientTrack
-import com.aurex.app.ui.components.HeroCardShape
-import com.aurex.app.ui.components.HeroDecoration
-import com.aurex.app.ui.components.HeroFinance
-import com.aurex.app.ui.components.HeroIconButton
-import com.aurex.app.ui.components.HeroTile
-import com.aurex.app.ui.components.MicroLabel
-import com.aurex.app.ui.components.MoneyInputField
-import com.aurex.app.ui.components.MoneyText
-import com.aurex.app.ui.components.OnHero
-import com.aurex.app.ui.components.PremiumCard
-import com.aurex.app.ui.components.PremiumSectionHeader
-import com.aurex.app.ui.components.ShimmerBlock
-import com.aurex.app.ui.components.heroBrush
-import com.aurex.app.ui.components.pressable
-import com.aurex.app.ui.components.maskedValue
-import com.aurex.app.ui.theme.AurexTheme
-import com.aurex.app.ui.theme.Palette300
-import com.aurex.app.ui.theme.Palette500
-import com.aurex.app.ui.theme.Palette700
-import com.aurex.app.ui.theme.Palette900
+import com.monebie.app.MoneBieApplication
+import com.monebie.app.core.Money
+import com.monebie.app.core.MoneyFormatter
+import com.monebie.app.core.total
+import com.monebie.app.domain.model.Account
+import com.monebie.app.domain.model.AccountType
+import com.monebie.app.domain.model.displayName
+import com.monebie.app.domain.model.iconKey
+import com.monebie.app.domain.model.isAsset
+import com.monebie.app.presentation.account.AccountEvent
+import com.monebie.app.presentation.account.AccountFormState
+import com.monebie.app.presentation.account.AccountListUiState
+import com.monebie.app.presentation.account.AccountListViewModel
+import com.monebie.app.ui.components.AmbientBackdrop
+import com.monebie.app.ui.components.MoneBieButton
+import com.monebie.app.ui.components.MoneBieSnackbarHost
+import com.monebie.app.ui.components.showMoneBieMessage
+import com.monebie.app.ui.components.MoneBieIcons
+import com.monebie.app.ui.components.MoneBieTextField
+import com.monebie.app.ui.components.ConfirmDialog
+import com.monebie.app.ui.components.CountUpMoneyText
+import com.monebie.app.ui.components.DetailTopBar
+import com.monebie.app.ui.components.EmptyState
+import com.monebie.app.ui.components.FilterPill
+import com.monebie.app.ui.components.FormField
+import com.monebie.app.ui.components.FormNotice
+import com.monebie.app.ui.components.GlassIconButton
+import com.monebie.app.ui.components.GlowBadge
+import com.monebie.app.ui.components.GradientTrack
+import com.monebie.app.ui.components.HeroCardShape
+import com.monebie.app.ui.components.HeroDecoration
+import com.monebie.app.ui.components.HeroFinance
+import com.monebie.app.ui.components.HeroIconButton
+import com.monebie.app.ui.components.HeroTile
+import com.monebie.app.ui.components.MicroLabel
+import com.monebie.app.ui.components.MoneyInputField
+import com.monebie.app.ui.components.MoneyText
+import com.monebie.app.ui.components.OnHero
+import com.monebie.app.ui.components.PremiumCard
+import com.monebie.app.ui.components.PremiumSectionHeader
+import com.monebie.app.ui.components.ShimmerBlock
+import com.monebie.app.ui.components.heroBrush
+import com.monebie.app.ui.components.pressable
+import com.monebie.app.ui.components.maskedValue
+import com.monebie.app.ui.theme.MoneBieTheme
+import com.monebie.app.ui.theme.Palette300
+import com.monebie.app.ui.theme.Palette500
+import com.monebie.app.ui.theme.Palette700
+import com.monebie.app.ui.theme.Palette900
 
 /**
  * Where the money actually sits.
@@ -129,7 +129,7 @@ fun AccountsScreen(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
-    val app = context.applicationContext as AurexApplication
+    val app = context.applicationContext as MoneBieApplication
 
     val viewModel: AccountListViewModel = viewModel(
         factory = viewModelFactory {
@@ -154,12 +154,12 @@ fun AccountsScreen(
 
     LaunchedEffect(event) {
         when (val current = event) {
-            is AccountEvent.Saved -> snackbarHostState.showAurexMessage("Saved ${current.name}.")
-            is AccountEvent.Archived -> snackbarHostState.showAurexMessage(
+            is AccountEvent.Saved -> snackbarHostState.showMoneBieMessage("Saved ${current.name}.")
+            is AccountEvent.Archived -> snackbarHostState.showMoneBieMessage(
                 "${current.name} is archived. Its transactions keep their history."
             )
 
-            is AccountEvent.LastAccountRefused -> snackbarHostState.showAurexMessage(
+            is AccountEvent.LastAccountRefused -> snackbarHostState.showMoneBieMessage(
                 "Keep at least one account - everything you record has to move money somewhere."
             )
 
@@ -188,12 +188,12 @@ fun AccountsScreen(
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(
-                    start = AurexTheme.spacing.medium,
-                    end = AurexTheme.spacing.medium,
-                    top = AurexTheme.spacing.small,
-                    bottom = AurexTheme.spacing.extraExtraLarge
+                    start = MoneBieTheme.spacing.medium,
+                    end = MoneBieTheme.spacing.medium,
+                    top = MoneBieTheme.spacing.small,
+                    bottom = MoneBieTheme.spacing.extraExtraLarge
                 ),
-                verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small)
+                verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small)
             ) {
                 if (uiState.isLoading) {
                     item(key = "skeleton") { AccountsSkeleton() }
@@ -257,7 +257,7 @@ fun AccountsScreen(
                                 SectionTotal(
                                     money = owing.map { it.outstanding }.total(),
                                     currencySymbol = uiState.currencySymbol,
-                                    color = AurexTheme.finance.negative
+                                    color = MoneBieTheme.finance.negative
                                 )
                             }
                         )
@@ -278,7 +278,7 @@ fun AccountsScreen(
                     item(key = "add") {
                         AddAccountTile(
                             onClick = viewModel::startCreating,
-                            modifier = Modifier.padding(top = AurexTheme.spacing.extraSmall)
+                            modifier = Modifier.padding(top = MoneBieTheme.spacing.extraSmall)
                         )
                     }
                 }
@@ -294,7 +294,7 @@ fun AccountsScreen(
          * lands on top of the very tile offering the same action.
          */
 
-        AurexSnackbarHost(
+        MoneBieSnackbarHost(
             hostState = snackbarHostState,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
@@ -363,20 +363,20 @@ private fun AccountFormSheet(
         modifier = Modifier
             .fillMaxWidth()
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = AurexTheme.spacing.medium)
+            .padding(horizontal = MoneBieTheme.spacing.medium)
             .imePadding()
             .navigationBarsPadding()
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             GlowBadge(
-                icon = AurexIcons.forAccount(form.type.iconKey),
+                icon = MoneBieIcons.forAccount(form.type.iconKey),
                 tint = if (form.type.isAsset) {
                     MaterialTheme.colorScheme.primary
                 } else {
-                    AurexTheme.finance.negative
+                    MoneBieTheme.finance.negative
                 }
             )
-            Spacer(Modifier.width(AurexTheme.spacing.medium))
+            Spacer(Modifier.width(MoneBieTheme.spacing.medium))
             Column {
                 Text(
                     text = if (form.isEditing) "Edit account" else "New account",
@@ -389,10 +389,10 @@ private fun AccountFormSheet(
             }
         }
 
-        Spacer(Modifier.height(AurexTheme.spacing.large))
+        Spacer(Modifier.height(MoneBieTheme.spacing.large))
 
         FormField(label = "Name", error = form.nameError) {
-            AurexTextField(
+            MoneBieTextField(
                 value = form.name,
                 onValueChange = onNameChange,
                 placeholder = "e.g. Everyday wallet",
@@ -401,7 +401,7 @@ private fun AccountFormSheet(
             )
         }
 
-        Spacer(Modifier.height(AurexTheme.spacing.large))
+        Spacer(Modifier.height(MoneBieTheme.spacing.large))
 
         FormField(
             label = "Type",
@@ -413,8 +413,8 @@ private fun AccountFormSheet(
         ) {
             FlowRow(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small),
-                verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small)
+                horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small),
+                verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small)
             ) {
                 // Loans and EMIs have modules of their own, so they are not
                 // offered here - tracking one as an account too would count the
@@ -427,7 +427,7 @@ private fun AccountFormSheet(
                 ).forEach { type ->
                     FilterPill(
                         label = type.displayName,
-                        icon = AurexIcons.forAccount(type.iconKey),
+                        icon = MoneBieIcons.forAccount(type.iconKey),
                         selected = type == form.type,
                         onClick = { onTypeChange(type) }
                     )
@@ -436,7 +436,7 @@ private fun AccountFormSheet(
         }
 
         if (!form.isEditing) {
-            Spacer(Modifier.height(AurexTheme.spacing.large))
+            Spacer(Modifier.height(MoneBieTheme.spacing.large))
 
             FormField(
                 label = if (form.type.isAsset) "Opening balance" else "Owed right now",
@@ -457,7 +457,7 @@ private fun AccountFormSheet(
                 )
             }
         } else {
-            Spacer(Modifier.height(AurexTheme.spacing.large))
+            Spacer(Modifier.height(MoneBieTheme.spacing.large))
 
             FormNotice(
                 icon = Icons.Rounded.Info,
@@ -466,15 +466,15 @@ private fun AccountFormSheet(
             )
         }
 
-        Spacer(Modifier.height(AurexTheme.spacing.extraLarge))
+        Spacer(Modifier.height(MoneBieTheme.spacing.extraLarge))
 
-        AurexButton(
+        MoneBieButton(
             text = if (form.isEditing) "Save changes" else "Add account",
             loading = form.isSaving,
             onClick = onSave
         )
 
-        Spacer(Modifier.height(AurexTheme.spacing.extraExtraLarge))
+        Spacer(Modifier.height(MoneBieTheme.spacing.extraExtraLarge))
     }
 }
 
@@ -757,7 +757,7 @@ private fun AccountCard(
     modifier: Modifier = Modifier
 ) {
     val negative = account.balance.isNegative
-    val accent = if (negative) AurexTheme.finance.negative else MaterialTheme.colorScheme.primary
+    val accent = if (negative) MoneBieTheme.finance.negative else MaterialTheme.colorScheme.primary
 
     // The card opens the editor - renaming is the common case - and archiving
     // sits behind its own control so the two are not one mis-tap apart.
@@ -765,10 +765,10 @@ private fun AccountCard(
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.medium)
+            horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.medium)
         ) {
             GlowBadge(
-                icon = AurexIcons.forAccount(account.type.iconKey),
+                icon = MoneBieIcons.forAccount(account.type.iconKey),
                 tint = accent
             )
 
@@ -796,7 +796,7 @@ private fun AccountCard(
             }
         }
 
-        Spacer(Modifier.height(AurexTheme.spacing.medium))
+        Spacer(Modifier.height(MoneBieTheme.spacing.medium))
 
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -808,7 +808,7 @@ private fun AccountCard(
                     currencySymbol = currencySymbol,
                     style = MaterialTheme.typography.headlineSmall,
                     color = if (negative) {
-                        AurexTheme.finance.negative
+                        MoneBieTheme.finance.negative
                     } else {
                         MaterialTheme.colorScheme.onSurface
                     },
@@ -833,7 +833,7 @@ private fun AccountCard(
         }
 
         if (share != null) {
-            Spacer(Modifier.height(AurexTheme.spacing.small))
+            Spacer(Modifier.height(MoneBieTheme.spacing.small))
 
             GradientTrack(
                 progress = share,
@@ -868,9 +868,9 @@ private fun AddAccountTile(
             .clip(shape)
             .border(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.35f), shape)
             .pressable(onClick)
-            .padding(AurexTheme.spacing.medium),
+            .padding(MoneBieTheme.spacing.medium),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.medium)
+        horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.medium)
     ) {
         GlowBadge(icon = Icons.Rounded.Add, tint = MaterialTheme.colorScheme.primary)
 
@@ -913,10 +913,10 @@ private fun SectionTotal(
 private fun AccountsSkeleton(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small)
+        verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small)
     ) {
         ShimmerBlock(modifier = Modifier.fillMaxWidth(), height = 224.dp, cornerRadius = 30.dp)
-        Spacer(Modifier.height(AurexTheme.spacing.extraSmall))
+        Spacer(Modifier.height(MoneBieTheme.spacing.extraSmall))
         ShimmerBlock(modifier = Modifier.fillMaxWidth(0.4f), height = 18.dp)
         ShimmerBlock(modifier = Modifier.fillMaxWidth(), height = 82.dp, cornerRadius = 24.dp)
         ShimmerBlock(modifier = Modifier.fillMaxWidth(), height = 82.dp, cornerRadius = 24.dp)

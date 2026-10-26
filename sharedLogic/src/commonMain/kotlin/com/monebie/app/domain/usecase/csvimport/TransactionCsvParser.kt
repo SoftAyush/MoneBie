@@ -1,9 +1,9 @@
-package com.aurex.app.domain.usecase.csvimport
+package com.monebie.app.domain.usecase.csvimport
 
-import com.aurex.app.core.Money
-import com.aurex.app.domain.model.PaymentMethod
-import com.aurex.app.domain.model.TransactionType
-import com.aurex.app.domain.model.displayName
+import com.monebie.app.core.Money
+import com.monebie.app.domain.model.PaymentMethod
+import com.monebie.app.domain.model.TransactionType
+import com.monebie.app.domain.model.displayName
 
 /**
  * One line of a CSV as the importer understood it.
@@ -35,7 +35,7 @@ data class CsvParseResult(
 )
 
 /**
- * Reads the CSV that [com.aurex.app.domain.usecase.export.TransactionCsv]
+ * Reads the CSV that [com.monebie.app.domain.usecase.export.TransactionCsv]
  * writes, and anything else laid out the same way.
  *
  * Columns are found by header name rather than position, so a file with the

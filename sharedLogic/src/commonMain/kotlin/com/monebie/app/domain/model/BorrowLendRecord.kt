@@ -1,6 +1,6 @@
-package com.aurex.app.domain.model
+package com.monebie.app.domain.model
 
-import com.aurex.app.core.Money
+import com.monebie.app.core.Money
 
 /**
  * Which way money moved between the user and another person.

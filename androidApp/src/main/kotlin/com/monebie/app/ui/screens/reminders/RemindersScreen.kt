@@ -1,4 +1,4 @@
-package com.aurex.app.ui.screens.reminders
+package com.monebie.app.ui.screens.reminders
 
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
@@ -42,33 +42,33 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.aurex.app.AurexApplication
-import com.aurex.app.core.Money
-import com.aurex.app.core.MoneyFormatter
-import com.aurex.app.core.totalOf
-import com.aurex.app.domain.model.DueBucket
-import com.aurex.app.domain.model.UpcomingPayment
-import com.aurex.app.domain.usecase.reminders.ReminderBoard
-import com.aurex.app.presentation.reminders.RemindersViewModel
-import com.aurex.app.ui.components.AmbientBackdrop
-import com.aurex.app.ui.components.CountUpMoneyText
-import com.aurex.app.ui.components.DetailTopBar
-import com.aurex.app.ui.components.EmptyState
-import com.aurex.app.ui.components.HeroCardShape
-import com.aurex.app.ui.components.HeroDecoration
-import com.aurex.app.ui.components.HeroFinance
-import com.aurex.app.ui.components.HeroNote
-import com.aurex.app.ui.components.HeroTile
-import com.aurex.app.ui.components.MicroLabel
-import com.aurex.app.ui.components.OnHero
-import com.aurex.app.ui.components.PremiumCard
-import com.aurex.app.ui.components.ShimmerBlock
-import com.aurex.app.ui.components.heroBrush
-import com.aurex.app.ui.screens.dashboard.UpcomingPaymentRow
-import com.aurex.app.ui.theme.AurexTheme
-import com.aurex.app.ui.theme.Palette300
-import com.aurex.app.ui.theme.Palette700
-import com.aurex.app.ui.theme.Palette900
+import com.monebie.app.MoneBieApplication
+import com.monebie.app.core.Money
+import com.monebie.app.core.MoneyFormatter
+import com.monebie.app.core.totalOf
+import com.monebie.app.domain.model.DueBucket
+import com.monebie.app.domain.model.UpcomingPayment
+import com.monebie.app.domain.usecase.reminders.ReminderBoard
+import com.monebie.app.presentation.reminders.RemindersViewModel
+import com.monebie.app.ui.components.AmbientBackdrop
+import com.monebie.app.ui.components.CountUpMoneyText
+import com.monebie.app.ui.components.DetailTopBar
+import com.monebie.app.ui.components.EmptyState
+import com.monebie.app.ui.components.HeroCardShape
+import com.monebie.app.ui.components.HeroDecoration
+import com.monebie.app.ui.components.HeroFinance
+import com.monebie.app.ui.components.HeroNote
+import com.monebie.app.ui.components.HeroTile
+import com.monebie.app.ui.components.MicroLabel
+import com.monebie.app.ui.components.OnHero
+import com.monebie.app.ui.components.PremiumCard
+import com.monebie.app.ui.components.ShimmerBlock
+import com.monebie.app.ui.components.heroBrush
+import com.monebie.app.ui.screens.dashboard.UpcomingPaymentRow
+import com.monebie.app.ui.theme.MoneBieTheme
+import com.monebie.app.ui.theme.Palette300
+import com.monebie.app.ui.theme.Palette700
+import com.monebie.app.ui.theme.Palette900
 
 /**
  * Everything with a due date, in one place.
@@ -83,7 +83,7 @@ fun RemindersScreen(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
-    val app = context.applicationContext as AurexApplication
+    val app = context.applicationContext as MoneBieApplication
 
     val viewModel: RemindersViewModel = viewModel(
         factory = viewModelFactory {
@@ -118,12 +118,12 @@ fun RemindersScreen(
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(
-                    start = AurexTheme.spacing.medium,
-                    end = AurexTheme.spacing.medium,
-                    top = AurexTheme.spacing.small,
-                    bottom = AurexTheme.spacing.extraExtraLarge
+                    start = MoneBieTheme.spacing.medium,
+                    end = MoneBieTheme.spacing.medium,
+                    top = MoneBieTheme.spacing.small,
+                    bottom = MoneBieTheme.spacing.extraExtraLarge
                 ),
-                verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small)
+                verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small)
             ) {
                 if (board.isLoading) {
                     item(key = "skeleton") { RemindersSkeleton() }
@@ -400,8 +400,8 @@ private fun BucketHeader(
     modifier: Modifier = Modifier
 ) {
     val accent = when (bucket) {
-        DueBucket.OVERDUE -> AurexTheme.finance.negative
-        DueBucket.TODAY -> AurexTheme.finance.caution
+        DueBucket.OVERDUE -> MoneBieTheme.finance.negative
+        DueBucket.TODAY -> MoneBieTheme.finance.caution
         DueBucket.THIS_WEEK -> MaterialTheme.colorScheme.primary
         else -> MaterialTheme.colorScheme.onSurfaceVariant
     }
@@ -409,7 +409,7 @@ private fun BucketHeader(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(top = AurexTheme.spacing.small, bottom = 2.dp),
+            .padding(top = MoneBieTheme.spacing.small, bottom = 2.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         // The same brand tick the section headers elsewhere use, taking the
@@ -453,10 +453,10 @@ private fun BucketHeader(
 private fun RemindersSkeleton(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small)
+        verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small)
     ) {
         ShimmerBlock(modifier = Modifier.fillMaxWidth(), height = 300.dp, cornerRadius = 30.dp)
-        Spacer(Modifier.height(AurexTheme.spacing.extraSmall))
+        Spacer(Modifier.height(MoneBieTheme.spacing.extraSmall))
         ShimmerBlock(modifier = Modifier.fillMaxWidth(0.35f), height = 18.dp)
         ShimmerBlock(modifier = Modifier.fillMaxWidth(), height = 96.dp, cornerRadius = 24.dp)
         ShimmerBlock(modifier = Modifier.fillMaxWidth(), height = 96.dp, cornerRadius = 24.dp)

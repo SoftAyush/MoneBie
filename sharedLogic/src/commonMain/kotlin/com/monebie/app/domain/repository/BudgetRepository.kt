@@ -1,7 +1,7 @@
-package com.aurex.app.domain.repository
+package com.monebie.app.domain.repository
 
-import com.aurex.app.domain.model.Budget
-import com.aurex.app.domain.model.BudgetDraft
+import com.monebie.app.domain.model.Budget
+import com.monebie.app.domain.model.BudgetDraft
 import kotlinx.coroutines.flow.Flow
 
 interface BudgetRepository {

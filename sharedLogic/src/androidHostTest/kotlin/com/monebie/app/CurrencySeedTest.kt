@@ -1,9 +1,9 @@
-package com.aurex.app
+package com.monebie.app
 
 import app.cash.sqldelight.db.QueryResult
 import app.cash.sqldelight.db.SqlDriver
 import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
-import com.aurex.app.db.AurexDatabase
+import com.monebie.app.db.MoneBieDatabase
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -57,7 +57,7 @@ class CurrencySeedTest {
 
     private fun freshDriver(): SqlDriver =
         JdbcSqliteDriver(JdbcSqliteDriver.IN_MEMORY).also {
-            AurexDatabase.Schema.create(it).value
+            MoneBieDatabase.Schema.create(it).value
         }
 
     private fun rows(driver: SqlDriver): List<Currency> {
@@ -99,7 +99,7 @@ class CurrencySeedTest {
     fun anUpgradedInstallEndsUpWithTheSameCurrenciesAsAFreshOne() {
         val fresh = freshDriver()
         val upgraded = driverAtVersion1().also {
-            AurexDatabase.Schema.migrate(it, 1L, AurexDatabase.Schema.version).value
+            MoneBieDatabase.Schema.migrate(it, 1L, MoneBieDatabase.Schema.version).value
         }
 
         assertEquals(
@@ -184,7 +184,7 @@ class CurrencySeedTest {
             0
         )
 
-        AurexDatabase.Schema.migrate(driver, 1L, AurexDatabase.Schema.version).value
+        MoneBieDatabase.Schema.migrate(driver, 1L, MoneBieDatabase.Schema.version).value
 
         // Updated in place - one row, canonical symbol, same primary key.
         val npr = rows(driver).single { it.code == "NPR" }

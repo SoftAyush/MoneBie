@@ -1,6 +1,6 @@
-package com.aurex.app.domain.usecase.user
+package com.monebie.app.domain.usecase.user
 
-import com.aurex.app.domain.repository.UserRepository
+import com.monebie.app.domain.repository.UserRepository
 
 class SaveUserUseCase(private val userRepository: UserRepository) {
     suspend operator fun invoke(name: String, date: String, currencyCode: String) {

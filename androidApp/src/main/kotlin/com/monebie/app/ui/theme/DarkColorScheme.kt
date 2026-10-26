@@ -1,40 +1,40 @@
-package com.aurex.app.ui.theme
+package com.monebie.app.ui.theme
 
 import androidx.compose.material3.darkColorScheme
 
 val DarkColorScheme = darkColorScheme(
-    primary = AurexPrimaryDark,
-    onPrimary = AurexOnPrimaryDark,
-    primaryContainer = AurexPrimaryContainerDark,
-    onPrimaryContainer = AurexOnPrimaryContainerDark,
+    primary = MoneBiePrimaryDark,
+    onPrimary = MoneBieOnPrimaryDark,
+    primaryContainer = MoneBiePrimaryContainerDark,
+    onPrimaryContainer = MoneBieOnPrimaryContainerDark,
 
-    secondary = AurexSecondaryDark,
-    onSecondary = AurexOnSecondaryDark,
-    secondaryContainer = AurexSecondaryContainerDark,
-    onSecondaryContainer = AurexOnSecondaryContainerDark,
+    secondary = MoneBieSecondaryDark,
+    onSecondary = MoneBieOnSecondaryDark,
+    secondaryContainer = MoneBieSecondaryContainerDark,
+    onSecondaryContainer = MoneBieOnSecondaryContainerDark,
 
-    tertiary = AurexTertiaryDark,
-    onTertiary = AurexOnTertiaryDark,
-    tertiaryContainer = AurexTertiaryContainerDark,
-    onTertiaryContainer = AurexOnTertiaryContainerDark,
+    tertiary = MoneBieTertiaryDark,
+    onTertiary = MoneBieOnTertiaryDark,
+    tertiaryContainer = MoneBieTertiaryContainerDark,
+    onTertiaryContainer = MoneBieOnTertiaryContainerDark,
 
     error = ErrorDark,
     onError = OnErrorDark,
     errorContainer = ErrorContainerDark,
     onErrorContainer = OnErrorContainerDark,
 
-    background = AurexBackgroundDark,
-    onBackground = AurexOnSurfaceDark,
-    surface = AurexSurfaceDark,
-    onSurface = AurexOnSurfaceDark,
-    surfaceVariant = AurexSurfaceVariantDark,
-    onSurfaceVariant = AurexOnSurfaceVariantDark,
+    background = MoneBieBackgroundDark,
+    onBackground = MoneBieOnSurfaceDark,
+    surface = MoneBieSurfaceDark,
+    onSurface = MoneBieOnSurfaceDark,
+    surfaceVariant = MoneBieSurfaceVariantDark,
+    onSurfaceVariant = MoneBieOnSurfaceVariantDark,
 
-    surfaceContainerLowest = AurexSurfaceContainerLowestDark,
-    surfaceContainerLow = AurexSurfaceContainerLowDark,
-    surfaceContainer = AurexSurfaceContainerDark,
-    surfaceContainerHigh = AurexSurfaceContainerHighDark,
-    surfaceContainerHighest = AurexSurfaceContainerHighestDark,
+    surfaceContainerLowest = MoneBieSurfaceContainerLowestDark,
+    surfaceContainerLow = MoneBieSurfaceContainerLowDark,
+    surfaceContainer = MoneBieSurfaceContainerDark,
+    surfaceContainerHigh = MoneBieSurfaceContainerHighDark,
+    surfaceContainerHighest = MoneBieSurfaceContainerHighestDark,
 
-    outline = AurexOutlineDark
+    outline = MoneBieOutlineDark
 )

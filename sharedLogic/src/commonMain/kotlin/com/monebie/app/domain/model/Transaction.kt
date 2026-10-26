@@ -1,6 +1,6 @@
-package com.aurex.app.domain.model
+package com.monebie.app.domain.model
 
-import com.aurex.app.core.Money
+import com.monebie.app.core.Money
 
 /**
  * What produced a transaction.

@@ -1,4 +1,4 @@
-package com.aurex.app.ui.components
+package com.monebie.app.ui.components
 
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -30,7 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.aurex.app.ui.theme.AurexTheme
+import com.monebie.app.ui.theme.MoneBieTheme
 
 /**
  * Empty state used everywhere a list can legitimately have nothing in it.
@@ -50,7 +50,7 @@ fun EmptyState(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = AurexTheme.spacing.large),
+            .padding(vertical = MoneBieTheme.spacing.large),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         IconBadge(
@@ -60,7 +60,7 @@ fun EmptyState(
             size = 56.dp
         )
 
-        Spacer(Modifier.height(AurexTheme.spacing.medium))
+        Spacer(Modifier.height(MoneBieTheme.spacing.medium))
 
         Text(
             text = title,
@@ -70,18 +70,18 @@ fun EmptyState(
             textAlign = TextAlign.Center
         )
 
-        Spacer(Modifier.height(AurexTheme.spacing.extraSmall))
+        Spacer(Modifier.height(MoneBieTheme.spacing.extraSmall))
 
         Text(
             text = message,
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(horizontal = AurexTheme.spacing.large)
+            modifier = Modifier.padding(horizontal = MoneBieTheme.spacing.large)
         )
 
         if (actionLabel != null && onAction != null) {
-            Spacer(Modifier.height(AurexTheme.spacing.medium))
+            Spacer(Modifier.height(MoneBieTheme.spacing.medium))
             // Padding sits outside the pill so the touch target is comfortably
             // larger than the label without changing how the pill looks.
             StatusPill(
@@ -130,7 +130,7 @@ fun ShimmerBlock(
 
 /** Full-screen branded loading state, used while the first database read resolves. */
 @Composable
-fun AurexLoadingScreen(modifier: Modifier = Modifier) {
+fun MoneBieLoadingScreen(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -139,7 +139,7 @@ fun AurexLoadingScreen(modifier: Modifier = Modifier) {
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.medium)
+            verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.medium)
         ) {
             Box(
                 modifier = Modifier
@@ -159,7 +159,7 @@ fun ErrorState(
     icon: ImageVector,
     modifier: Modifier = Modifier
 ) {
-    AurexCard(
+    MoneBieCard(
         modifier = modifier.fillMaxWidth(),
         containerColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.5f),
         borderColor = Color.Transparent
@@ -170,14 +170,14 @@ fun ErrorState(
                 tint = MaterialTheme.colorScheme.error,
                 background = MaterialTheme.colorScheme.error.copy(alpha = 0.12f)
             )
-            Spacer(Modifier.height(AurexTheme.spacing.small))
+            Spacer(Modifier.height(MoneBieTheme.spacing.small))
             Text(
                 text = "Something went wrong",
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.onSurface
             )
-            Spacer(Modifier.height(AurexTheme.spacing.extraSmall))
+            Spacer(Modifier.height(MoneBieTheme.spacing.extraSmall))
             Text(
                 text = message,
                 style = MaterialTheme.typography.bodySmall,

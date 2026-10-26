@@ -1,8 +1,8 @@
-package com.aurex.app.domain.usecase.backup
+package com.monebie.app.domain.usecase.backup
 
-import com.aurex.app.domain.model.backup.BackupSnapshot
-import com.aurex.app.domain.repository.BackupRepository
-import com.aurex.app.domain.repository.RemoteBackupStore
+import com.monebie.app.domain.model.backup.BackupSnapshot
+import com.monebie.app.domain.repository.BackupRepository
+import com.monebie.app.domain.repository.RemoteBackupStore
 
 /** What came of asking for a restore. */
 sealed interface RestoreOutcome {

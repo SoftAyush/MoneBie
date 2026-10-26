@@ -1,9 +1,9 @@
-package com.aurex.app.ui.theme
+package com.monebie.app.ui.theme
 
 import android.content.Context
 import android.content.res.Configuration
-import com.aurex.app.domain.model.ThemeMode
-import com.aurex.app.domain.model.themeModeOf
+import com.monebie.app.domain.model.ThemeMode
+import com.monebie.app.domain.model.themeModeOf
 
 /**
  * The chosen palette, mirrored where it can be read synchronously.
@@ -15,11 +15,11 @@ import com.aurex.app.domain.model.themeModeOf
  * an app the user has asked to keep dark, and the reverse.
  *
  * The database stays the source of truth. This is a cache that follows it, kept
- * current by [com.aurex.app.AurexApplication], and only ever read at startup.
+ * current by [com.monebie.app.MoneBieApplication], and only ever read at startup.
  */
 object ThemeStartupCache {
 
-    private const val FILE = "aurex_startup"
+    private const val FILE = "monebie_startup"
     private const val KEY_THEME_MODE = "theme_mode"
 
     fun read(context: Context): ThemeMode {

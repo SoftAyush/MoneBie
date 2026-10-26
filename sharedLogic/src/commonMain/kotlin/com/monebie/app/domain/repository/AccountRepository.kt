@@ -1,8 +1,8 @@
-package com.aurex.app.domain.repository
+package com.monebie.app.domain.repository
 
-import com.aurex.app.core.Money
-import com.aurex.app.domain.model.Account
-import com.aurex.app.domain.model.AccountType
+import com.monebie.app.core.Money
+import com.monebie.app.domain.model.Account
+import com.monebie.app.domain.model.AccountType
 import kotlinx.coroutines.flow.Flow
 
 interface AccountRepository {

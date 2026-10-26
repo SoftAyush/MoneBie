@@ -1,7 +1,7 @@
-package com.aurex.app.data.mapper
+package com.monebie.app.data.mapper
 
-import com.aurex.app.domain.model.Currency
-import com.aurex.app.db.Currency as DbCurrency
+import com.monebie.app.domain.model.Currency
+import com.monebie.app.db.Currency as DbCurrency
 
 fun DbCurrency.toDomain(): Currency {
     return Currency(

@@ -1,4 +1,4 @@
-package com.aurex.app.notifications
+package com.monebie.app.notifications
 
 import android.content.Context
 
@@ -13,7 +13,7 @@ import android.content.Context
  */
 object PaymentReminderSettings {
 
-    private const val FILE = "aurex_reminders"
+    private const val FILE = "monebie_reminders"
     private const val KEY_ENABLED = "enabled"
     private const val KEY_SENT = "sent"
 

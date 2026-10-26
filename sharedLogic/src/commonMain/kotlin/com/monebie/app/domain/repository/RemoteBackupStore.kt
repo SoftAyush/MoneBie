@@ -1,6 +1,6 @@
-package com.aurex.app.domain.repository
+package com.monebie.app.domain.repository
 
-import com.aurex.app.domain.model.backup.BackupSnapshot
+import com.monebie.app.domain.model.backup.BackupSnapshot
 import kotlinx.coroutines.flow.Flow
 
 /**

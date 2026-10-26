@@ -1,4 +1,4 @@
-package com.aurex.app.domain.model
+package com.monebie.app.domain.model
 
 /**
  * Categories are referenced by a stable string id rather than an enum ordinal,

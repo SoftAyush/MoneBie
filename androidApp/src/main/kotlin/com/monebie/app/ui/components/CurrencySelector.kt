@@ -1,4 +1,4 @@
-package com.aurex.app.ui.components
+package com.monebie.app.ui.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
@@ -25,8 +25,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.aurex.app.domain.model.Currency
-import com.aurex.app.ui.theme.AurexTheme
+import com.monebie.app.domain.model.Currency
+import com.monebie.app.ui.theme.MoneBieTheme
 
 @Composable
 fun CurrencySelector(
@@ -34,7 +34,7 @@ fun CurrencySelector(
 ) {
     var showSheet by remember { mutableStateOf(false) }
 
-    AurexTheme {
+    MoneBieTheme {
         OutlinedCard(
             modifier = Modifier
                 .fillMaxWidth()
@@ -49,12 +49,12 @@ fun CurrencySelector(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
-                        horizontal = AurexTheme.spacing.medium, vertical = AurexTheme.spacing.medium
+                        horizontal = MoneBieTheme.spacing.medium, vertical = MoneBieTheme.spacing.medium
                     ), verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(text = selected.flag, fontSize = 30.sp)
 
-                Spacer(Modifier.width(AurexTheme.spacing.medium))
+                Spacer(Modifier.width(MoneBieTheme.spacing.medium))
 
                 Column(modifier = Modifier.weight(1f)) {
                     Text(

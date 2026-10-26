@@ -1,4 +1,4 @@
-package com.aurex.app.ui.screens.budget
+package com.monebie.app.ui.screens.budget
 
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
@@ -51,44 +51,44 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.aurex.app.AurexApplication
-import com.aurex.app.core.MoneyFormatter
-import com.aurex.app.domain.model.BudgetLevel
-import com.aurex.app.domain.model.BudgetOverview
-import com.aurex.app.domain.model.BudgetStatus
-import com.aurex.app.domain.model.TransactionCategory
-import com.aurex.app.presentation.budget.BudgetEvent
-import com.aurex.app.presentation.budget.BudgetFormState
-import com.aurex.app.presentation.budget.BudgetsViewModel
-import com.aurex.app.ui.components.AmbientBackdrop
-import com.aurex.app.ui.components.AurexButton
-import com.aurex.app.ui.components.AurexIcons
-import com.aurex.app.ui.components.AurexSnackbarHost
-import com.aurex.app.ui.components.CategoryPicker
-import com.aurex.app.ui.components.ConfirmDialog
-import com.aurex.app.ui.components.CountUpMoneyText
-import com.aurex.app.ui.components.DetailTopBar
-import com.aurex.app.ui.components.EmptyState
-import com.aurex.app.ui.components.FormField
-import com.aurex.app.ui.components.GlassIconButton
-import com.aurex.app.ui.components.GlowBadge
-import com.aurex.app.ui.components.HeroCardShape
-import com.aurex.app.ui.components.HeroDecoration
-import com.aurex.app.ui.components.HeroFinance
-import com.aurex.app.ui.components.HeroTile
-import com.aurex.app.ui.components.MicroLabel
-import com.aurex.app.ui.components.MoneyInputField
-import com.aurex.app.ui.components.MoneyText
-import com.aurex.app.ui.components.OnHero
-import com.aurex.app.ui.components.PremiumCard
-import com.aurex.app.ui.components.PremiumSectionHeader
-import com.aurex.app.ui.components.ShimmerBlock
-import com.aurex.app.ui.components.heroBrush
-import com.aurex.app.ui.components.pressable
-import com.aurex.app.ui.components.showAurexMessage
-import com.aurex.app.ui.theme.AurexTheme
-import com.aurex.app.ui.theme.Palette700
-import com.aurex.app.ui.theme.Palette900
+import com.monebie.app.MoneBieApplication
+import com.monebie.app.core.MoneyFormatter
+import com.monebie.app.domain.model.BudgetLevel
+import com.monebie.app.domain.model.BudgetOverview
+import com.monebie.app.domain.model.BudgetStatus
+import com.monebie.app.domain.model.TransactionCategory
+import com.monebie.app.presentation.budget.BudgetEvent
+import com.monebie.app.presentation.budget.BudgetFormState
+import com.monebie.app.presentation.budget.BudgetsViewModel
+import com.monebie.app.ui.components.AmbientBackdrop
+import com.monebie.app.ui.components.MoneBieButton
+import com.monebie.app.ui.components.MoneBieIcons
+import com.monebie.app.ui.components.MoneBieSnackbarHost
+import com.monebie.app.ui.components.CategoryPicker
+import com.monebie.app.ui.components.ConfirmDialog
+import com.monebie.app.ui.components.CountUpMoneyText
+import com.monebie.app.ui.components.DetailTopBar
+import com.monebie.app.ui.components.EmptyState
+import com.monebie.app.ui.components.FormField
+import com.monebie.app.ui.components.GlassIconButton
+import com.monebie.app.ui.components.GlowBadge
+import com.monebie.app.ui.components.HeroCardShape
+import com.monebie.app.ui.components.HeroDecoration
+import com.monebie.app.ui.components.HeroFinance
+import com.monebie.app.ui.components.HeroTile
+import com.monebie.app.ui.components.MicroLabel
+import com.monebie.app.ui.components.MoneyInputField
+import com.monebie.app.ui.components.MoneyText
+import com.monebie.app.ui.components.OnHero
+import com.monebie.app.ui.components.PremiumCard
+import com.monebie.app.ui.components.PremiumSectionHeader
+import com.monebie.app.ui.components.ShimmerBlock
+import com.monebie.app.ui.components.heroBrush
+import com.monebie.app.ui.components.pressable
+import com.monebie.app.ui.components.showMoneBieMessage
+import com.monebie.app.ui.theme.MoneBieTheme
+import com.monebie.app.ui.theme.Palette700
+import com.monebie.app.ui.theme.Palette900
 
 /**
  * Monthly budgets.
@@ -104,7 +104,7 @@ fun BudgetsScreen(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
-    val app = context.applicationContext as AurexApplication
+    val app = context.applicationContext as MoneBieApplication
 
     val viewModel: BudgetsViewModel = viewModel(
         factory = viewModelFactory {
@@ -127,9 +127,9 @@ fun BudgetsScreen(
 
     LaunchedEffect(event) {
         when (val current = event) {
-            is BudgetEvent.Saved -> snackbarHostState.showAurexMessage("Budget for ${current.categoryName} saved.")
-            is BudgetEvent.Deleted -> snackbarHostState.showAurexMessage("Removed the ${current.categoryName} budget.")
-            is BudgetEvent.Failed -> snackbarHostState.showAurexMessage(current.message)
+            is BudgetEvent.Saved -> snackbarHostState.showMoneBieMessage("Budget for ${current.categoryName} saved.")
+            is BudgetEvent.Deleted -> snackbarHostState.showMoneBieMessage("Removed the ${current.categoryName} budget.")
+            is BudgetEvent.Failed -> snackbarHostState.showMoneBieMessage(current.message)
             null -> Unit
         }
         if (event != null) viewModel.consumeEvent()
@@ -166,16 +166,16 @@ fun BudgetsScreen(
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(
-                    start = AurexTheme.spacing.medium,
-                    end = AurexTheme.spacing.medium,
-                    top = AurexTheme.spacing.small,
-                    bottom = AurexTheme.spacing.extraExtraLarge
+                    start = MoneBieTheme.spacing.medium,
+                    end = MoneBieTheme.spacing.medium,
+                    top = MoneBieTheme.spacing.small,
+                    bottom = MoneBieTheme.spacing.extraExtraLarge
                 ),
-                verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small)
+                verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small)
             ) {
                 if (overview.isLoading) {
                     item(key = "skeleton") {
-                        Column(verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small)) {
+                        Column(verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small)) {
                             ShimmerBlock(Modifier.fillMaxWidth().height(180.dp))
                             ShimmerBlock(Modifier.fillMaxWidth().height(72.dp))
                             ShimmerBlock(Modifier.fillMaxWidth().height(72.dp))
@@ -190,7 +190,7 @@ fun BudgetsScreen(
                             EmptyState(
                                 icon = Icons.Rounded.Savings,
                                 title = "No budgets yet",
-                                message = "Set a monthly limit on a category and Aurex will " +
+                                message = "Set a monthly limit on a category and MoneBie will " +
                                     "show how much of it is left as the month goes on.",
                                 actionLabel = if (overview.availableCategories.isNotEmpty()) "Set a budget" else null,
                                 onAction = { viewModel.startCreating() }
@@ -226,7 +226,7 @@ fun BudgetsScreen(
             }
         }
 
-        AurexSnackbarHost(
+        MoneBieSnackbarHost(
             hostState = snackbarHostState,
             modifier = Modifier.align(Alignment.BottomCenter)
         )
@@ -381,10 +381,10 @@ private fun BudgetRow(
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.medium)
+            horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.medium)
         ) {
             GlowBadge(
-                icon = AurexIcons.forCategory(status.category.iconKey),
+                icon = MoneBieIcons.forCategory(status.category.iconKey),
                 tint = accent,
                 size = 40.dp
             )
@@ -430,7 +430,7 @@ private fun BudgetRow(
             }
         }
 
-        Spacer(Modifier.height(AurexTheme.spacing.small))
+        Spacer(Modifier.height(MoneBieTheme.spacing.small))
 
         Box(
             modifier = Modifier
@@ -452,9 +452,9 @@ private fun BudgetRow(
 
 @Composable
 private fun budgetAccent(level: BudgetLevel): Color = when (level) {
-    BudgetLevel.OK -> AurexTheme.finance.positive
-    BudgetLevel.NEAR -> AurexTheme.finance.caution
-    BudgetLevel.OVER -> AurexTheme.finance.negative
+    BudgetLevel.OK -> MoneBieTheme.finance.positive
+    BudgetLevel.NEAR -> MoneBieTheme.finance.caution
+    BudgetLevel.OVER -> MoneBieTheme.finance.negative
 }
 
 @Composable
@@ -475,10 +475,10 @@ private fun BudgetFormSheet(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = AurexTheme.spacing.large)
+            .padding(horizontal = MoneBieTheme.spacing.large)
             .imePadding()
             .navigationBarsPadding(),
-        verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.medium)
+        verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.medium)
     ) {
         Text(
             text = if (form.isEditing) "Edit budget" else "New budget",
@@ -502,7 +502,7 @@ private fun BudgetFormSheet(
             )
         }
 
-        AurexButton(
+        MoneBieButton(
             text = if (form.isEditing) "Save changes" else "Set budget",
             onClick = onSave,
             loading = form.isSaving,
@@ -515,9 +515,9 @@ private fun BudgetFormSheet(
                     .fillMaxWidth()
                     .clip(MaterialTheme.shapes.medium)
                     .pressable(onDelete)
-                    .padding(vertical = AurexTheme.spacing.small),
+                    .padding(vertical = MoneBieTheme.spacing.small),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small)
+                horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small)
             ) {
                 GlowBadge(
                     icon = Icons.Rounded.DeleteOutline,
@@ -532,6 +532,6 @@ private fun BudgetFormSheet(
             }
         }
 
-        Spacer(Modifier.height(AurexTheme.spacing.small))
+        Spacer(Modifier.height(MoneBieTheme.spacing.small))
     }
 }

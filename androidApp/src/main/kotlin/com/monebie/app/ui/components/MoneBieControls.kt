@@ -1,4 +1,4 @@
-package com.aurex.app.ui.components
+package com.monebie.app.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -23,7 +23,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
-import com.aurex.app.ui.theme.AurexTheme
+import com.monebie.app.ui.theme.MoneBieTheme
 
 /**
  * Single-select chip used for categories, payment methods and list filters.
@@ -66,7 +66,7 @@ fun SelectableChip(
                 shape = shape
             )
             .clickable(onClick = onClick)
-            .padding(horizontal = AurexTheme.spacing.medium, vertical = 8.dp),
+            .padding(horizontal = MoneBieTheme.spacing.medium, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
@@ -150,6 +150,6 @@ fun ConfirmDialog(
             TextButton(onClick = onDismiss) { Text(dismissLabel) }
         },
         containerColor = MaterialTheme.colorScheme.surface,
-        shape = RoundedCornerShape(AurexTheme.spacing.large)
+        shape = RoundedCornerShape(MoneBieTheme.spacing.large)
     )
 }

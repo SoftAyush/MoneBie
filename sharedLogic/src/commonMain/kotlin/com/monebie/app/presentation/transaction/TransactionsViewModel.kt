@@ -1,32 +1,35 @@
-package com.aurex.app.presentation.transaction
+package com.monebie.app.presentation.transaction
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aurex.app.core.addMonths
-import com.aurex.app.core.firstDayOfMonth
-import com.aurex.app.core.formatMonthYear
-import com.aurex.app.core.getCurrentDay
-import com.aurex.app.core.monthOf
-import com.aurex.app.core.shiftMonth
-import com.aurex.app.domain.calculation.FinancialCalculator
-import com.aurex.app.domain.model.Account
-import com.aurex.app.domain.model.CategoryLookup
-import com.aurex.app.domain.model.TransactionCategories
-import com.aurex.app.domain.model.TransactionCategory
-import com.aurex.app.domain.model.DayGroup
-import com.aurex.app.domain.model.PeriodSummary
-import com.aurex.app.domain.model.TransactionFilter
-import com.aurex.app.domain.model.TransactionType
-import com.aurex.app.domain.usecase.account.GetAccountsUseCase
-import com.aurex.app.domain.usecase.category.GetActiveCategoriesUseCase
-import com.aurex.app.domain.usecase.transaction.DeleteTransactionUseCase
-import com.aurex.app.domain.usecase.transaction.GetTransactionsInRangeUseCase
-import com.aurex.app.domain.usecase.user.GetSelectedCurrencySymbolUseCase
+import com.monebie.app.core.AppCalendar
+import com.monebie.app.core.firstDayAfterMonth
+import com.monebie.app.core.firstDayOfMonth
+import com.monebie.app.core.formatMonth
+import com.monebie.app.core.getCurrentDay
+import com.monebie.app.core.monthKeyOf
+import com.monebie.app.core.monthOf
+import com.monebie.app.core.shiftMonth
+import com.monebie.app.domain.calculation.FinancialCalculator
+import com.monebie.app.domain.model.Account
+import com.monebie.app.domain.model.CategoryLookup
+import com.monebie.app.domain.model.TransactionCategories
+import com.monebie.app.domain.model.TransactionCategory
+import com.monebie.app.domain.model.DayGroup
+import com.monebie.app.domain.model.PeriodSummary
+import com.monebie.app.domain.model.TransactionFilter
+import com.monebie.app.domain.model.TransactionType
+import com.monebie.app.domain.usecase.account.GetAccountsUseCase
+import com.monebie.app.domain.usecase.category.GetActiveCategoriesUseCase
+import com.monebie.app.domain.usecase.transaction.DeleteTransactionUseCase
+import com.monebie.app.domain.usecase.transaction.GetTransactionsInRangeUseCase
+import com.monebie.app.domain.usecase.user.GetSelectedCurrencySymbolUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -91,12 +94,20 @@ class TransactionsViewModel(
 
     private val currentMonth = monthOf(todayProvider())
 
-    private val selectedMonth = MutableStateFlow(currentMonth)
+    /**
+     * How many months back from the current one the user has paged. Kept as a
+     * count rather than a month so switching calendars in Settings keeps their
+     * place instead of stranding them on a month of the other calendar.
+     */
+    private val monthsBack = MutableStateFlow(0)
+
+    private val selectedMonth = combine(AppCalendar.system, monthsBack) { system, back ->
+        shiftMonth(monthKeyOf(todayProvider(), system), -back)
+    }.distinctUntilChanged()
     private val filter = MutableStateFlow(TransactionFilter())
 
     private val monthTransactions = selectedMonth.flatMapLatest { month ->
-        val start = firstDayOfMonth(month)
-        getTransactionsInRangeUseCase(start, addMonths(start, 1))
+        getTransactionsInRangeUseCase(firstDayOfMonth(month), firstDayAfterMonth(month))
     }
 
     /** Accounts, categories and the currency move together and rarely change. */
@@ -116,8 +127,8 @@ class TransactionsViewModel(
         TransactionsUiState(
             isLoading = false,
             month = month,
-            monthLabel = formatMonthYear(firstDayOfMonth(month)),
-            canGoToNextMonth = month < currentMonth,
+            monthLabel = formatMonth(month),
+            canGoToNextMonth = todayProvider() >= firstDayAfterMonth(month),
             filter = activeFilter,
             monthSummary = FinancialCalculator.summarise(transactions),
             visibleSummary = FinancialCalculator.summarise(visible),
@@ -131,17 +142,17 @@ class TransactionsViewModel(
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = TransactionsUiState(
             month = currentMonth,
-            monthLabel = formatMonthYear(firstDayOfMonth(currentMonth))
+            monthLabel = formatMonth(currentMonth)
         )
     )
 
     fun showPreviousMonth() {
-        selectedMonth.update { shiftMonth(it, -1) }
+        monthsBack.update { it + 1 }
     }
 
     /** Guarded so the list cannot page into months that have not happened yet. */
     fun showNextMonth() {
-        selectedMonth.update { if (it < currentMonth) shiftMonth(it, 1) else it }
+        monthsBack.update { (it - 1).coerceAtLeast(0) }
     }
 
     fun setTypeFilter(type: TransactionType?) {

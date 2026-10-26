@@ -1,8 +1,8 @@
-package com.aurex.app.data.mapper
+package com.monebie.app.data.mapper
 
-import com.aurex.app.domain.model.User
-import com.aurex.app.domain.model.themeModeOf
-import com.aurex.app.db.User as DbUser
+import com.monebie.app.domain.model.User
+import com.monebie.app.domain.model.themeModeOf
+import com.monebie.app.db.User as DbUser
 
 fun DbUser.toDomain(): User {
     return User(

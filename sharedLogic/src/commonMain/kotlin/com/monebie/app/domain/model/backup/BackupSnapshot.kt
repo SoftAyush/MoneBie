@@ -1,12 +1,12 @@
-package com.aurex.app.domain.model.backup
+package com.monebie.app.domain.model.backup
 
 /**
  * Everything the user has entered, in one transferable value.
  *
  * The rows are carried as flat mirrors of the tables rather than as the domain
  * models. A domain model is shaped for the screen that reads it - [
- * com.aurex.app.domain.model.Debt] arrives with its payments already rolled up
- * into an amount paid, and [com.aurex.app.domain.model.Account] hides the
+ * com.monebie.app.domain.model.Debt] arrives with its payments already rolled up
+ * into an amount paid, and [com.monebie.app.domain.model.Account] hides the
  * archived flag behind computed properties. Restoring from those would mean
  * reconstructing the rows they were derived from, and any rollup that was
  * stored as well as derived could come back disagreeing with its own detail.

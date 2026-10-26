@@ -1,4 +1,4 @@
-package com.aurex.app.ui.screens.backup
+package com.monebie.app.ui.screens.backup
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -46,23 +46,23 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.aurex.app.AurexApplication
-import com.aurex.app.data.backup.GoogleIdTokenProvider
-import com.aurex.app.domain.repository.BackupIdentity
-import com.aurex.app.domain.repository.BackupMetadata
-import com.aurex.app.presentation.backup.BackupEvent
-import com.aurex.app.presentation.backup.BackupViewModel
-import com.aurex.app.ui.components.AmbientBackdrop
-import com.aurex.app.ui.components.AurexButton
-import com.aurex.app.ui.components.AurexSnackbarHost
-import com.aurex.app.ui.components.CardDivider
-import com.aurex.app.ui.components.DetailTopBar
-import com.aurex.app.ui.components.GlowBadge
-import com.aurex.app.ui.components.PremiumCard
-import com.aurex.app.ui.components.PremiumSectionHeader
-import com.aurex.app.ui.components.pressable
-import com.aurex.app.ui.components.showAurexMessage
-import com.aurex.app.ui.theme.AurexTheme
+import com.monebie.app.MoneBieApplication
+import com.monebie.app.data.backup.GoogleIdTokenProvider
+import com.monebie.app.domain.repository.BackupIdentity
+import com.monebie.app.domain.repository.BackupMetadata
+import com.monebie.app.presentation.backup.BackupEvent
+import com.monebie.app.presentation.backup.BackupViewModel
+import com.monebie.app.ui.components.AmbientBackdrop
+import com.monebie.app.ui.components.MoneBieButton
+import com.monebie.app.ui.components.MoneBieSnackbarHost
+import com.monebie.app.ui.components.CardDivider
+import com.monebie.app.ui.components.DetailTopBar
+import com.monebie.app.ui.components.GlowBadge
+import com.monebie.app.ui.components.PremiumCard
+import com.monebie.app.ui.components.PremiumSectionHeader
+import com.monebie.app.ui.components.pressable
+import com.monebie.app.ui.components.showMoneBieMessage
+import com.monebie.app.ui.theme.MoneBieTheme
 
 /**
  * Backing the ledger up to the cloud, and putting it back.
@@ -79,7 +79,7 @@ fun BackupScreen(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
-    val app = context.applicationContext as AurexApplication
+    val app = context.applicationContext as MoneBieApplication
     val activity = remember(context) { context.findActivity() }
 
     val viewModel: BackupViewModel = viewModel(
@@ -104,19 +104,19 @@ fun BackupScreen(
     LaunchedEffect(event) {
         when (val current = event) {
             is BackupEvent.SignedIn ->
-                snackbarHostState.showAurexMessage("Signed in as ${current.label}.")
+                snackbarHostState.showMoneBieMessage("Signed in as ${current.label}.")
 
-            BackupEvent.SignedOut -> snackbarHostState.showAurexMessage("Signed out.")
+            BackupEvent.SignedOut -> snackbarHostState.showMoneBieMessage("Signed out.")
 
             is BackupEvent.BackedUp ->
-                snackbarHostState.showAurexMessage("Backed up ${current.rowCount} rows.")
+                snackbarHostState.showMoneBieMessage("Backed up ${current.rowCount} rows.")
 
             is BackupEvent.Restored ->
-                snackbarHostState.showAurexMessage("Restored ${current.rowCount} rows.")
+                snackbarHostState.showMoneBieMessage("Restored ${current.rowCount} rows.")
 
-            BackupEvent.Deleted -> snackbarHostState.showAurexMessage("Backup deleted.")
+            BackupEvent.Deleted -> snackbarHostState.showMoneBieMessage("Backup deleted.")
 
-            is BackupEvent.Failed -> snackbarHostState.showAurexMessage(current.message)
+            is BackupEvent.Failed -> snackbarHostState.showMoneBieMessage(current.message)
             null -> Unit
         }
         if (event != null) viewModel.consumeEvent()
@@ -132,12 +132,12 @@ fun BackupScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
-                    .padding(horizontal = AurexTheme.spacing.medium)
+                    .padding(horizontal = MoneBieTheme.spacing.medium)
                     .imePadding()
                     .navigationBarsPadding(),
-                verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.large)
+                verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.large)
             ) {
-                Spacer(Modifier.height(AurexTheme.spacing.extraSmall))
+                Spacer(Modifier.height(MoneBieTheme.spacing.extraSmall))
 
                 when (val identity = uiState.identity) {
                     BackupIdentity.SignedOut -> SignInSection(
@@ -172,11 +172,11 @@ fun BackupScreen(
                     }
                 }
 
-                Spacer(Modifier.height(AurexTheme.spacing.large))
+                Spacer(Modifier.height(MoneBieTheme.spacing.large))
             }
         }
 
-        AurexSnackbarHost(
+        MoneBieSnackbarHost(
             hostState = snackbarHostState,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
@@ -217,7 +217,7 @@ private fun SignInSection(
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.large)
+        verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.large)
     ) {
         InfoCard(
             icon = Icons.Rounded.CloudOff,
@@ -226,7 +226,7 @@ private fun SignInSection(
                 "same account on a new phone brings everything back."
         )
 
-        AurexButton(
+        MoneBieButton(
             text = "Continue with Google",
             onClick = onSignIn,
             loading = isBusy,
@@ -244,13 +244,13 @@ private fun SignedInSection(
     Column(modifier = Modifier.fillMaxWidth()) {
         PremiumSectionHeader(title = "Signed in as")
 
-        Spacer(Modifier.height(AurexTheme.spacing.small))
+        Spacer(Modifier.height(MoneBieTheme.spacing.small))
 
         PremiumCard(modifier = Modifier.fillMaxWidth()) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.medium)
+                horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.medium)
             ) {
                 GlowBadge(icon = Icons.Rounded.CloudDone, tint = MaterialTheme.colorScheme.primary)
 
@@ -276,7 +276,7 @@ private fun SignedInSection(
                     modifier = Modifier
                         .clip(MaterialTheme.shapes.small)
                         .pressable { if (!isBusy) onSignOut() }
-                        .padding(AurexTheme.spacing.small)
+                        .padding(MoneBieTheme.spacing.small)
                 )
             }
         }
@@ -298,12 +298,12 @@ private fun StoredBackupSection(
     Column(modifier = Modifier.fillMaxWidth()) {
         PremiumSectionHeader(title = "Cloud backup")
 
-        Spacer(Modifier.height(AurexTheme.spacing.small))
+        Spacer(Modifier.height(MoneBieTheme.spacing.small))
 
         PremiumCard(modifier = Modifier.fillMaxWidth()) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.medium)
+                verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.medium)
             ) {
                 when {
                     isLoading -> StatusLine("Checking for a backup...")
@@ -331,7 +331,7 @@ private fun StoredBackupSection(
                     )
                 }
 
-                AurexButton(
+                MoneBieButton(
                     text = "Back up now",
                     onClick = onBackUpNow,
                     enabled = canBackUp,
@@ -341,15 +341,15 @@ private fun StoredBackupSection(
             }
         }
 
-        Spacer(Modifier.height(AurexTheme.spacing.large))
+        Spacer(Modifier.height(MoneBieTheme.spacing.large))
 
         PremiumSectionHeader(title = "Restore & remove")
 
-        Spacer(Modifier.height(AurexTheme.spacing.small))
+        Spacer(Modifier.height(MoneBieTheme.spacing.small))
 
         PremiumCard(
             modifier = Modifier.fillMaxWidth(),
-            contentPadding = AurexTheme.spacing.medium
+            contentPadding = MoneBieTheme.spacing.medium
         ) {
             ActionRow(
                 icon = Icons.Rounded.Restore,
@@ -388,9 +388,9 @@ private fun RestoreConfirmation(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(AurexTheme.spacing.large)
+            .padding(MoneBieTheme.spacing.large)
             .navigationBarsPadding(),
-        verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.medium)
+        verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.medium)
     ) {
         GlowBadge(icon = Icons.Rounded.Warning, tint = MaterialTheme.colorScheme.error)
 
@@ -414,9 +414,9 @@ private fun RestoreConfirmation(
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
 
-        Spacer(Modifier.height(AurexTheme.spacing.small))
+        Spacer(Modifier.height(MoneBieTheme.spacing.small))
 
-        AurexButton(
+        MoneBieButton(
             text = "Replace my data",
             onClick = onConfirm,
             icon = Icons.Rounded.Restore,
@@ -424,7 +424,7 @@ private fun RestoreConfirmation(
             contentColor = MaterialTheme.colorScheme.onError
         )
 
-        AurexButton(
+        MoneBieButton(
             text = "Cancel",
             onClick = onCancel,
             containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
@@ -454,7 +454,7 @@ private fun InfoCard(
     PremiumCard(modifier = Modifier.fillMaxWidth()) {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.medium)
+            horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.medium)
         ) {
             GlowBadge(icon = icon, tint = MaterialTheme.colorScheme.primary)
 
@@ -498,9 +498,9 @@ private fun ActionRow(
             .fillMaxWidth()
             .clip(MaterialTheme.shapes.medium)
             .pressable { if (enabled) onClick() }
-            .padding(vertical = AurexTheme.spacing.small),
+            .padding(vertical = MoneBieTheme.spacing.small),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.medium)
+        horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.medium)
     ) {
         GlowBadge(icon = icon, tint = tint.copy(alpha = alpha))
 

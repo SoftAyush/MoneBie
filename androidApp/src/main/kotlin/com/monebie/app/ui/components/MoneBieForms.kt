@@ -1,4 +1,4 @@
-package com.aurex.app.ui.components
+package com.monebie.app.ui.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
@@ -37,7 +37,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.aurex.app.ui.theme.AurexTheme
+import com.monebie.app.ui.theme.MoneBieTheme
 
 /*
  * The form kit.
@@ -95,7 +95,7 @@ fun FieldError(
             color = MaterialTheme.colorScheme.error,
             textAlign = if (centered) TextAlign.Center else TextAlign.Start,
             modifier = Modifier
-                .padding(top = AurexTheme.spacing.small)
+                .padding(top = MoneBieTheme.spacing.small)
                 .then(if (centered) Modifier.fillMaxWidth() else Modifier)
         )
     }
@@ -117,12 +117,12 @@ fun FormSection(
     Column(modifier = modifier.fillMaxWidth()) {
         PremiumSectionHeader(title = title)
 
-        Spacer(Modifier.height(AurexTheme.spacing.small))
+        Spacer(Modifier.height(MoneBieTheme.spacing.small))
 
         PremiumCard(modifier = Modifier.fillMaxWidth()) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.large),
+                verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.large),
                 content = content
             )
         }
@@ -158,12 +158,12 @@ fun FormField(
             }
         }
 
-        Spacer(Modifier.height(AurexTheme.spacing.small))
+        Spacer(Modifier.height(MoneBieTheme.spacing.small))
 
         content()
 
         if (hint != null) {
-            Spacer(Modifier.height(AurexTheme.spacing.extraSmall))
+            Spacer(Modifier.height(MoneBieTheme.spacing.extraSmall))
             Text(
                 text = hint,
                 style = MaterialTheme.typography.bodySmall,
@@ -185,7 +185,7 @@ fun MoneyInputField(
     placeholder: String = "0.00",
     textStyle: TextStyle = MaterialTheme.typography.headlineSmall
 ) {
-    AurexTextField(
+    MoneBieTextField(
         value = value,
         onValueChange = onValueChange,
         placeholder = placeholder,
@@ -291,9 +291,9 @@ fun FormNotice(
             .clip(shape)
             .background(tone.copy(alpha = 0.08f))
             .border(1.dp, tone.copy(alpha = 0.22f), shape)
-            .padding(AurexTheme.spacing.medium),
+            .padding(MoneBieTheme.spacing.medium),
         verticalAlignment = Alignment.Top,
-        horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small)
+        horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small)
     ) {
         Icon(
             imageVector = icon,

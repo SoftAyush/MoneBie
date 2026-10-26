@@ -1,4 +1,4 @@
-package com.aurex.app.ui.screens.borrowlend
+package com.monebie.app.ui.screens.borrowlend
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,23 +25,23 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.aurex.app.AurexApplication
-import com.aurex.app.domain.model.LoanDirection
-import com.aurex.app.presentation.borrowlend.AddEditBorrowLendViewModel
-import com.aurex.app.ui.components.AccountPicker
-import com.aurex.app.ui.components.AmbientBackdrop
-import com.aurex.app.ui.components.AurexButton
-import com.aurex.app.ui.components.AurexDateField
-import com.aurex.app.ui.components.AurexTextField
-import com.aurex.app.ui.components.DetailTopBar
-import com.aurex.app.ui.components.FilterPill
-import com.aurex.app.ui.components.FormField
-import com.aurex.app.ui.components.FormNotice
-import com.aurex.app.ui.components.FormSection
-import com.aurex.app.ui.components.MoneyInputField
-import com.aurex.app.ui.components.Segment
-import com.aurex.app.ui.components.SegmentedSelector
-import com.aurex.app.ui.theme.AurexTheme
+import com.monebie.app.MoneBieApplication
+import com.monebie.app.domain.model.LoanDirection
+import com.monebie.app.presentation.borrowlend.AddEditBorrowLendViewModel
+import com.monebie.app.ui.components.AccountPicker
+import com.monebie.app.ui.components.AmbientBackdrop
+import com.monebie.app.ui.components.MoneBieButton
+import com.monebie.app.ui.components.MoneBieDateField
+import com.monebie.app.ui.components.MoneBieTextField
+import com.monebie.app.ui.components.DetailTopBar
+import com.monebie.app.ui.components.FilterPill
+import com.monebie.app.ui.components.FormField
+import com.monebie.app.ui.components.FormNotice
+import com.monebie.app.ui.components.FormSection
+import com.monebie.app.ui.components.MoneyInputField
+import com.monebie.app.ui.components.Segment
+import com.monebie.app.ui.components.SegmentedSelector
+import com.monebie.app.ui.theme.MoneBieTheme
 
 /**
  * Record money borrowed or lent.
@@ -58,7 +58,7 @@ fun AddEditBorrowLendScreen(
     initialDirection: LoanDirection = LoanDirection.LENT
 ) {
     val context = LocalContext.current
-    val app = context.applicationContext as AurexApplication
+    val app = context.applicationContext as MoneBieApplication
 
     val viewModel: AddEditBorrowLendViewModel = viewModel(
         key = "add_edit_loan_" + (recordId ?: -1L) + "_" + initialDirection.name,
@@ -96,12 +96,12 @@ fun AddEditBorrowLendScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
-                    .padding(horizontal = AurexTheme.spacing.medium)
+                    .padding(horizontal = MoneBieTheme.spacing.medium)
                     .imePadding()
                     .navigationBarsPadding(),
-                verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.large)
+                verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.large)
             ) {
-                Spacer(Modifier.height(AurexTheme.spacing.extraSmall))
+                Spacer(Modifier.height(MoneBieTheme.spacing.extraSmall))
 
                 if (uiState.canEditTerms) {
                     // Phrased from the user's side rather than as "Borrowed" /
@@ -111,12 +111,12 @@ fun AddEditBorrowLendScreen(
                             Segment(
                                 value = LoanDirection.BORROWED,
                                 label = "I borrowed",
-                                accent = AurexTheme.finance.negative
+                                accent = MoneBieTheme.finance.negative
                             ),
                             Segment(
                                 value = LoanDirection.LENT,
                                 label = "I lent",
-                                accent = AurexTheme.finance.receivable
+                                accent = MoneBieTheme.finance.receivable
                             )
                         ),
                         selected = uiState.direction,
@@ -136,7 +136,7 @@ fun AddEditBorrowLendScreen(
                         label = if (uiState.isBorrowed) "Borrowed from" else "Lent to",
                         error = uiState.nameError
                     ) {
-                        AurexTextField(
+                        MoneBieTextField(
                             value = uiState.personName,
                             onValueChange = viewModel::setPersonName,
                             placeholder = "Their name",
@@ -156,7 +156,7 @@ fun AddEditBorrowLendScreen(
 
                 FormSection(title = "Dates") {
                     FormField(label = if (uiState.isBorrowed) "Borrowed on" else "Lent on") {
-                        AurexDateField(
+                        MoneBieDateField(
                             day = uiState.date,
                             onDayChange = { day -> day?.let(viewModel::setDate) }
                         )
@@ -169,7 +169,7 @@ fun AddEditBorrowLendScreen(
                             "Expected back (optional)"
                         }
                     ) {
-                        AurexDateField(
+                        MoneBieDateField(
                             day = uiState.dueDate,
                             onDayChange = viewModel::setDueDate,
                             placeholder = "No date agreed",
@@ -194,7 +194,7 @@ fun AddEditBorrowLendScreen(
                             Column(
                                 modifier = Modifier.fillMaxWidth(),
                                 verticalArrangement = Arrangement.spacedBy(
-                                    AurexTheme.spacing.small
+                                    MoneBieTheme.spacing.small
                                 )
                             ) {
                                 AccountPicker(
@@ -222,7 +222,7 @@ fun AddEditBorrowLendScreen(
 
                 FormSection(title = "Details") {
                     FormField(label = "Notes (optional)") {
-                        AurexTextField(
+                        MoneBieTextField(
                             value = uiState.notes,
                             onValueChange = viewModel::setNotes,
                             placeholder = "What was it for?",
@@ -232,13 +232,13 @@ fun AddEditBorrowLendScreen(
                     }
                 }
 
-                AurexButton(
+                MoneBieButton(
                     text = if (uiState.isEditing) "Save changes" else "Save record",
                     loading = uiState.isSaving,
                     onClick = viewModel::save
                 )
 
-                Spacer(Modifier.height(AurexTheme.spacing.extraExtraLarge))
+                Spacer(Modifier.height(MoneBieTheme.spacing.extraExtraLarge))
             }
         }
     }

@@ -1,23 +1,22 @@
-package com.aurex.app.domain.usecase.budget
+package com.monebie.app.domain.usecase.budget
 
-import com.aurex.app.core.Money
-import com.aurex.app.core.addMonths
-import com.aurex.app.core.firstDayOfMonth
-import com.aurex.app.core.formatMonthYear
-import com.aurex.app.core.getCurrentDay
-import com.aurex.app.core.monthOf
-import com.aurex.app.domain.model.Budget
-import com.aurex.app.domain.model.BudgetDraft
-import com.aurex.app.domain.model.BudgetOverview
-import com.aurex.app.domain.model.BudgetStatus
-import com.aurex.app.domain.model.CategoryLookup
-import com.aurex.app.domain.model.Transaction
-import com.aurex.app.domain.model.TransactionCategory
-import com.aurex.app.domain.model.TransactionType
-import com.aurex.app.domain.repository.BudgetRepository
-import com.aurex.app.domain.repository.CategoryRepository
-import com.aurex.app.domain.repository.TransactionRepository
-import com.aurex.app.domain.repository.UserRepository
+import com.monebie.app.core.Money
+import com.monebie.app.core.firstDayAfterMonth
+import com.monebie.app.core.firstDayOfMonth
+import com.monebie.app.core.formatMonth
+import com.monebie.app.core.getCurrentDay
+import com.monebie.app.domain.model.Budget
+import com.monebie.app.domain.model.BudgetDraft
+import com.monebie.app.domain.model.BudgetOverview
+import com.monebie.app.domain.model.BudgetStatus
+import com.monebie.app.domain.model.CategoryLookup
+import com.monebie.app.domain.model.Transaction
+import com.monebie.app.domain.model.TransactionCategory
+import com.monebie.app.domain.model.TransactionType
+import com.monebie.app.domain.repository.BudgetRepository
+import com.monebie.app.domain.repository.CategoryRepository
+import com.monebie.app.domain.repository.TransactionRepository
+import com.monebie.app.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 
@@ -80,11 +79,11 @@ class GetBudgetOverviewUseCase(
     private val todayProvider: () -> String = ::getCurrentDay
 ) {
 
-    /** [month] is yyyy-MM. */
+    /** [month] is a month key from monthOf. */
     operator fun invoke(month: String): Flow<BudgetOverview> {
         val today = todayProvider()
         val start = firstDayOfMonth(month)
-        val end = addMonths(start, 1)
+        val end = firstDayAfterMonth(month)
 
         return combine(
             budgetRepository.observeBudgets(),
@@ -94,9 +93,9 @@ class GetBudgetOverviewUseCase(
         ) { budgets, transactions, categories, symbol ->
             BudgetOverview(
                 month = month,
-                monthLabel = formatMonthYear(start),
+                monthLabel = formatMonth(month),
                 currencySymbol = symbol ?: DEFAULT_CURRENCY_SYMBOL,
-                canGoToNextMonth = month < monthOf(today),
+                canGoToNextMonth = today >= end,
                 statuses = BudgetMeasure.measure(budgets, transactions, CategoryLookup(categories)),
                 availableCategories = BudgetMeasure.unbudgeted(categories, budgets),
                 isLoading = false

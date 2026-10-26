@@ -1,19 +1,20 @@
-package com.aurex.app
+package com.monebie.app
 
 import android.app.Application
-import com.aurex.app.core.AppContainer
-import com.aurex.app.data.backup.FirestoreBackupStore
-import com.aurex.app.data.database.DatabaseDriverFactory
-import com.aurex.app.notifications.PaymentReminders
-import com.aurex.app.notifications.RecurringPosting
-import com.aurex.app.security.AppLock
-import com.aurex.app.ui.theme.ThemeStartupCache
+import com.monebie.app.core.AppContainer
+import com.monebie.app.data.backup.FirestoreBackupStore
+import com.monebie.app.data.database.DatabaseDriverFactory
+import com.monebie.app.notifications.PaymentReminders
+import com.monebie.app.notifications.RecurringPosting
+import com.monebie.app.security.AppLock
+import com.monebie.app.ui.components.DateCalendarSettings
+import com.monebie.app.ui.theme.ThemeStartupCache
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 
-class AurexApplication : Application() {
+class MoneBieApplication : Application() {
     lateinit var appContainer: AppContainer
         private set
 
@@ -31,6 +32,10 @@ class AurexApplication : Application() {
         // Before any activity: a cold start into a locked app must be locked
         // before the first frame, not after the dashboard has drawn.
         AppLock.onProcessStart(this)
+
+        // Before any screen, so the first frame already buckets months in the
+        // calendar the user chose.
+        DateCalendarSettings.load(this)
 
         mirrorThemeChoice()
         PaymentReminders.rescheduleIfEnabled(this)

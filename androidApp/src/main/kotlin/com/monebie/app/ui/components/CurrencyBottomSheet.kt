@@ -1,4 +1,4 @@
-package com.aurex.app.ui.components
+package com.monebie.app.ui.components
 
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
@@ -51,10 +51,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.aurex.app.domain.model.Currency
-import com.aurex.app.ui.theme.AurexTheme
-import com.aurex.app.ui.theme.Palette700
-import com.aurex.app.ui.theme.Palette900
+import com.monebie.app.domain.model.Currency
+import com.monebie.app.ui.theme.MoneBieTheme
+import com.monebie.app.ui.theme.Palette700
+import com.monebie.app.ui.theme.Palette900
 
 /**
  * Picking the currency every figure in the app is labelled with.
@@ -110,35 +110,35 @@ fun CurrencyBottomSheet(
 
             SelectedCurrencyCard(
                 currency = selected,
-                modifier = Modifier.padding(horizontal = AurexTheme.spacing.medium)
+                modifier = Modifier.padding(horizontal = MoneBieTheme.spacing.medium)
             )
 
-            Spacer(Modifier.height(AurexTheme.spacing.large))
+            Spacer(Modifier.height(MoneBieTheme.spacing.large))
 
-            AurexTextField(
+            MoneBieTextField(
                 value = search,
                 onValueChange = { search = it },
                 placeholder = "Search by name, code or symbol",
                 leadingIcon = Icons.Rounded.Search,
                 textStyle = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.padding(horizontal = AurexTheme.spacing.medium)
+                modifier = Modifier.padding(horizontal = MoneBieTheme.spacing.medium)
             )
 
             // The quick row is a shortcut, not a filter result - it would be
             // noise beside a search that already narrowed the list.
             if (!searching && popular.isNotEmpty()) {
-                Spacer(Modifier.height(AurexTheme.spacing.large))
+                Spacer(Modifier.height(MoneBieTheme.spacing.large))
 
                 MicroLabel(
                     text = "Most used",
-                    modifier = Modifier.padding(horizontal = AurexTheme.spacing.medium)
+                    modifier = Modifier.padding(horizontal = MoneBieTheme.spacing.medium)
                 )
 
-                Spacer(Modifier.height(AurexTheme.spacing.small))
+                Spacer(Modifier.height(MoneBieTheme.spacing.small))
 
                 LazyRow(
-                    contentPadding = PaddingValues(horizontal = AurexTheme.spacing.medium),
-                    horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small)
+                    contentPadding = PaddingValues(horizontal = MoneBieTheme.spacing.medium),
+                    horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small)
                 ) {
                     items(popular, key = { "quick_" + it.code }) { currency ->
                         QuickCurrencyCard(
@@ -150,12 +150,12 @@ fun CurrencyBottomSheet(
                 }
             }
 
-            Spacer(Modifier.height(AurexTheme.spacing.large))
+            Spacer(Modifier.height(MoneBieTheme.spacing.large))
 
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = AurexTheme.spacing.medium),
+                    .padding(horizontal = MoneBieTheme.spacing.medium),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 MicroLabel(text = if (searching) "Results" else "All currencies")
@@ -166,13 +166,13 @@ fun CurrencyBottomSheet(
                 )
             }
 
-            Spacer(Modifier.height(AurexTheme.spacing.small))
+            Spacer(Modifier.height(MoneBieTheme.spacing.small))
 
             if (listed.isEmpty()) {
                 PremiumCard(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = AurexTheme.spacing.medium)
+                        .padding(horizontal = MoneBieTheme.spacing.medium)
                 ) {
                     EmptyState(
                         icon = Icons.Rounded.SearchOff,
@@ -186,7 +186,7 @@ fun CurrencyBottomSheet(
 
             LazyColumn(
                 modifier = Modifier.fillMaxWidth(),
-                contentPadding = PaddingValues(horizontal = AurexTheme.spacing.medium),
+                contentPadding = PaddingValues(horizontal = MoneBieTheme.spacing.medium),
                 verticalArrangement = Arrangement.spacedBy(6.dp)
             ) {
                 items(listed, key = { it.code }) { currency ->
@@ -441,7 +441,7 @@ private fun CurrencyRow(
             )
         }
 
-        Spacer(Modifier.width(AurexTheme.spacing.small))
+        Spacer(Modifier.width(MoneBieTheme.spacing.small))
 
         // Reserve the column and forbid wrapping: symbols like the Moroccan
         // dirham (د.م.) are several characters, and left to itself the trailing

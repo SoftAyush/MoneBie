@@ -18,7 +18,7 @@ kotlin {
     }
     
     androidLibrary {
-       namespace = "com.aurex.app.sharedLogic"
+       namespace = "com.monebie.app.sharedLogic"
        compileSdk = libs.versions.android.compileSdk.get().toInt()
        minSdk = libs.versions.android.minSdk.get().toInt()
     
@@ -63,8 +63,8 @@ kotlin {
 
 sqldelight {
     databases {
-        create("AurexDatabase") {
-            packageName.set("com.aurex.app.db")
+        create("MoneBieDatabase") {
+            packageName.set("com.monebie.app.db")
             dialect(libs.sqldelight.sqlite.dialect)
             srcDirs.setFrom("src/commonMain/sq")
         }

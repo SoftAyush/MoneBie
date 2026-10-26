@@ -1,16 +1,16 @@
-package com.aurex.app.presentation.debt
+package com.monebie.app.presentation.debt
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aurex.app.core.Money
-import com.aurex.app.core.getCurrentDay
-import com.aurex.app.domain.model.Account
-import com.aurex.app.domain.model.DebtDraft
-import com.aurex.app.domain.model.PaymentFrequency
-import com.aurex.app.domain.usecase.account.GetAccountsUseCase
-import com.aurex.app.domain.usecase.debt.GetDebtUseCase
-import com.aurex.app.domain.usecase.debt.SaveDebtUseCase
-import com.aurex.app.domain.usecase.user.GetSelectedCurrencySymbolUseCase
+import com.monebie.app.core.Money
+import com.monebie.app.core.getCurrentDay
+import com.monebie.app.domain.model.Account
+import com.monebie.app.domain.model.DebtDraft
+import com.monebie.app.domain.model.PaymentFrequency
+import com.monebie.app.domain.usecase.account.GetAccountsUseCase
+import com.monebie.app.domain.usecase.debt.GetDebtUseCase
+import com.monebie.app.domain.usecase.debt.SaveDebtUseCase
+import com.monebie.app.domain.usecase.user.GetSelectedCurrencySymbolUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

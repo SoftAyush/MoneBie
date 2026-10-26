@@ -1,7 +1,7 @@
-package com.aurex.app.domain.repository
+package com.monebie.app.domain.repository
 
-import com.aurex.app.domain.model.ThemeMode
-import com.aurex.app.domain.model.User
+import com.monebie.app.domain.model.ThemeMode
+import com.monebie.app.domain.model.User
 import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {

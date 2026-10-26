@@ -1,44 +1,44 @@
-package com.aurex.app.domain.calculation
+package com.monebie.app.domain.calculation
 
-import com.aurex.app.core.Money
-import com.aurex.app.core.addDays
-import com.aurex.app.core.addMonths
-import com.aurex.app.core.dayOf
-import com.aurex.app.core.firstDayOfMonth
-import com.aurex.app.core.daysBetween
-import com.aurex.app.core.getCurrentDay
-import com.aurex.app.core.isInMonth
-import com.aurex.app.core.isOnDay
-import com.aurex.app.core.monthOf
-import com.aurex.app.core.totalOf
-import com.aurex.app.domain.model.Account
-import com.aurex.app.domain.model.AccountDelta
-import com.aurex.app.domain.model.AccountType
-import com.aurex.app.domain.model.AssetBreakdown
-import com.aurex.app.domain.model.BorrowLendRecord
-import com.aurex.app.domain.model.CategorySpend
-import com.aurex.app.domain.model.DailyTotal
-import com.aurex.app.domain.model.DayGroup
-import com.aurex.app.domain.model.Debt
-import com.aurex.app.domain.model.DueBucket
-import com.aurex.app.domain.model.DebtStatus
-import com.aurex.app.domain.model.Emi
-import com.aurex.app.domain.model.EmiStatus
-import com.aurex.app.domain.model.LiabilityBreakdown
-import com.aurex.app.domain.model.LoanDirection
-import com.aurex.app.domain.model.LoanStatus
-import com.aurex.app.domain.model.NetPosition
-import com.aurex.app.domain.model.PaymentFrequency
-import com.aurex.app.domain.model.PeriodSummary
-import com.aurex.app.domain.model.Transaction
-import com.aurex.app.domain.model.CategoryLookup
-import com.aurex.app.domain.model.TransactionDraft
-import com.aurex.app.domain.model.TransactionType
-import com.aurex.app.domain.model.UpcomingPayment
-import com.aurex.app.domain.model.UpcomingPaymentKind
-import com.aurex.app.domain.model.isAsset
-import com.aurex.app.domain.model.periodDays
-import com.aurex.app.domain.model.periodMonths
+import com.monebie.app.core.Money
+import com.monebie.app.core.addDays
+import com.monebie.app.core.addMonths
+import com.monebie.app.core.dayOf
+import com.monebie.app.core.firstDayAfterMonth
+import com.monebie.app.core.firstDayOfMonth
+import com.monebie.app.core.daysBetween
+import com.monebie.app.core.getCurrentDay
+import com.monebie.app.core.isInMonth
+import com.monebie.app.core.isOnDay
+import com.monebie.app.core.totalOf
+import com.monebie.app.domain.model.Account
+import com.monebie.app.domain.model.AccountDelta
+import com.monebie.app.domain.model.AccountType
+import com.monebie.app.domain.model.AssetBreakdown
+import com.monebie.app.domain.model.BorrowLendRecord
+import com.monebie.app.domain.model.CategorySpend
+import com.monebie.app.domain.model.DailyTotal
+import com.monebie.app.domain.model.DayGroup
+import com.monebie.app.domain.model.Debt
+import com.monebie.app.domain.model.DueBucket
+import com.monebie.app.domain.model.DebtStatus
+import com.monebie.app.domain.model.Emi
+import com.monebie.app.domain.model.EmiStatus
+import com.monebie.app.domain.model.LiabilityBreakdown
+import com.monebie.app.domain.model.LoanDirection
+import com.monebie.app.domain.model.LoanStatus
+import com.monebie.app.domain.model.NetPosition
+import com.monebie.app.domain.model.PaymentFrequency
+import com.monebie.app.domain.model.PeriodSummary
+import com.monebie.app.domain.model.Transaction
+import com.monebie.app.domain.model.CategoryLookup
+import com.monebie.app.domain.model.TransactionDraft
+import com.monebie.app.domain.model.TransactionType
+import com.monebie.app.domain.model.UpcomingPayment
+import com.monebie.app.domain.model.UpcomingPaymentKind
+import com.monebie.app.domain.model.isAsset
+import com.monebie.app.domain.model.periodDays
+import com.monebie.app.domain.model.periodMonths
 
 /**
  * The single source of truth for every derived financial figure in the app.
@@ -107,7 +107,7 @@ object FinancialCalculator {
     fun summaryForDay(transactions: List<Transaction>, day: String): PeriodSummary =
         summarise(transactions.filter { isOnDay(it.date, day) })
 
-    /** [month] is yyyy-MM. */
+    /** [month] is a month key from monthOf. */
     fun summaryForMonth(transactions: List<Transaction>, month: String): PeriodSummary =
         summarise(transactions.filter { isInMonth(it.date, month) })
 
@@ -202,10 +202,10 @@ object FinancialCalculator {
      */
     fun elapsedDaysInMonth(month: String, today: String): Int {
         val firstDay = firstDayOfMonth(month)
-        val dayAfterMonth = addMonths(firstDay, 1)
+        val dayAfterMonth = firstDayAfterMonth(month)
         val monthLength = daysBetween(firstDay, dayAfterMonth).toInt()
 
-        if (monthOf(today) != month) {
+        if (!isInMonth(today, month)) {
             // Any month other than the current one is either fully elapsed or
             // has not started; both are answered by comparing to its first day.
             return if (today >= dayAfterMonth) monthLength else 0
@@ -304,15 +304,15 @@ object FinancialCalculator {
         records.filter { it.direction == LoanDirection.LENT && !it.isSettled }
             .totalOf { it.remainingAmount }
 
-    /** Installments falling due inside [month] (yyyy-MM) across all active EMIs. */
+    /** Installments falling due inside [month] (a month key from monthOf) across all active EMIs. */
     fun emiDueInMonth(emis: List<Emi>, month: String): Money =
-        emis.filter { emi -> emi.nextDueDate?.let { monthOf(it) == month } == true }
+        emis.filter { emi -> emi.nextDueDate?.let { isInMonth(it, month) } == true }
             .totalOf { it.monthlyAmount }
 
-    /** Debt payments falling due inside [month] (yyyy-MM). */
+    /** Debt payments falling due inside [month] (a month key from monthOf). */
     fun debtDueInMonth(debts: List<Debt>, month: String, today: String = getCurrentDay()): Money =
         debts.filter { !it.isSettled }
-            .filter { debt -> nextDebtDueDate(debt, today)?.let { monthOf(it) == month } == true }
+            .filter { debt -> nextDebtDueDate(debt, today)?.let { isInMonth(it, month) } == true }
             .totalOf { it.nextPaymentAmount }
 
     /**

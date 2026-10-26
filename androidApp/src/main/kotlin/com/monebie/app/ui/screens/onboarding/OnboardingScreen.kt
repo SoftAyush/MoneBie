@@ -1,4 +1,4 @@
-package com.aurex.app.ui.screens.onboarding
+package com.monebie.app.ui.screens.onboarding
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.animateColorAsState
@@ -64,21 +64,21 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.aurex.app.presentation.onboarding.OnboardingViewModel
-import com.aurex.app.ui.components.AurexBrandBar
-import com.aurex.app.ui.components.AurexGradientButton
-import com.aurex.app.ui.components.AurexStepDots
-import com.aurex.app.ui.components.AuroraBackground
-import com.aurex.app.ui.components.brandBrush
-import com.aurex.app.ui.components.onBrandColor
-import com.aurex.app.ui.theme.AurexTheme
+import com.monebie.app.presentation.onboarding.OnboardingViewModel
+import com.monebie.app.ui.components.MoneBieBrandBar
+import com.monebie.app.ui.components.MoneBieGradientButton
+import com.monebie.app.ui.components.MoneBieStepDots
+import com.monebie.app.ui.components.AuroraBackground
+import com.monebie.app.ui.components.brandBrush
+import com.monebie.app.ui.components.onBrandColor
+import com.monebie.app.ui.theme.MoneBieTheme
 import kotlin.math.absoluteValue
 
 /**
  * The first thing anyone sees.
  *
  * Three swipeable pages over a slowly drifting aurora, each fronted by a
- * miniature of a real Aurex screen that draws itself in on arrival. The pager
+ * miniature of a real MoneBie screen that draws itself in on arrival. The pager
  * and the view model stay in step in both directions, so swiping, tapping Next
  * and Skip all move the same single source of truth.
  */
@@ -106,7 +106,7 @@ fun OnboardingScreen(
 
     val isLastPage = uiState.currentPageIndex == pages.lastIndex
 
-    AurexTheme {
+    MoneBieTheme {
         Box(modifier = Modifier.fillMaxSize()) {
             AuroraBackground(modifier = Modifier.fillMaxSize())
 
@@ -137,12 +137,12 @@ fun OnboardingScreen(
                     )
                 }
 
-                AurexStepDots(
+                MoneBieStepDots(
                     total = pages.size,
                     current = uiState.currentPageIndex,
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
-                        .padding(bottom = AurexTheme.spacing.large)
+                        .padding(bottom = MoneBieTheme.spacing.large)
                 )
 
                 BottomBar(
@@ -151,8 +151,8 @@ fun OnboardingScreen(
                     isLastPage = isLastPage,
                     onNext = { viewModel.nextStep(onFinished) },
                     modifier = Modifier.padding(
-                        horizontal = AurexTheme.spacing.large,
-                        vertical = AurexTheme.spacing.medium
+                        horizontal = MoneBieTheme.spacing.large,
+                        vertical = MoneBieTheme.spacing.medium
                     )
                 )
             }
@@ -176,7 +176,7 @@ private fun PageContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = AurexTheme.spacing.large),
+            .padding(horizontal = MoneBieTheme.spacing.large),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -198,7 +198,7 @@ private fun PageContent(
             OnboardingHero(imageResName = imageResName, progress = progress)
         }
 
-        Spacer(Modifier.height(AurexTheme.spacing.extraLarge))
+        Spacer(Modifier.height(MoneBieTheme.spacing.extraLarge))
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -215,14 +215,14 @@ private fun PageContent(
                 textAlign = TextAlign.Center
             )
 
-            Spacer(Modifier.height(AurexTheme.spacing.medium))
+            Spacer(Modifier.height(MoneBieTheme.spacing.medium))
 
             Text(
                 text = description,
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.padding(horizontal = AurexTheme.spacing.small)
+                modifier = Modifier.padding(horizontal = MoneBieTheme.spacing.small)
             )
         }
     }
@@ -238,7 +238,7 @@ private fun TopBar(skipVisible: Boolean, onSkip: () -> Unit) {
         label = "skip_alpha"
     )
 
-    AurexBrandBar(
+    MoneBieBrandBar(
         trailing = {
             Text(
                 text = "Skip",
@@ -272,7 +272,7 @@ private fun BottomBar(
         label = "cta_morph"
     ) { last ->
         if (last) {
-            AurexGradientButton(
+            MoneBieGradientButton(
                 text = "Get Started",
                 icon = Icons.AutoMirrored.Rounded.ArrowForward,
                 onClick = onNext

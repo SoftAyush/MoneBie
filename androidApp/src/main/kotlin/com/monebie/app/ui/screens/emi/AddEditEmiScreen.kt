@@ -1,4 +1,4 @@
-package com.aurex.app.ui.screens.emi
+package com.monebie.app.ui.screens.emi
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,20 +30,20 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.aurex.app.AurexApplication
-import com.aurex.app.presentation.emi.AddEditEmiViewModel
-import com.aurex.app.ui.components.AccountPicker
-import com.aurex.app.ui.components.AmbientBackdrop
-import com.aurex.app.ui.components.AurexButton
-import com.aurex.app.ui.components.AurexDateField
-import com.aurex.app.ui.components.AurexTextField
-import com.aurex.app.ui.components.DetailTopBar
-import com.aurex.app.ui.components.FilterPill
-import com.aurex.app.ui.components.FormField
-import com.aurex.app.ui.components.FormNotice
-import com.aurex.app.ui.components.FormSection
-import com.aurex.app.ui.components.MoneyInputField
-import com.aurex.app.ui.theme.AurexTheme
+import com.monebie.app.MoneBieApplication
+import com.monebie.app.presentation.emi.AddEditEmiViewModel
+import com.monebie.app.ui.components.AccountPicker
+import com.monebie.app.ui.components.AmbientBackdrop
+import com.monebie.app.ui.components.MoneBieButton
+import com.monebie.app.ui.components.MoneBieDateField
+import com.monebie.app.ui.components.MoneBieTextField
+import com.monebie.app.ui.components.DetailTopBar
+import com.monebie.app.ui.components.FilterPill
+import com.monebie.app.ui.components.FormField
+import com.monebie.app.ui.components.FormNotice
+import com.monebie.app.ui.components.FormSection
+import com.monebie.app.ui.components.MoneyInputField
+import com.monebie.app.ui.theme.MoneBieTheme
 
 /**
  * Create or edit an EMI.
@@ -60,7 +60,7 @@ fun AddEditEmiScreen(
     emiId: Long? = null
 ) {
     val context = LocalContext.current
-    val app = context.applicationContext as AurexApplication
+    val app = context.applicationContext as MoneBieApplication
 
     val viewModel: AddEditEmiViewModel = viewModel(
         key = "add_edit_emi_" + (emiId ?: -1L),
@@ -97,24 +97,24 @@ fun AddEditEmiScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
-                    .padding(horizontal = AurexTheme.spacing.medium)
+                    .padding(horizontal = MoneBieTheme.spacing.medium)
                     .imePadding()
                     .navigationBarsPadding(),
-                verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.large)
+                verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.large)
             ) {
-                Spacer(Modifier.height(AurexTheme.spacing.extraSmall))
+                Spacer(Modifier.height(MoneBieTheme.spacing.extraSmall))
 
                 uiState.scheduleWarning?.let { warning ->
                     FormNotice(
                         icon = Icons.Rounded.WarningAmber,
                         text = warning,
-                        accent = AurexTheme.finance.caution
+                        accent = MoneBieTheme.finance.caution
                     )
                 }
 
                 FormSection(title = "What it is") {
                     FormField(label = "Name", error = uiState.nameError) {
-                        AurexTextField(
+                        MoneBieTextField(
                             value = uiState.name,
                             onValueChange = viewModel::setName,
                             placeholder = "e.g. Car loan",
@@ -124,7 +124,7 @@ fun AddEditEmiScreen(
                     }
 
                     FormField(label = "Provider", error = uiState.providerError) {
-                        AurexTextField(
+                        MoneBieTextField(
                             value = uiState.provider,
                             onValueChange = viewModel::setProvider,
                             placeholder = "Bank or finance company",
@@ -144,7 +144,7 @@ fun AddEditEmiScreen(
                     }
 
                     FormField(label = "Interest rate (optional)") {
-                        AurexTextField(
+                        MoneBieTextField(
                             value = uiState.interestRateInput,
                             onValueChange = viewModel::setInterestRate,
                             placeholder = "0.0",
@@ -164,7 +164,7 @@ fun AddEditEmiScreen(
                                 (uiState.endDatePreview?.let { ", ending $it" } ?: "")
                         }
                     ) {
-                        AurexTextField(
+                        MoneBieTextField(
                             value = uiState.tenureYearsInput,
                             onValueChange = viewModel::setTenureYears,
                             placeholder = "e.g. 5",
@@ -213,7 +213,7 @@ fun AddEditEmiScreen(
                         label = "Start date",
                         hint = "The first installment falls due one month after this date."
                     ) {
-                        AurexDateField(
+                        MoneBieDateField(
                             day = uiState.startDate,
                             onDayChange = { day -> day?.let(viewModel::setStartDate) }
                         )
@@ -232,7 +232,7 @@ fun AddEditEmiScreen(
                     }
 
                     FormField(label = "Notes (optional)") {
-                        AurexTextField(
+                        MoneBieTextField(
                             value = uiState.notes,
                             onValueChange = viewModel::setNotes,
                             placeholder = "Anything worth remembering",
@@ -242,13 +242,13 @@ fun AddEditEmiScreen(
                     }
                 }
 
-                AurexButton(
+                MoneBieButton(
                     text = if (uiState.isEditing) "Save changes" else "Add EMI",
                     loading = uiState.isSaving,
                     onClick = viewModel::save
                 )
 
-                Spacer(Modifier.height(AurexTheme.spacing.extraExtraLarge))
+                Spacer(Modifier.height(MoneBieTheme.spacing.extraExtraLarge))
             }
         }
     }

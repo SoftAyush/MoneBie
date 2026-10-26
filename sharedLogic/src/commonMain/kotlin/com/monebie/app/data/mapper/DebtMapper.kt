@@ -1,12 +1,12 @@
-package com.aurex.app.data.mapper
+package com.monebie.app.data.mapper
 
-import com.aurex.app.core.Money
-import com.aurex.app.domain.model.Debt
-import com.aurex.app.domain.model.DebtPayment
-import com.aurex.app.domain.model.PaymentFrequency
-import com.aurex.app.db.DebtPayment as DbDebtPayment
-import com.aurex.app.db.SelectAllDebts
-import com.aurex.app.db.SelectDebtById
+import com.monebie.app.core.Money
+import com.monebie.app.domain.model.Debt
+import com.monebie.app.domain.model.DebtPayment
+import com.monebie.app.domain.model.PaymentFrequency
+import com.monebie.app.db.DebtPayment as DbDebtPayment
+import com.monebie.app.db.SelectAllDebts
+import com.monebie.app.db.SelectDebtById
 
 /*
  * The two debt selects share a shape - the Debt columns plus a SUMmed

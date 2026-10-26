@@ -1,6 +1,6 @@
-package com.aurex.app.presentation.dashboard
+package com.monebie.app.presentation.dashboard
 
-import com.aurex.app.domain.model.DashboardSnapshot
+import com.monebie.app.domain.model.DashboardSnapshot
 
 sealed interface DashboardUiState {
 

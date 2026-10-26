@@ -1,9 +1,9 @@
-package com.aurex.app.presentation.overview
+package com.monebie.app.presentation.overview
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aurex.app.domain.model.FinancialOverview
-import com.aurex.app.domain.usecase.overview.GetFinancialOverviewUseCase
+import com.monebie.app.domain.model.FinancialOverview
+import com.monebie.app.domain.usecase.overview.GetFinancialOverviewUseCase
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch

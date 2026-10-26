@@ -1,22 +1,22 @@
-package com.aurex.app.data.repository
+package com.monebie.app.data.repository
 
-import com.aurex.app.core.getCurrentDateString
-import com.aurex.app.data.database.DatabaseHelper
-import com.aurex.app.db.AurexDatabase
-import com.aurex.app.domain.model.backup.BackupAccount
-import com.aurex.app.domain.model.backup.BackupBudget
-import com.aurex.app.domain.model.backup.BackupRecurringTransaction
-import com.aurex.app.domain.model.backup.BackupCategory
-import com.aurex.app.domain.model.backup.BackupDebt
-import com.aurex.app.domain.model.backup.BackupDebtPayment
-import com.aurex.app.domain.model.backup.BackupEmi
-import com.aurex.app.domain.model.backup.BackupEmiPayment
-import com.aurex.app.domain.model.backup.BackupLoanRecord
-import com.aurex.app.domain.model.backup.BackupLoanRepayment
-import com.aurex.app.domain.model.backup.BackupSnapshot
-import com.aurex.app.domain.model.backup.BackupTransaction
-import com.aurex.app.domain.model.backup.BackupUser
-import com.aurex.app.domain.repository.BackupRepository
+import com.monebie.app.core.getCurrentDateString
+import com.monebie.app.data.database.DatabaseHelper
+import com.monebie.app.db.MoneBieDatabase
+import com.monebie.app.domain.model.backup.BackupAccount
+import com.monebie.app.domain.model.backup.BackupBudget
+import com.monebie.app.domain.model.backup.BackupRecurringTransaction
+import com.monebie.app.domain.model.backup.BackupCategory
+import com.monebie.app.domain.model.backup.BackupDebt
+import com.monebie.app.domain.model.backup.BackupDebtPayment
+import com.monebie.app.domain.model.backup.BackupEmi
+import com.monebie.app.domain.model.backup.BackupEmiPayment
+import com.monebie.app.domain.model.backup.BackupLoanRecord
+import com.monebie.app.domain.model.backup.BackupLoanRepayment
+import com.monebie.app.domain.model.backup.BackupSnapshot
+import com.monebie.app.domain.model.backup.BackupTransaction
+import com.monebie.app.domain.model.backup.BackupUser
+import com.monebie.app.domain.repository.BackupRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -36,7 +36,7 @@ class BackupRepositoryImpl(
     override suspend fun snapshot(): BackupSnapshot = withContext(ioDispatcher) {
         dbHelper.database.transactionWithResult {
             BackupSnapshot(
-                schemaVersion = AurexDatabase.Schema.version,
+                schemaVersion = MoneBieDatabase.Schema.version,
                 createdAt = getCurrentDateString(),
                 user = dbHelper.userQueries.selectAllUsers().executeAsList().firstOrNull()?.let {
                     BackupUser(

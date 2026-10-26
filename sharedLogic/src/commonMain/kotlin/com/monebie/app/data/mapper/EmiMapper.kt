@@ -1,11 +1,11 @@
-package com.aurex.app.data.mapper
+package com.monebie.app.data.mapper
 
-import com.aurex.app.core.Money
-import com.aurex.app.domain.model.Emi
-import com.aurex.app.domain.model.EmiPayment
-import com.aurex.app.db.EmiPayment as DbEmiPayment
-import com.aurex.app.db.SelectAllEmis
-import com.aurex.app.db.SelectEmiById
+import com.monebie.app.core.Money
+import com.monebie.app.domain.model.Emi
+import com.monebie.app.domain.model.EmiPayment
+import com.monebie.app.db.EmiPayment as DbEmiPayment
+import com.monebie.app.db.SelectAllEmis
+import com.monebie.app.db.SelectEmiById
 
 fun SelectAllEmis.toDomain(): Emi = buildEmi(
     id = id,

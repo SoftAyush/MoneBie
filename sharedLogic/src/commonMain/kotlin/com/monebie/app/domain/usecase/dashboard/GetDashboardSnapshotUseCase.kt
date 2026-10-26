@@ -1,30 +1,34 @@
-package com.aurex.app.domain.usecase.dashboard
+package com.monebie.app.domain.usecase.dashboard
 
-import com.aurex.app.core.addDays
-import com.aurex.app.core.getCurrentDay
-import com.aurex.app.core.monthOf
-import com.aurex.app.core.startOfMonth
-import com.aurex.app.domain.calculation.FinancialCalculator
-import com.aurex.app.domain.model.Account
-import com.aurex.app.domain.model.Budget
-import com.aurex.app.domain.model.CategoryLookup
-import com.aurex.app.domain.model.BorrowLendRecord
-import com.aurex.app.domain.model.TransactionCategory
-import com.aurex.app.domain.model.DashboardSnapshot
-import com.aurex.app.domain.model.Debt
-import com.aurex.app.domain.model.Emi
-import com.aurex.app.domain.model.Transaction
-import com.aurex.app.domain.repository.AccountRepository
-import com.aurex.app.domain.repository.BorrowLendRepository
-import com.aurex.app.domain.repository.BudgetRepository
-import com.aurex.app.domain.repository.CategoryRepository
-import com.aurex.app.domain.repository.DebtRepository
-import com.aurex.app.domain.repository.EmiRepository
-import com.aurex.app.domain.repository.TransactionRepository
-import com.aurex.app.domain.repository.UserRepository
-import com.aurex.app.domain.usecase.budget.BudgetMeasure
+import com.monebie.app.core.AppCalendar
+import com.monebie.app.core.addDays
+import com.monebie.app.core.getCurrentDay
+import com.monebie.app.core.isInMonth
+import com.monebie.app.core.monthOf
+import com.monebie.app.core.startOfMonth
+import com.monebie.app.domain.calculation.FinancialCalculator
+import com.monebie.app.domain.model.Account
+import com.monebie.app.domain.model.Budget
+import com.monebie.app.domain.model.CategoryLookup
+import com.monebie.app.domain.model.BorrowLendRecord
+import com.monebie.app.domain.model.TransactionCategory
+import com.monebie.app.domain.model.DashboardSnapshot
+import com.monebie.app.domain.model.Debt
+import com.monebie.app.domain.model.Emi
+import com.monebie.app.domain.model.Transaction
+import com.monebie.app.domain.repository.AccountRepository
+import com.monebie.app.domain.repository.BorrowLendRepository
+import com.monebie.app.domain.repository.BudgetRepository
+import com.monebie.app.domain.repository.CategoryRepository
+import com.monebie.app.domain.repository.DebtRepository
+import com.monebie.app.domain.repository.EmiRepository
+import com.monebie.app.domain.repository.TransactionRepository
+import com.monebie.app.domain.repository.UserRepository
+import com.monebie.app.domain.usecase.budget.BudgetMeasure
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 
@@ -77,7 +81,15 @@ class GetDashboardSnapshotUseCase(
         val recent: List<Transaction>
     )
 
-    operator fun invoke(recentTransactionLimit: Int = 5): Flow<DashboardSnapshot> {
+    /**
+     * Rebuilt whenever the user switches between AD and BS, since that moves
+     * where "this month" starts and so which transactions the window must read.
+     */
+    @OptIn(ExperimentalCoroutinesApi::class)
+    operator fun invoke(recentTransactionLimit: Int = 5): Flow<DashboardSnapshot> =
+        AppCalendar.system.flatMapLatest { snapshots(recentTransactionLimit) }
+
+    private fun snapshots(recentTransactionLimit: Int): Flow<DashboardSnapshot> {
         val today = todayProvider()
 
         val profile = combine(
@@ -179,7 +191,7 @@ class GetDashboardSnapshotUseCase(
             // the period a monthly budget is measured over.
             budgets = BudgetMeasure.measure(
                 budgets = budgets,
-                transactions = transactions.filter { monthOf(it.date) == month },
+                transactions = transactions.filter { isInMonth(it.date, month) },
                 categories = CategoryLookup(references.categories)
             )
         )

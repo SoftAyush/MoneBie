@@ -1,11 +1,11 @@
-package com.aurex.app.data.repository
+package com.monebie.app.data.repository
 
-import com.aurex.app.data.database.DatabaseHelper
-import com.aurex.app.data.mapper.toDomain
-import com.aurex.app.domain.model.ThemeMode
-import com.aurex.app.domain.model.User
-import com.aurex.app.domain.model.themeModeOf
-import com.aurex.app.domain.repository.UserRepository
+import com.monebie.app.data.database.DatabaseHelper
+import com.monebie.app.data.mapper.toDomain
+import com.monebie.app.domain.model.ThemeMode
+import com.monebie.app.domain.model.User
+import com.monebie.app.domain.model.themeModeOf
+import com.monebie.app.domain.repository.UserRepository
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.coroutines.mapToOneOrNull

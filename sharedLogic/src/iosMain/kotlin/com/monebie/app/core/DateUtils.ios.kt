@@ -1,4 +1,4 @@
-package com.aurex.app.core
+package com.monebie.app.core
 
 import platform.Foundation.NSCalendar
 import platform.Foundation.NSCalendarUnitHour
@@ -46,12 +46,12 @@ actual fun daysBetween(startDay: String, endDay: String): Long {
     return (end.timeIntervalSinceDate(start) / 86_400.0).toLong()
 }
 
-actual fun formatDisplayDate(day: String): String {
+actual fun formatGregorianDate(day: String): String {
     val date = parseDay(day) ?: return day
     return formatter("d MMM yyyy").stringFromDate(date)
 }
 
-actual fun formatMonthYear(day: String): String {
+actual fun formatGregorianMonthYear(day: String): String {
     val date = parseDay(day) ?: return day
     return formatter("MMMM yyyy").stringFromDate(date)
 }

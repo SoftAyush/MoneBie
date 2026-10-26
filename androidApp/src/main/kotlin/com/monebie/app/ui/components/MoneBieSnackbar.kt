@@ -1,4 +1,4 @@
-package com.aurex.app.ui.components
+package com.monebie.app.ui.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -30,9 +30,9 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.aurex.app.ui.theme.AurexTheme
-import com.aurex.app.ui.theme.Palette700
-import com.aurex.app.ui.theme.Palette900
+import com.monebie.app.ui.theme.MoneBieTheme
+import com.monebie.app.ui.theme.Palette700
+import com.monebie.app.ui.theme.Palette900
 
 /**
  * The app's confirmation strip.
@@ -47,7 +47,7 @@ import com.aurex.app.ui.theme.Palette900
  * accessibility announcement are still Material's - only the surface changes.
  */
 @Composable
-fun AurexSnackbarHost(
+fun MoneBieSnackbarHost(
     hostState: SnackbarHostState,
     modifier: Modifier = Modifier
 ) {
@@ -62,7 +62,7 @@ fun AurexSnackbarHost(
             enter = fadeIn() + slideInVertically { it / 2 },
             exit = fadeOut() + slideOutVertically { it / 2 }
         ) {
-            AurexSnackbar(
+            MoneBieSnackbar(
                 message = data.visuals.message,
                 actionLabel = data.visuals.actionLabel,
                 onAction = { data.performAction() }
@@ -72,7 +72,7 @@ fun AurexSnackbarHost(
 }
 
 @Composable
-private fun AurexSnackbar(
+private fun MoneBieSnackbar(
     message: String,
     actionLabel: String?,
     onAction: () -> Unit,
@@ -91,7 +91,7 @@ private fun AurexSnackbar(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = AurexTheme.spacing.medium, vertical = AurexTheme.spacing.small)
+            .padding(horizontal = MoneBieTheme.spacing.medium, vertical = MoneBieTheme.spacing.small)
             .shadow(
                 elevation = if (dark) 0.dp else 14.dp,
                 shape = shape,
@@ -150,7 +150,7 @@ private fun AurexSnackbar(
  * account - come in quick succession, and a queue would leave a stale
  * confirmation up after the user has moved on to the next thing.
  */
-suspend fun SnackbarHostState.showAurexMessage(message: String) {
+suspend fun SnackbarHostState.showMoneBieMessage(message: String) {
     currentSnackbarData?.dismiss()
     showSnackbar(message)
 }

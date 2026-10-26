@@ -1,18 +1,18 @@
-package com.aurex.app.domain.usecase.reminders
+package com.monebie.app.domain.usecase.reminders
 
-import com.aurex.app.core.Money
-import com.aurex.app.core.getCurrentDay
-import com.aurex.app.core.totalOf
-import com.aurex.app.domain.calculation.FinancialCalculator
-import com.aurex.app.domain.model.BorrowLendRecord
-import com.aurex.app.domain.model.Debt
-import com.aurex.app.domain.model.DueBucket
-import com.aurex.app.domain.model.Emi
-import com.aurex.app.domain.model.UpcomingPayment
-import com.aurex.app.domain.repository.BorrowLendRepository
-import com.aurex.app.domain.repository.DebtRepository
-import com.aurex.app.domain.repository.EmiRepository
-import com.aurex.app.domain.repository.UserRepository
+import com.monebie.app.core.Money
+import com.monebie.app.core.getCurrentDay
+import com.monebie.app.core.totalOf
+import com.monebie.app.domain.calculation.FinancialCalculator
+import com.monebie.app.domain.model.BorrowLendRecord
+import com.monebie.app.domain.model.Debt
+import com.monebie.app.domain.model.DueBucket
+import com.monebie.app.domain.model.Emi
+import com.monebie.app.domain.model.UpcomingPayment
+import com.monebie.app.domain.repository.BorrowLendRepository
+import com.monebie.app.domain.repository.DebtRepository
+import com.monebie.app.domain.repository.EmiRepository
+import com.monebie.app.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 

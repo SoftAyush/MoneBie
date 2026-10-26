@@ -1,4 +1,4 @@
-package com.aurex.app.ui.screens.debt
+package com.monebie.app.ui.screens.debt
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,21 +20,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.aurex.app.core.MoneyFormatter
-import com.aurex.app.core.formatDisplayDate
-import com.aurex.app.core.relativeDueLabel
-import com.aurex.app.domain.model.DebtStatus
-import com.aurex.app.domain.model.displayName
-import com.aurex.app.domain.model.perLabel
-import com.aurex.app.presentation.debt.DebtListItem
-import com.aurex.app.ui.components.GlassIconButton
-import com.aurex.app.ui.components.GlowBadge
-import com.aurex.app.ui.components.GradientTrack
-import com.aurex.app.ui.components.MicroLabel
-import com.aurex.app.ui.components.MoneyText
-import com.aurex.app.ui.components.PremiumCard
-import com.aurex.app.ui.components.StatusPill
-import com.aurex.app.ui.theme.AurexTheme
+import com.monebie.app.core.MoneyFormatter
+import com.monebie.app.core.formatDisplayDate
+import com.monebie.app.core.relativeDueLabel
+import com.monebie.app.domain.model.DebtStatus
+import com.monebie.app.domain.model.displayName
+import com.monebie.app.domain.model.perLabel
+import com.monebie.app.presentation.debt.DebtListItem
+import com.monebie.app.ui.components.GlassIconButton
+import com.monebie.app.ui.components.GlowBadge
+import com.monebie.app.ui.components.GradientTrack
+import com.monebie.app.ui.components.MicroLabel
+import com.monebie.app.ui.components.MoneyText
+import com.monebie.app.ui.components.PremiumCard
+import com.monebie.app.ui.components.StatusPill
+import com.monebie.app.ui.theme.MoneBieTheme
 
 /**
  * Colour for a debt status.
@@ -44,9 +44,9 @@ import com.aurex.app.ui.theme.AurexTheme
  */
 @Composable
 fun statusColors(status: DebtStatus): Pair<Color, Color> = when (status) {
-    DebtStatus.OVERDUE -> AurexTheme.finance.negative to AurexTheme.finance.negativeContainer
-    DebtStatus.PAID -> AurexTheme.finance.positive to AurexTheme.finance.positiveContainer
-    DebtStatus.PARTIALLY_PAID -> AurexTheme.finance.caution to AurexTheme.finance.cautionContainer
+    DebtStatus.OVERDUE -> MoneBieTheme.finance.negative to MoneBieTheme.finance.negativeContainer
+    DebtStatus.PAID -> MoneBieTheme.finance.positive to MoneBieTheme.finance.positiveContainer
+    DebtStatus.PARTIALLY_PAID -> MoneBieTheme.finance.caution to MoneBieTheme.finance.cautionContainer
     DebtStatus.ACTIVE -> MaterialTheme.colorScheme.primary to
         MaterialTheme.colorScheme.primary.copy(alpha = 0.10f)
 }
@@ -84,7 +84,7 @@ fun DebtCard(
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.medium)
+            horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.medium)
         ) {
             GlowBadge(icon = Icons.AutoMirrored.Rounded.ReceiptLong, tint = accent)
 
@@ -118,7 +118,7 @@ fun DebtCard(
             }
         }
 
-        Spacer(Modifier.height(AurexTheme.spacing.medium))
+        Spacer(Modifier.height(MoneBieTheme.spacing.medium))
 
         GradientTrack(
             progress = debt.progress,
@@ -126,7 +126,7 @@ fun DebtCard(
             height = 6.dp
         )
 
-        Spacer(Modifier.height(AurexTheme.spacing.small))
+        Spacer(Modifier.height(MoneBieTheme.spacing.small))
 
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -150,7 +150,7 @@ fun DebtCard(
         }
 
         if (item.status != DebtStatus.PAID && item.daysUntilDue != null) {
-            Spacer(Modifier.height(AurexTheme.spacing.small))
+            Spacer(Modifier.height(MoneBieTheme.spacing.small))
 
             val days = item.daysUntilDue!!
             /*
@@ -160,14 +160,14 @@ fun DebtCard(
              * 3mo", which is the one distinction a due date exists to make.
              */
             val dueTone = when {
-                days < 0L -> AurexTheme.finance.negative
-                days <= 7L -> AurexTheme.finance.caution
+                days < 0L -> MoneBieTheme.finance.negative
+                days <= 7L -> MoneBieTheme.finance.caution
                 else -> null
             }
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small)
+                horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small)
             ) {
                 DebtStatusPill(item.status)
                 StatusPill(
@@ -193,7 +193,7 @@ fun DebtCard(
                 }
             }
         } else if (item.status == DebtStatus.PAID) {
-            Spacer(Modifier.height(AurexTheme.spacing.small))
+            Spacer(Modifier.height(MoneBieTheme.spacing.small))
             DebtStatusPill(item.status)
         }
     }
@@ -213,13 +213,13 @@ fun PaymentHistoryRow(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = AurexTheme.spacing.small),
+            .padding(vertical = MoneBieTheme.spacing.small),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.medium)
+        horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.medium)
     ) {
         GlowBadge(
             icon = Icons.AutoMirrored.Rounded.ReceiptLong,
-            tint = AurexTheme.finance.positive,
+            tint = MoneBieTheme.finance.positive,
             size = 38.dp
         )
 
@@ -254,10 +254,10 @@ fun PaymentHistoryRow(
             text = amount,
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.Bold,
-            color = AurexTheme.finance.positive
+            color = MoneBieTheme.finance.positive
         )
 
-        Spacer(Modifier.width(AurexTheme.spacing.small))
+        Spacer(Modifier.width(MoneBieTheme.spacing.small))
 
         // Small and quiet: removing a payment rewrites the balance above it,
         // so it should be reachable without ever being the loudest thing here.

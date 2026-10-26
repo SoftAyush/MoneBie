@@ -1,7 +1,7 @@
-package com.aurex.app.domain.repository
+package com.monebie.app.domain.repository
 
-import com.aurex.app.domain.model.Transaction
-import com.aurex.app.domain.model.TransactionDraft
+import com.monebie.app.domain.model.Transaction
+import com.monebie.app.domain.model.TransactionDraft
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.Flow
  *
  * Later phases post through this same interface: a debt payment and an EMI
  * installment become drafts carrying a
- * [com.aurex.app.domain.model.TransactionSource] that points back at the record
+ * [com.monebie.app.domain.model.TransactionSource] that points back at the record
  * they settled.
  */
 interface TransactionRepository {

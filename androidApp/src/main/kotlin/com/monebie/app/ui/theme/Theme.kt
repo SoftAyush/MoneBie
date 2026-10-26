@@ -1,4 +1,4 @@
-package com.aurex.app.ui.theme
+package com.monebie.app.ui.theme
 
 import android.app.Activity
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -12,17 +12,17 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 /**
- * The palette the app has settled on, for nested [AurexTheme] calls to inherit.
+ * The palette the app has settled on, for nested [MoneBieTheme] calls to inherit.
  *
  * Several screens wrap themselves in the theme again - the onboarding flow, the
  * setup screens, the currency selector - and without this they would each fall
  * back to the phone's setting and ignore a user who has chosen light or dark.
  */
-val LocalAurexDarkTheme = compositionLocalOf<Boolean?> { null }
+val LocalMoneBieDarkTheme = compositionLocalOf<Boolean?> { null }
 
 @Composable
-fun AurexTheme(
-    darkTheme: Boolean = LocalAurexDarkTheme.current ?: isSystemInDarkTheme(),
+fun MoneBieTheme(
+    darkTheme: Boolean = LocalMoneBieDarkTheme.current ?: isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
     val colorScheme = if (darkTheme) {
@@ -42,7 +42,7 @@ fun AurexTheme(
 
     CompositionLocalProvider(
         LocalSpacing provides Spacing(),
-        LocalAurexDarkTheme provides darkTheme,
+        LocalMoneBieDarkTheme provides darkTheme,
         LocalFinanceColors provides if (darkTheme) DarkFinanceColors else LightFinanceColors
     ) {
         MaterialTheme(
@@ -55,9 +55,9 @@ fun AurexTheme(
 }
 
 /**
- * Accessor for the Aurex design system.
+ * Accessor for the MoneBie design system.
  */
-object AurexTheme {
+object MoneBieTheme {
     val spacing: Spacing
         @Composable
         get() = LocalSpacing.current

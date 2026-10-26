@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		44C7012E8EB32DAB53C7A5B3 /* Aurex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Aurex.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		44C7012E8EB32DAB53C7A5B3 /* MoneBie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MoneBie.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -59,7 +59,7 @@
 		C4F0E3CF0A478C75831F38E9 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				44C7012E8EB32DAB53C7A5B3 /* Aurex.app */,
+				44C7012E8EB32DAB53C7A5B3 /* MoneBie.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -87,7 +87,7 @@
 			packageProductDependencies = (
 			);
 			productName = iosApp;
-			productReference = 44C7012E8EB32DAB53C7A5B3 /* Aurex.app */;
+			productReference = 44C7012E8EB32DAB53C7A5B3 /* MoneBie.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */

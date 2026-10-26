@@ -1,4 +1,4 @@
-package com.aurex.app.ui.screens.recurring
+package com.monebie.app.ui.screens.recurring
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -31,30 +31,30 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.aurex.app.AurexApplication
-import com.aurex.app.core.formatDisplayDate
-import com.aurex.app.domain.model.TransactionType
-import com.aurex.app.domain.model.displayName
-import com.aurex.app.presentation.recurring.AddEditRecurringViewModel
-import com.aurex.app.ui.components.AccountPicker
-import com.aurex.app.ui.components.AmbientBackdrop
-import com.aurex.app.ui.components.AurexButton
-import com.aurex.app.ui.components.AurexDateField
-import com.aurex.app.ui.components.AurexTextField
-import com.aurex.app.ui.components.CategoryPicker
-import com.aurex.app.ui.components.DetailTopBar
-import com.aurex.app.ui.components.EmptyState
-import com.aurex.app.ui.components.FieldError
-import com.aurex.app.ui.components.FormField
-import com.aurex.app.ui.components.FormLabel
-import com.aurex.app.ui.components.FormNotice
-import com.aurex.app.ui.components.FormSection
-import com.aurex.app.ui.components.MoneyInputField
-import com.aurex.app.ui.components.PremiumCard
-import com.aurex.app.ui.components.Segment
-import com.aurex.app.ui.components.SegmentedSelector
-import com.aurex.app.ui.components.SelectableChip
-import com.aurex.app.ui.theme.AurexTheme
+import com.monebie.app.MoneBieApplication
+import com.monebie.app.core.formatDisplayDate
+import com.monebie.app.domain.model.TransactionType
+import com.monebie.app.domain.model.displayName
+import com.monebie.app.presentation.recurring.AddEditRecurringViewModel
+import com.monebie.app.ui.components.AccountPicker
+import com.monebie.app.ui.components.AmbientBackdrop
+import com.monebie.app.ui.components.MoneBieButton
+import com.monebie.app.ui.components.MoneBieDateField
+import com.monebie.app.ui.components.MoneBieTextField
+import com.monebie.app.ui.components.CategoryPicker
+import com.monebie.app.ui.components.DetailTopBar
+import com.monebie.app.ui.components.EmptyState
+import com.monebie.app.ui.components.FieldError
+import com.monebie.app.ui.components.FormField
+import com.monebie.app.ui.components.FormLabel
+import com.monebie.app.ui.components.FormNotice
+import com.monebie.app.ui.components.FormSection
+import com.monebie.app.ui.components.MoneyInputField
+import com.monebie.app.ui.components.PremiumCard
+import com.monebie.app.ui.components.Segment
+import com.monebie.app.ui.components.SegmentedSelector
+import com.monebie.app.ui.components.SelectableChip
+import com.monebie.app.ui.theme.MoneBieTheme
 
 /**
  * The recurring transaction form.
@@ -73,7 +73,7 @@ fun AddEditRecurringScreen(
     presetType: TransactionType = TransactionType.EXPENSE
 ) {
     val context = LocalContext.current
-    val app = context.applicationContext as AurexApplication
+    val app = context.applicationContext as MoneBieApplication
 
     val viewModel: AddEditRecurringViewModel = viewModel(
         key = "recurring_$recurringId",
@@ -112,7 +112,7 @@ fun AddEditRecurringScreen(
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(AurexTheme.spacing.medium),
+                        .padding(MoneBieTheme.spacing.medium),
                     contentAlignment = Alignment.Center
                 ) {
                     PremiumCard(modifier = Modifier.fillMaxWidth()) {
@@ -132,31 +132,31 @@ fun AddEditRecurringScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
-                    .padding(horizontal = AurexTheme.spacing.medium)
+                    .padding(horizontal = MoneBieTheme.spacing.medium)
                     .imePadding()
                     .navigationBarsPadding(),
-                verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.large)
+                verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.large)
             ) {
-                Spacer(Modifier.height(AurexTheme.spacing.extraSmall))
+                Spacer(Modifier.height(MoneBieTheme.spacing.extraSmall))
 
                 PremiumCard(modifier = Modifier.fillMaxWidth()) {
                     SegmentedSelector(
                         segments = listOf(
-                            Segment(TransactionType.INCOME, "Income", AurexTheme.finance.positive),
-                            Segment(TransactionType.EXPENSE, "Expense", AurexTheme.finance.negative),
+                            Segment(TransactionType.INCOME, "Income", MoneBieTheme.finance.positive),
+                            Segment(TransactionType.EXPENSE, "Expense", MoneBieTheme.finance.negative),
                             Segment(TransactionType.TRANSFER, "Transfer", MaterialTheme.colorScheme.primary)
                         ),
                         selected = uiState.type,
                         onSelect = viewModel::setType
                     )
 
-                    Spacer(Modifier.height(AurexTheme.spacing.large))
+                    Spacer(Modifier.height(MoneBieTheme.spacing.large))
 
                     FormLabel(text = "Name")
 
-                    Spacer(Modifier.height(AurexTheme.spacing.small))
+                    Spacer(Modifier.height(MoneBieTheme.spacing.small))
 
-                    AurexTextField(
+                    MoneBieTextField(
                         value = uiState.name,
                         onValueChange = viewModel::setName,
                         placeholder = when (uiState.type) {
@@ -170,11 +170,11 @@ fun AddEditRecurringScreen(
 
                     FieldError(uiState.nameError)
 
-                    Spacer(Modifier.height(AurexTheme.spacing.medium))
+                    Spacer(Modifier.height(MoneBieTheme.spacing.medium))
 
                     FormLabel(text = "Amount")
 
-                    Spacer(Modifier.height(AurexTheme.spacing.small))
+                    Spacer(Modifier.height(MoneBieTheme.spacing.small))
 
                     MoneyInputField(
                         value = uiState.amountInput,
@@ -189,8 +189,8 @@ fun AddEditRecurringScreen(
                 FormSection(title = "Repeats") {
                     FormField(label = "Every") {
                         FlowRow(
-                            horizontalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small),
-                            verticalArrangement = Arrangement.spacedBy(AurexTheme.spacing.small)
+                            horizontalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small),
+                            verticalArrangement = Arrangement.spacedBy(MoneBieTheme.spacing.small)
                         ) {
                             uiState.frequencies.forEach { frequency ->
                                 SelectableChip(
@@ -203,14 +203,14 @@ fun AddEditRecurringScreen(
                     }
 
                     FormField(label = if (uiState.isEditing) "Started" else "First on") {
-                        AurexDateField(
+                        MoneBieDateField(
                             day = uiState.startDate,
                             onDayChange = { day -> day?.let(viewModel::setStartDate) }
                         )
                     }
 
                     FormField(label = "Ends (optional)", error = uiState.dateError) {
-                        AurexDateField(
+                        MoneBieDateField(
                             day = uiState.endDate,
                             onDayChange = viewModel::setEndDate,
                             placeholder = "Never",
@@ -270,7 +270,7 @@ fun AddEditRecurringScreen(
 
                 FormSection(title = "Details") {
                     FormField(label = "Note (optional)") {
-                        AurexTextField(
+                        MoneBieTextField(
                             value = uiState.note,
                             onValueChange = viewModel::setNote,
                             placeholder = "Shown on each entry",
@@ -288,13 +288,13 @@ fun AddEditRecurringScreen(
                     )
                 }
 
-                AurexButton(
+                MoneBieButton(
                     text = if (uiState.isEditing) "Save changes" else "Start schedule",
                     loading = uiState.isSaving,
                     onClick = viewModel::save
                 )
 
-                Spacer(Modifier.height(AurexTheme.spacing.extraExtraLarge))
+                Spacer(Modifier.height(MoneBieTheme.spacing.extraExtraLarge))
             }
         }
     }

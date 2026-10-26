@@ -1,4 +1,4 @@
-package com.aurex.app.security
+package com.monebie.app.security
 
 import android.content.Context
 import android.os.SystemClock
@@ -24,14 +24,14 @@ object AppLock {
     /** Elapsed-realtime stamp of the last trip to the background, or null while foregrounded. */
     private var backgroundedAt: Long? = null
 
-    /** Set just before Aurex itself opens another app's screen; consumed by [onBackground]. */
+    /** Set just before MoneBie itself opens another app's screen; consumed by [onBackground]. */
     private var externalActivityExpected = false
 
-    /** Whether the current absence is one Aurex started. */
+    /** Whether the current absence is one MoneBie started. */
     private var awayOnExternalActivity = false
 
     /**
-     * How long a trip Aurex itself started - a file picker, a share sheet, a
+     * How long a trip MoneBie itself started - a file picker, a share sheet, a
      * sign-in - may last before the lock treats it as having left.
      *
      * Without this, "lock immediately" would ask for the PIN on the way back
@@ -47,7 +47,7 @@ object AppLock {
     }
 
     /**
-     * Declares that the next stop is Aurex handing off to another screen -
+     * Declares that the next stop is MoneBie handing off to another screen -
      * call immediately before launching a picker, chooser or sign-in.
      */
     fun expectExternalActivity() {

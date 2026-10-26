@@ -1,9 +1,9 @@
-package com.aurex.app.data.repository
+package com.monebie.app.data.repository
 
-import com.aurex.app.domain.model.backup.BackupSnapshot
-import com.aurex.app.domain.repository.BackupIdentity
-import com.aurex.app.domain.repository.BackupMetadata
-import com.aurex.app.domain.repository.RemoteBackupStore
+import com.monebie.app.domain.model.backup.BackupSnapshot
+import com.monebie.app.domain.repository.BackupIdentity
+import com.monebie.app.domain.repository.BackupMetadata
+import com.monebie.app.domain.repository.RemoteBackupStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.flowOf
  * "not available here" rather than either crashing or, worse, appearing to
  * back a ledger up to somewhere that does not exist.
  *
- * Making this the default is what keeps [com.aurex.app.core.AppContainer] free
+ * Making this the default is what keeps [com.monebie.app.core.AppContainer] free
  * of a nullable store, and so keeps every caller free of null checks that would
  * otherwise exist only to describe a platform gap.
  */

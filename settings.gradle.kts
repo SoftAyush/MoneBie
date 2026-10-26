@@ -1,4 +1,4 @@
-rootProject.name = "Aurex"
+rootProject.name = "MoneBie"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {

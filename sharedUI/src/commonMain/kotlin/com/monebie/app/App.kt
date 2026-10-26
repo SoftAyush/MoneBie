@@ -1,4 +1,4 @@
-//package com.aurex.app
+//package com.monebie.app
 //
 //import androidx.compose.animation.AnimatedVisibility
 //import androidx.compose.foundation.Image
@@ -16,8 +16,8 @@
 //import androidx.compose.ui.tooling.preview.Preview
 //import org.jetbrains.compose.resources.painterResource
 //
-//import aurex.sharedui.generated.resources.Res
-//import aurex.sharedui.generated.resources.compose_multiplatform
+//import monebie.sharedui.generated.resources.Res
+//import monebie.sharedui.generated.resources.compose_multiplatform
 //
 //@Composable
 //@Preview
